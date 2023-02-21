@@ -18,12 +18,14 @@ int main() {
 
     auto scene = Scene::create();
 
-    const auto boxGeometry = BoxGeometry::create();
-    const auto boxMaterial = MeshBasicMaterial::create();
-    boxMaterial->color = Color::blue;
-    auto boxMesh = Mesh::create(boxGeometry, boxMaterial);
-    boxMesh->position.setY(10);
-    scene->add(boxMesh);
+    const auto ballGeometry = SphereGeometry::create(5);
+    const auto ballMaterial = MeshBasicMaterial::create();
+    ballMaterial->color = Color::blue;
+    ballMaterial->wireframe = true;
+    ballMaterial->wireframeLinewidth = 20;
+    auto ballMesh = Mesh::create(ballGeometry, ballMaterial);
+    ballMesh->position.setY(10);
+    scene->add(ballMesh);
 
     const auto planeGeometry = PlaneGeometry::create(50, 50);
     planeGeometry->rotateX(math::DEG2RAD*-90);
@@ -47,30 +49,29 @@ int main() {
 
     BulletWrapper bullet(Vector3(0,-9.81,0));
 
-    auto box = RbWrapper::create(boxGeometry, 1);
-    bullet.addRigidbody(box,boxMesh);
+    auto ball = RbWrapper::create(ballGeometry, 1);
+    bullet.addRigidbody(ball,ballMesh);
 
     KeyAdapter keyListener(KeyAdapter::Mode::KEY_PRESSED | threepp::KeyAdapter::KEY_REPEAT, [&](KeyEvent evt){
         if (evt.key == 32) { // space
-            box->body->applyCentralImpulse({0,10,0});
+            ball->body->applyCentralImpulse({0,5,0});
         }
         if(evt.key == 87){//w
-            box->body->applyCentralImpulse({0,0,-10});
+            ball->body->applyCentralImpulse({0,0,-2});
         }
         if(evt.key == 65){//a
-            box->body->applyCentralImpulse({-10,0,0});
+            ball->body->applyCentralImpulse({-2,0,0});
         }
         if(evt.key == 83){//s
-            box->body->applyCentralImpulse({0,0,10});
+            ball->body->applyCentralImpulse({0,0,2});
         }
         if(evt.key == 68){//d
-            box->body->applyCentralImpulse({10,0,0});
+            ball->body->applyCentralImpulse({2,0,0});
         }
     });
 
     canvas.addKeyListener(&keyListener);
 
-    // bullet.addRigidbody(RbWrapper::create(boxGeometry, 0.01), box);
     bullet.addRigidbody(RbWrapper::create(planeGeometry), plane);
 
     canvas.animate([&](float dt) {
