@@ -9,28 +9,28 @@ int main() {
 
     Canvas canvas;
     GLRenderer renderer(canvas);
+    renderer.setClearColor(Color::aliceblue);
 
-    auto camera = PerspectiveCamera::create(75, canvas.getAspect(),0.1f,100);
-    camera->position.z = 20;
-    camera->position.y = 10;
-
+    auto camera = PerspectiveCamera::create();
+    camera->position.z = 5;
 
     OrbitControls controls{camera, canvas};
 
     auto scene = Scene::create();
 
-    const auto boxGeometry = BoxGeometry::create();
-    const auto boxMaterial = MeshBasicMaterial::create();
-    boxMaterial->color = Color::blue;
-    auto boxMesh = Mesh::create(boxGeometry, boxMaterial);
-    boxMesh->position.setY(10);
-    scene->add(boxMesh);
+    const auto ballGeometry = SphereGeometry::create(5);
+    const auto ballMaterial = MeshBasicMaterial::create();
+    ballMaterial->color = Color::blue;
+    ballMaterial->wireframe = true;
+    ballMaterial->wireframeLinewidth = 20;
+    auto ballMesh = Mesh::create(ballGeometry, ballMaterial);
+    ballMesh->position.setY(10);
+    scene->add(ballMesh);
 
     const auto planeGeometry = PlaneGeometry::create(50, 50);
     planeGeometry->rotateX(math::DEG2RAD*-90);
     const auto planeMaterial = MeshBasicMaterial::create();
-    planeMaterial->color = Color::gray;
-    planeMaterial->side = DoubleSide;
+    planeMaterial->color = Color::green;
     auto plane = Mesh::create(planeGeometry, planeMaterial);
     plane->position.y =-1;
     scene->add(plane);
@@ -39,14 +39,6 @@ int main() {
     auto& textHandle = renderer.textHandle("This is a test");
     textHandle.setPosition(0, canvas.getSize().height-30);
     textHandle.scale = 2;
-
-    auto light = PointLight::create(0xffffff);
-    light->distance=10;
-    light->position.set(0,1,0);
-    scene->add(light);
-
-    auto helper = PointLightHelper::create(light, 0.25f);
-    scene->add(helper);
 
     canvas.onWindowResize([&](WindowSize size){
         camera->aspect = size.getAspect();
@@ -57,30 +49,29 @@ int main() {
 
     BulletWrapper bullet(Vector3(0,-9.81,0));
 
-    auto box = RbWrapper::create(boxGeometry, 1);
-    bullet.addRigidbody(box,boxMesh);
+    auto ball = RbWrapper::create(ballGeometry, 1);
+    bullet.addRigidbody(ball,ballMesh);
 
     KeyAdapter keyListener(KeyAdapter::Mode::KEY_PRESSED | threepp::KeyAdapter::KEY_REPEAT, [&](KeyEvent evt){
         if (evt.key == 32) { // space
-
+            ball->body->applyCentralImpulse({0,5,0});
         }
         if(evt.key == 87){//w
-
+            ball->body->applyCentralImpulse({0,0,-2});
         }
         if(evt.key == 65){//a
-
+            ball->body->applyCentralImpulse({-2,0,0});
         }
         if(evt.key == 83){//s
-
+            ball->body->applyCentralImpulse({0,0,2});
         }
         if(evt.key == 68){//d
-
+            ball->body->applyCentralImpulse({2,0,0});
         }
     });
 
     canvas.addKeyListener(&keyListener);
 
-    // bullet.addRigidbody(RbWrapper::create(boxGeometry, 0.01), box);
     bullet.addRigidbody(RbWrapper::create(planeGeometry), plane);
 
     canvas.animate([&](float dt) {
