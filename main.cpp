@@ -9,10 +9,11 @@ int main() {
 
     Canvas canvas;
     GLRenderer renderer(canvas);
-    renderer.setClearColor(Color::aliceblue);
 
-    auto camera = PerspectiveCamera::create();
-    camera->position.z = 5;
+    auto camera = PerspectiveCamera::create(75, canvas.getAspect(),0.1f,100);
+    camera->position.z = 20;
+    camera->position.y = 10;
+
 
     OrbitControls controls{camera, canvas};
 
@@ -28,7 +29,8 @@ int main() {
     const auto planeGeometry = PlaneGeometry::create(50, 50);
     planeGeometry->rotateX(math::DEG2RAD*-90);
     const auto planeMaterial = MeshBasicMaterial::create();
-    planeMaterial->color = Color::green;
+    planeMaterial->color = Color::gray;
+    planeMaterial->side = DoubleSide;
     auto plane = Mesh::create(planeGeometry, planeMaterial);
     plane->position.y =-1;
     scene->add(plane);
@@ -37,6 +39,14 @@ int main() {
     auto& textHandle = renderer.textHandle("This is a test");
     textHandle.setPosition(0, canvas.getSize().height-30);
     textHandle.scale = 2;
+
+    auto light = PointLight::create(0xffffff);
+    light->distance=10;
+    light->position.set(0,1,0);
+    scene->add(light);
+
+    auto helper = PointLightHelper::create(light, 0.25f);
+    scene->add(helper);
 
     canvas.onWindowResize([&](WindowSize size){
         camera->aspect = size.getAspect();
@@ -52,19 +62,19 @@ int main() {
 
     KeyAdapter keyListener(KeyAdapter::Mode::KEY_PRESSED | threepp::KeyAdapter::KEY_REPEAT, [&](KeyEvent evt){
         if (evt.key == 32) { // space
-            box->body->applyCentralImpulse({0,10,0});
+
         }
         if(evt.key == 87){//w
-            box->body->applyCentralImpulse({0,0,-10});
+
         }
         if(evt.key == 65){//a
-            box->body->applyCentralImpulse({-10,0,0});
+
         }
         if(evt.key == 83){//s
-            box->body->applyCentralImpulse({0,0,10});
+
         }
         if(evt.key == 68){//d
-            box->body->applyCentralImpulse({10,0,0});
+
         }
     });
 
