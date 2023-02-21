@@ -2,6 +2,7 @@
 #include "threepp/threepp.hpp"
 #include "threepp/extras/imgui/imgui_context.hpp"
 #include "threepp/extras/bullet/BulletWrapper.hpp"
+#include <threepp/loaders/AssimpLoader.hpp>
 
 using namespace threepp;
 
