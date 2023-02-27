@@ -6,6 +6,8 @@
 
 using namespace threepp;
 
+//todo: Fix follower camera, then figure out.. driving or flying
+
 int main() {
 
     Canvas canvas;
@@ -13,7 +15,7 @@ int main() {
     renderer.setClearColor(Color::aliceblue);
 
     auto camera = PerspectiveCamera::create();
-    camera->position.z = 5;
+    camera->position.set(0,50,50);
 
     OrbitControls controls{camera, canvas};
 
@@ -23,7 +25,7 @@ int main() {
     const auto ballMaterial = MeshBasicMaterial::create();
     ballMaterial->color = Color::blue;
     ballMaterial->wireframe = true;
-    ballMaterial->wireframeLinewidth = 20;
+    ballMaterial->wireframeLinewidth = 1;
     auto ballMesh = Mesh::create(ballGeometry, ballMaterial);
     ballMesh->position.setY(10);
     scene->add(ballMesh);
