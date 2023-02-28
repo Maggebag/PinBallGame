@@ -23,7 +23,6 @@ int main() {
     const auto ballMaterial = MeshBasicMaterial::create();
     ballMaterial->color = Color::blue;
     ballMaterial->wireframe = true;
-    ballMaterial->wireframeLinewidth = 1;
     auto ballMesh = Mesh::create(ballGeometry, ballMaterial);
     ballMesh->position.setY(10);
     scene->add(ballMesh);
@@ -51,7 +50,7 @@ int main() {
     BulletWrapper bullet(Vector3(0,-9.81,0));
 
     auto ball = RbWrapper::create(ballGeometry, 1);
-    bullet.addRigidbody(ball,ballMesh);
+    bullet.addRigidbody(ball,*ballMesh);
 
     KeyAdapter keyListener(KeyAdapter::Mode::KEY_PRESSED | threepp::KeyAdapter::KEY_REPEAT, [&](KeyEvent evt){
         if (evt.key == 32) { // space
@@ -73,7 +72,7 @@ int main() {
 
     canvas.addKeyListener(&keyListener);
 
-    bullet.addRigidbody(RbWrapper::create(planeGeometry), plane);
+    bullet.addRigidbody(RbWrapper::create(planeGeometry), *plane);
 
 
 
