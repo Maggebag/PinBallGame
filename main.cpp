@@ -6,8 +6,6 @@
 
 using namespace threepp;
 
-//todo: Fix follower camera, then figure out.. driving or flying
-
 int main() {
 
     Canvas canvas;
@@ -30,7 +28,7 @@ int main() {
     ballMesh->position.setY(10);
     scene->add(ballMesh);
 
-    const auto planeGeometry = PlaneGeometry::create(50, 50);
+    const auto planeGeometry = PlaneGeometry::create(500, 500);
     planeGeometry->rotateX(math::DEG2RAD*-90);
     const auto planeMaterial = MeshBasicMaterial::create();
     planeMaterial->color = Color::green;
@@ -39,7 +37,7 @@ int main() {
     scene->add(plane);
 
     renderer.enableTextRendering();
-    auto& textHandle = renderer.textHandle("This is a test");
+    auto& textHandle = renderer.textHandle("Test of physics");
     textHandle.setPosition(0, canvas.getSize().height-30);
     textHandle.scale = 2;
 
@@ -60,7 +58,7 @@ int main() {
             ball->body->applyCentralImpulse({0,5,0});
         }
         if(evt.key == 87){//w
-            ball->body->applyCentralImpulse({0,0,-2});
+            ball->body->applyImpulse({0,0,-2},{0,2,0});
         }
         if(evt.key == 65){//a
             ball->body->applyCentralImpulse({-2,0,0});
@@ -76,6 +74,8 @@ int main() {
     canvas.addKeyListener(&keyListener);
 
     bullet.addRigidbody(RbWrapper::create(planeGeometry), plane);
+
+
 
     canvas.animate([&](float dt) {
         bullet.step(dt);
