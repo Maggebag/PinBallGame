@@ -35,6 +35,7 @@ int main() {
     plane->position.y =-1;
     scene->add(plane);
 
+
     renderer.enableTextRendering();
     auto& textHandle = renderer.textHandle("Test of physics");
     textHandle.setPosition(0, canvas.getSize().height-30);
@@ -60,20 +61,19 @@ int main() {
             ball->body->applyImpulse({0,0,-2},{0,2,0});
         }
         if(evt.key == 65){//a
-            ball->body->applyCentralImpulse({-2,0,0});
+            ball->body->applyImpulse({-2,0,0},{0,2,0});
         }
         if(evt.key == 83){//s
-            ball->body->applyCentralImpulse({0,0,2});
+            ball->body->applyImpulse({0,0,2},{0,2,0});
         }
         if(evt.key == 68){//d
-            ball->body->applyCentralImpulse({2,0,0});
+            ball->body->applyImpulse({2,0,0},{0,2,0});
         }
     });
 
     canvas.addKeyListener(&keyListener);
 
     bullet.addRigidbody(RbWrapper::create(planeGeometry), *plane);
-
 
 
     canvas.animate([&](float dt) {
