@@ -20,13 +20,35 @@ int main() {
     auto scene = Scene::create();
     scene->add(HemisphereLight::create());
 
-    const auto ballGeometry = SphereGeometry::create(0.5, 32, 32);
+    const auto ballGeometry = SphereGeometry::create(1, 32, 32);
     const auto ballMaterial = MeshBasicMaterial::create();
     ballMaterial->color = Color::blue;
     ballMaterial->wireframe = true;
     auto ballMesh = Mesh::create(ballGeometry, ballMaterial);
     ballMesh->position.setY(10);
     scene->add(ballMesh);
+
+    const auto collisionBoxGeometry= BoxGeometry::create(10,5,10);
+    const auto boxMaterial = MeshBasicMaterial::create();
+    boxMaterial->color = Color::slategrey;
+    auto boxMesh = Mesh::create(collisionBoxGeometry, boxMaterial);
+    boxMesh->position.set(20,-1,0);
+    scene->add(boxMesh);
+
+    const auto flipperGeometry = BoxGeometry::create(30,5,5);
+    flipperGeometry->rotateY(math::DEG2RAD*-90);
+    const auto flipperMaterial = MeshBasicMaterial::create();
+    flipperMaterial->color = Color::palegreen;
+    auto flipperMesh = Mesh::create(flipperGeometry,flipperMaterial);
+    flipperMesh->position.set(-20,2,5);
+    scene->add(flipperMesh);
+
+    const auto flipperAxisGeometry = CylinderGeometry::create(3,3,6);
+    const auto flipperAxisMaterial = MeshBasicMaterial::create();
+    flipperAxisMaterial->color = Color::red;
+    auto flipperAxisMesh = Mesh::create(flipperAxisGeometry,flipperAxisMaterial);
+    flipperAxisMesh->position.set(-20,2,19);
+    scene->add(flipperAxisMesh);
 
     const auto planeGeometry = PlaneGeometry::create(500, 500);
     planeGeometry->rotateX(math::DEG2RAD*-90);
@@ -57,21 +79,31 @@ int main() {
     bullet.get(*ballMesh)->body->setRollingFriction(.1);
     bullet.get(*ballMesh)->body->setSpinningFriction(0.1);
 
+    bullet.addMesh(*boxMesh);
+    bullet.get(*boxMesh)->body->setRestitution(5);
+
+    bullet.addMesh(*flipperMesh);
+    bullet.get(*flipperMesh)->body->setRestitution(1);
+    bullet.addMesh(*flipperAxisMesh);
+
+    bullet.addMesh(*plane);
+    bullet.get(*plane)->body->setRestitution(0.6);
+
     KeyAdapter keyListener(KeyAdapter::Mode::KEY_PRESSED | threepp::KeyAdapter::KEY_REPEAT, [&](KeyEvent evt){
         if (evt.key == 32) { // space
-            bullet.get(*ballMesh)->body->applyCentralImpulse({0,50,0});
+            bullet.get(*ballMesh)->body->applyCentralImpulse({0,20,0});
         }
         if(evt.key == 87){//w
-            bullet.get(*ballMesh)->body->applyImpulse({0,0,-20},{0,2,0});
+            bullet.get(*ballMesh)->body->applyTorque({-40,0,0});
         }
         if(evt.key == 65){//a
-            bullet.get(*ballMesh)->body->applyImpulse({-20,0,0},{0,2,0});
+            bullet.get(*ballMesh)->body->applyTorque({0,0,40});
         }
         if(evt.key == 83){//s
-            bullet.get(*ballMesh)->body->applyImpulse({0,0,20},{0,2,0});
+            bullet.get(*ballMesh)->body->applyTorque({40,0,0});
         }
         if(evt.key == 68){//d
-            bullet.get(*ballMesh)->body->applyImpulse({20,0,0},{0,2,0});
+            bullet.get(*ballMesh)->body->applyTorque({0,0,-40});
         }
         if(evt.key == 82){//r
             bullet.setMeshPosition(*ballMesh,{0,0,0});
@@ -79,9 +111,6 @@ int main() {
     });
 
     canvas.addKeyListener(&keyListener);
-
-    bullet.addMesh(*plane);
-    bullet.get(*plane)->body->setRestitution(0.6);
 
     canvas.animate([&](float dt) {
         bullet.step(dt);
