@@ -79,18 +79,19 @@ int main() {
     BulletPhysics bullet;
 
     bullet.addMesh(*ballMesh, 10, true);
-    bullet.get(*ballMesh)->body->setRestitution(0.8);
-    bullet.get(*ballMesh)->body->setFriction(1.f);
-    bullet.get(*ballMesh)->body->setRollingFriction(.1);
-    bullet.get(*ballMesh)->body->setSpinningFriction(0.1);
+    auto bouncyBall = bullet.get(*ballMesh);
+    bouncyBall->body->setRestitution(0.2);
+    bouncyBall->body->setFriction(1.f);
+    bouncyBall->body->setRollingFriction(.1);
+    bouncyBall->body->setSpinningFriction(0.1);
 
     bullet.addMesh(*boxMesh);
     bullet.get(*boxMesh)->body->setRestitution(5);
 
     bullet.addMesh(*flipperMesh, 10, true);
     auto flippy = bullet.get(*flipperMesh);
-    btHingeConstraint flippyBoi(*flippy->body,btVector3(0,0,15),btVector3(0,1,0));
-    flippyBoi.enableAngularMotor(true,1,1000);
+    btHingeConstraint flippyBoi(*flippy->body,btVector3(0,0,flipperGeometry->width/2),btVector3(0,1,0));
+    flippyBoi.enableAngularMotor(true,10,10);
     bullet.addConstraint(&flippyBoi, true);
 
     bullet.addMesh(*plane);
