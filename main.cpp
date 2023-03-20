@@ -41,14 +41,14 @@ int main() {
     flipperMaterial->color = Color::palegreen;
     auto flipperMesh = Mesh::create(flipperGeometry,flipperMaterial);
     flipperMesh->position.set(-20,2,5);
-    scene->add(flipperMesh);
 
     const auto flipperAxisGeometry = CylinderGeometry::create(3,3,6);
     const auto flipperAxisMaterial = MeshBasicMaterial::create();
     flipperAxisMaterial->color = Color::red;
+    flipperAxisGeometry->translate(0,0,flipperGeometry->width/2);
     auto flipperAxisMesh = Mesh::create(flipperAxisGeometry,flipperAxisMaterial);
-    flipperAxisMesh->position.set(-20,2,19);
-    scene->add(flipperAxisMesh);
+    flipperMesh->add(flipperAxisMesh);
+    scene->add(flipperMesh);
 
     const auto planeGeometry = PlaneGeometry::create(500, 500);
     planeGeometry->rotateX(math::DEG2RAD*-90);
@@ -58,6 +58,11 @@ int main() {
     plane->position.y =-1;
     scene->add(plane);
 
+    Vector3 axisPos;
+    flipperAxisMesh->getWorldPosition(axisPos);
+
+    btVector3 btAxisPos;
+    btAxisPos.setZ(axisPos.z);
 
     renderer.enableTextRendering();
     auto& textHandle = renderer.textHandle("Test of physics");
@@ -73,7 +78,7 @@ int main() {
 
     BulletPhysics bullet;
 
-    bullet.addMesh(*ballMesh, 10);
+    bullet.addMesh(*ballMesh, 10, true);
     bullet.get(*ballMesh)->body->setRestitution(0.8);
     bullet.get(*ballMesh)->body->setFriction(1.f);
     bullet.get(*ballMesh)->body->setRollingFriction(.1);
@@ -82,28 +87,29 @@ int main() {
     bullet.addMesh(*boxMesh);
     bullet.get(*boxMesh)->body->setRestitution(5);
 
-    bullet.addMesh(*flipperMesh);
-    bullet.get(*flipperMesh)->body->setRestitution(1);
-    bullet.addMesh(*flipperAxisMesh);
+    bullet.addMesh(*flipperMesh, 10, true);
+    auto flippy = bullet.get(*flipperMesh);
+    btHingeConstraint flippyBoi(*flippy->body,btVector3(0,0,15),btVector3(0,1,0));
+    flippyBoi.enableAngularMotor(true,1,1000);
+    bullet.addConstraint(&flippyBoi, true);
 
     bullet.addMesh(*plane);
     bullet.get(*plane)->body->setRestitution(0.6);
 
     KeyAdapter keyListener(KeyAdapter::Mode::KEY_PRESSED | threepp::KeyAdapter::KEY_REPEAT, [&](KeyEvent evt){
         if (evt.key == 32) { // space
-            bullet.get(*ballMesh)->body->applyCentralImpulse({0,20,0});
         }
         if(evt.key == 87){//w
-            bullet.get(*ballMesh)->body->applyTorque({-40,0,0});
+            bullet.get(*ballMesh)->body->applyTorque({-80,0,0});
         }
         if(evt.key == 65){//a
-            bullet.get(*ballMesh)->body->applyTorque({0,0,40});
+            bullet.get(*ballMesh)->body->applyTorque({0,0,80});
         }
         if(evt.key == 83){//s
-            bullet.get(*ballMesh)->body->applyTorque({40,0,0});
+            bullet.get(*ballMesh)->body->applyTorque({80,0,0});
         }
         if(evt.key == 68){//d
-            bullet.get(*ballMesh)->body->applyTorque({0,0,-40});
+            bullet.get(*ballMesh)->body->applyTorque({0,0,-80});
         }
         if(evt.key == 82){//r
             bullet.setMeshPosition(*ballMesh,{0,0,0});
