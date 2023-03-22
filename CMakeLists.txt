@@ -6,5 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(threepp CONFIG REQUIRED)
 find_package(Bullet CONFIG REQUIRED)
 
-add_executable(physicsTest physicsTest.cpp)
-target_link_libraries(physicsTest PRIVATE threepp::threepp ${BULLET_LIBRARIES})
+add_subdirectory(src)
+add_subdirectory(tests/manualTests)
+
+add_executable(pinballGame pinballGame.cpp)
+target_link_libraries(pinballGame PRIVATE threepp::threepp ${BULLET_LIBRARIES})

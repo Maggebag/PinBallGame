@@ -1,3 +1,5 @@
+//This file has been for myself to test new functions to understand them properly before implementing them
+//I have tested things such has how to make hingeconstraints and how to properly employ and use the bullet physics-engine
 
 #include "threepp/threepp.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
