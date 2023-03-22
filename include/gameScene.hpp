@@ -1,0 +1,8 @@
+//
+// Created by magnu on 22.03.2023.
+//
+
+#ifndef PINBALLGAME_GAMESCENE_HPP
+#define PINBALLGAME_GAMESCENE_HPP
+
+#endif //PINBALLGAME_GAMESCENE_HPP

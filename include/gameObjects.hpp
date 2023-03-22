@@ -1,0 +1,8 @@
+//
+// Created by magnu on 22.03.2023.
+//
+
+#ifndef PINBALLGAME_GAMEOBJECTS_HPP
+#define PINBALLGAME_GAMEOBJECTS_HPP
+
+#endif //PINBALLGAME_GAMEOBJECTS_HPP
