@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(threepp CONFIG REQUIRED)
 find_package(Bullet CONFIG REQUIRED)
 
-add_subdirectory(src)
-add_subdirectory(tests/manualTests)
+set(SRC pinballGame.cpp src/objectsLogic.cpp)
 
-add_executable(pinballGame pinballGame.cpp)
+add_executable(pinballGame ${SRC})
 target_link_libraries(pinballGame PRIVATE threepp::threepp ${BULLET_LIBRARIES})
+target_include_directories(pinballGame PUBLIC include)

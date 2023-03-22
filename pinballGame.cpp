@@ -1,3 +1,9 @@
-//
-// Created by magnu on 22.03.2023.
-//
+
+#include "threepp/threepp.hpp"
+#include "threepp/extras/physics/BulletPhysics.hpp"
+#include "gameScene.hpp"
+#include "gameObjects.hpp"
+
+using namespace threepp;
+
+auto bouncyCylinder1 = createCylinder(5,10)
