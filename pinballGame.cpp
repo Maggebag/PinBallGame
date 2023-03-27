@@ -6,10 +6,7 @@
 
 using namespace threepp;
 
-auto bouncyCylinder1 = createCylinder(5,10);
-
-auto flipperRight = createFlipper(1);
-
-auto flipperLeft = createFlipper(-1);
-
-auto pinBall = createBall(3);
+int main()
+{
+   return 0;
+}

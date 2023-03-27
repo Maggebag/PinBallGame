@@ -11,7 +11,7 @@ The goal of this project is to make a pinball game using bullet physics engine, 
 
 #### Todo
 * Make the entire scene in a struct similar to "SnakeGame" in threepp examples, for simplicity of using key_pressed and key_released functions
-* Figure out a good and efficient way of making the board in which the game is played
+* Figure out a good and efficient way of making the board in which the game is played, probably create borders of playing field as stl file and load as a geometry
 * Write good and meaningful tests aswell as code that can be tested
 * Want to do a point scoring system for hitting different things on the playing field, however this is not a top priorty as i need a playing field first lol
 
