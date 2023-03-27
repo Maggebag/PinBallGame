@@ -3,33 +3,10 @@
 
 #include "threepp/threepp.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
+#include "gameObjects.hpp"
 
 using namespace threepp;
 
-auto createFlipper(float direction){
-    const auto flipperGeometry = BoxGeometry::create(30,5,5);
-    const auto flipperMaterial = MeshBasicMaterial::create();
-    flipperMaterial->color = Color::palegreen;
-    auto flipperMesh = Mesh::create(flipperGeometry,flipperMaterial);
-
-    const auto flipperAxisGeometry = CylinderGeometry::create(2,2,6);
-    const auto flipperAxisMaterial = MeshBasicMaterial::create();
-    flipperAxisMaterial->color = Color::red;
-    flipperAxisGeometry->translate(direction*flipperGeometry->width/3,0,0);
-    auto flipperAxisMesh = Mesh::create(flipperAxisGeometry,flipperAxisMaterial);
-    flipperMesh->add(flipperAxisMesh);
-
-    return flipperMesh;
-}
-
-auto createCylinder(float size, float height){
-    const auto cylinderGeometry = CylinderGeometry::create(size,size,height);
-    const auto cylinderMaterial = MeshBasicMaterial::create();
-    cylinderMaterial->color = Color::red;
-    auto cylinderMesh = Mesh::create(cylinderGeometry,cylinderMaterial);
-
-    return cylinderMesh;
-}
 int main() {
 
     Canvas canvas(Canvas::Parameters().antialiasing(8));
@@ -44,12 +21,7 @@ int main() {
     auto scene = Scene::create();
     scene->add(HemisphereLight::create());
 
-    const auto ballGeometry = SphereGeometry::create(3, 32, 32);
-    const auto ballMaterial = MeshBasicMaterial::create();
-    ballMaterial->color = Color::blue;
-    ballMaterial->wireframe = true;
-    auto ballMesh = Mesh::create(ballGeometry, ballMaterial);
-    ballMesh->position.setY(5);
+    auto ballMesh = createBall(3);
     scene->add(ballMesh);
 
     auto bouncyCylinder = createCylinder(4,6);
@@ -87,7 +59,7 @@ int main() {
     Vector3 grav = {0, -9.6892, 1.5346}; //Hehe instead of rotating all objects and the plane, get the components of gravity-acceleration on a 9 degree slope
     BulletPhysics bullet(grav);
 
-    bullet.addMesh(*ballMesh, 1.f, true);
+    bullet.addMesh(*ballMesh, 10, true);
     auto bouncyBall = bullet.get(*ballMesh);
     bouncyBall->body->setRestitution(0.2);
     bouncyBall->body->setFriction(0.001);
