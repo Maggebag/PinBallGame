@@ -8,6 +8,8 @@ find_package(Bullet CONFIG REQUIRED)
 
 set(SRC pinballGame.cpp src/objectsLogic.cpp)
 
+add_subdirectory(tests/manualTests)
+
 add_executable(pinballGame ${SRC})
 target_link_libraries(pinballGame PRIVATE threepp::threepp ${BULLET_LIBRARIES})
 target_include_directories(pinballGame PUBLIC include)
