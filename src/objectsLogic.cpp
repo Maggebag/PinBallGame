@@ -4,15 +4,16 @@
 
 using namespace threepp;
 
-std::shared_ptr<Mesh>createCylinder(float size, float height){
-
+std::shared_ptr<Mesh>createCylinder(float size, float height)
+{
     const auto cylinderGeometry = CylinderGeometry::create(size,size,height);
     const auto cylinderMaterial = MeshBasicMaterial::create();
     cylinderMaterial->color = Color::red;
     auto cylinderMesh = Mesh::create(cylinderGeometry,cylinderMaterial);
 }
 
-std::shared_ptr<Mesh>createFlipper(float direction) {
+std::shared_ptr<Mesh>createFlipper(float direction)
+{
     const auto flipperGeometry = BoxGeometry::create(30, 5, 5);
     const auto flipperMaterial = MeshBasicMaterial::create();
     flipperMaterial->color = Color::palegreen;
@@ -26,4 +27,14 @@ std::shared_ptr<Mesh>createFlipper(float direction) {
     flipperMesh->add(flipperAxisMesh);
 
     return flipperMesh;
+}
+
+std::shared_ptr<Mesh>createBall(float radius)
+{
+    const auto ballGeometry = SphereGeometry::create(radius,32,32);
+    const auto ballMaterial = MeshBasicMaterial::create();
+    ballMaterial->color = Color::gray;
+    auto ballMesh = Mesh::create(ballGeometry,ballMaterial);
+
+    return ballMesh;
 }
