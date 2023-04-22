@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(threepp CONFIG REQUIRED)
 find_package(Bullet CONFIG REQUIRED)
 
-set(SRC pinballGame.cpp src/objectsLogic.cpp)
+set(SRC pinballGame.cpp src/gameObjects.cpp)
 
 add_subdirectory(tests/manualTests)
 
