@@ -36,12 +36,8 @@ int main() {
     flipper2Mesh->position.set(-30,2,30);
     scene->add(flipper2Mesh);
 
-    const auto planeGeometry = PlaneGeometry::create(500, 500);
-    planeGeometry->rotateX(math::DEG2RAD*-90);
-    const auto planeMaterial = MeshBasicMaterial::create();
-    planeMaterial->color = Color::green;
-    auto plane = Mesh::create(planeGeometry, planeMaterial);
-    plane->position.y =-1;
+    auto plane = createPlane(500,500);
+    plane->position.set(0,-1,0);
     scene->add(plane);
 
     renderer.enableTextRendering();

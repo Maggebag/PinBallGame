@@ -40,3 +40,13 @@ std::shared_ptr<Mesh>createBall(float radius)
 
     return ballMesh;
 }
+std::shared_ptr<Mesh>createPlane(float width, float height)
+{
+    const auto planeGeometry = PlaneGeometry::create(width,height);
+    planeGeometry->rotateX(math::DEG2RAD*-90);
+    const auto planeMaterial = MeshBasicMaterial::create();
+    planeMaterial->color = Color::beige;
+    auto plane = Mesh::create(planeGeometry, planeMaterial);
+
+    return plane;
+}

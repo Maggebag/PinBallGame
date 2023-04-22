@@ -11,4 +11,6 @@ std::shared_ptr<Mesh>createFlipper(float direction);
 
 std::shared_ptr<Mesh>createBall(float radius);
 
+std::shared_ptr<Mesh>createPlane(float width, float height);
+
 #endif //PINBALLGAME_GAMEOBJECTS_HPP
