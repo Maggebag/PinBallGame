@@ -1,5 +1,5 @@
 
-#include "gameObjects.hpp"
+#include "GameObjects.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
@@ -20,6 +20,14 @@ std::shared_ptr<Mesh>createFlipper(float direction)
     const auto flipperMaterial = MeshBasicMaterial::create();
     flipperMaterial->color = Color::palegreen;
     auto flipperMesh = Mesh::create(flipperGeometry, flipperMaterial);
+
+    const auto flipendGeometry = CylinderGeometry::create(2.5 , 2.5 , 5);
+    const auto flipendMaterial = MeshBasicMaterial::create();
+    flipendMaterial->color = Color::palegreen;
+    flipendGeometry->translate(direction * -flipperGeometry->width/2,0,0);
+    auto flipendMesh = Mesh::create(flipendGeometry, flipendMaterial);
+    flipperMesh->add(flipendMesh);
+
 
     const auto flipperAxisGeometry = CylinderGeometry::create(2, 2, 6);
     const auto flipperAxisMaterial = MeshBasicMaterial::create();

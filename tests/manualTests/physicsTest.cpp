@@ -3,7 +3,7 @@
 
 #include "threepp/threepp.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
-#include "gameObjects.hpp"
+#include "GameObjects.hpp"
 
 using namespace threepp;
 
@@ -19,9 +19,8 @@ int main() {
     OrbitControls controls{camera, canvas};
 
     auto scene = Scene::create();
-    scene->add(HemisphereLight::create());
 
-    auto ballMesh = createBall(3);
+    auto ballMesh = createBall(4);
     scene->add(ballMesh);
 
     auto bouncyCylinder = createCylinder(4,6);
@@ -29,11 +28,11 @@ int main() {
     scene->add(bouncyCylinder);
 
     auto flipperMesh = createFlipper(1);
-    flipperMesh->position.set(10,2,30);
+    flipperMesh->position.set(25,2,30);
     scene->add(flipperMesh);
 
     auto flipper2Mesh = createFlipper(-1);
-    flipper2Mesh->position.set(-30,2,30);
+    flipper2Mesh->position.set(-25,2,30);
     scene->add(flipper2Mesh);
 
     auto plane = createPlane(500,500);
@@ -87,7 +86,7 @@ int main() {
             flippyBoi2.setMotorTargetVelocity(1000000);
         }
         if(evt.key == 82){//r
-            bullet.setMeshPosition(*ballMesh,{0,0,0});
+            bullet.setMeshPosition(*ballMesh,{20,0,0});
             flippyBoi.setMotorTargetVelocity(1000000);
             flippyBoi2.setMotorTargetVelocity(-1000000);
         }

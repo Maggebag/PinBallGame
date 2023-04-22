@@ -1,7 +1,7 @@
 
 #include "threepp/threepp.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
-#include "gameObjects.hpp"
+#include "GameObjects.hpp"
 
 using namespace threepp;
 
