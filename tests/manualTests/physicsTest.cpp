@@ -4,6 +4,7 @@
 #include "threepp/threepp.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
 #include "GameObjects.hpp"
+#include "keyInput.hpp"
 
 using namespace threepp;
 
@@ -51,6 +52,8 @@ int main() {
         textHandle.setPosition(0, size.height-30);
     });
 
+    std::shared_ptr<KeyInput> keyInput;
+
     Vector3 grav = {0, -9.6892, 1.5346}; //Hehe instead of rotating all objects and the plane, get the components of gravity-acceleration on a 9 degree slope
     BulletPhysics bullet(grav);
 
@@ -80,19 +83,22 @@ int main() {
     bullet.addMesh(*plane);
     bullet.get(*plane)->body->setRestitution(0.6);
 
-    KeyAdapter keyListener( KeyAdapter::Mode::KEY_PRESSED | KeyAdapter::Mode::KEY_REPEAT, [&](KeyEvent evt){
+    //keyInput->flipperLeft(flippyBoi);
+
+   /* KeyAdapter keyListener( KeyAdapter::Mode::KEY_PRESSED | KeyAdapter::Mode::KEY_REPEAT, [&](KeyEvent evt){
         if(evt.key == 32){//space
-            flippyBoi.setMotorTargetVelocity(-1000000);
+            //flippyBoi.setMotorTargetVelocity(-1000000);
             flippyBoi2.setMotorTargetVelocity(1000000);
         }
         if(evt.key == 82){//r
             bullet.setMeshPosition(*ballMesh,{20,0,0});
-            flippyBoi.setMotorTargetVelocity(1000000);
+            //flippyBoi.setMotorTargetVelocity(1000000);
             flippyBoi2.setMotorTargetVelocity(-1000000);
         }
-    });
+    }); */
 
-    canvas.addKeyListener(&keyListener);
+    //canvas.addKeyListener(&keyListener);
+    canvas.addKeyListener(keyInput.get());
 
     canvas.animate([&](float dt) {
         bullet.step(dt);
