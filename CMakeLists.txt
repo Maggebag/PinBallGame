@@ -10,6 +10,6 @@ add_subdirectory(src)
 
 add_subdirectory(tests/manualTests)
 
-add_executable(pinballGame "pinballGame.cpp" include/keyinput.hpp include/bordGen.hpp)
+add_executable(pinballGame "pinballGame.cpp")
 target_link_libraries(pinballGame PUBLIC pinball-lib PRIVATE threepp::threepp ${BULLET_LIBRARIES})
 
