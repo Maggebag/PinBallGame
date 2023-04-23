@@ -103,11 +103,16 @@ int main() {
     localB.setOrigin(btVector3(0.0,0.0,math::TWO_PI));
 
     btSliderConstraint launchSlider(*topBox->body,*bottomBox->body,localA,localB,true);
-    launchSlider.setLowerLinLimit(-0.1);
-    launchSlider.setUpperLinLimit(10);
+    launchSlider.setLowerLinLimit(-20);
+    launchSlider.setUpperLinLimit(5);
     launchSlider.setLowerAngLimit(0);
     launchSlider.setUpperAngLimit(0);
+    launchSlider.setPoweredLinMotor(true);
+    launchSlider.setTargetLinMotorVelocity(-10000);
+    launchSlider.setMaxLinMotorForce(15);
     bullet.addConstraint(&launchSlider, true);
+
+    bullet.get(*box1)->body->setLinearVelocity({0,0,100});
 
     bullet.addMesh(*plane);
     bullet.get(*plane)->body->setRestitution(0.6);
