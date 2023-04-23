@@ -22,9 +22,10 @@ int main() {
     auto scene = Scene::create();
 
     auto ballMesh = createBall(4);
+    ballMesh->position.set(50,1,0);
     scene->add(ballMesh);
 
-    auto bouncyCylinder = createCylinder(4,6);
+    auto bouncyCylinder = createCylinder(4,6,255,0,0);
     bouncyCylinder->position.set(-10,2,-20);
     scene->add(bouncyCylinder);
 
@@ -40,6 +41,13 @@ int main() {
     plane->position.set(0,-1,0);
     scene->add(plane);
 
+    auto box1 = createBox(10,5,5,255,255,255);
+    auto box2 = createBox(10,5,5,255,0,255);
+    box1->position.set(50,2,40);
+    box2->position.set(50,2,60);
+    scene->add(box1);
+    scene->add(box2);
+
     renderer.enableTextRendering();
     auto& textHandle = renderer.textHandle("Test of physics");
     textHandle.setPosition(0, canvas.getSize().height-30);
@@ -51,8 +59,6 @@ int main() {
         renderer.setSize(size);
         textHandle.setPosition(0, size.height-30);
     });
-
-    std::shared_ptr<KeyInput> keyInput;
 
     Vector3 grav = {0, -9.6892, 1.5346}; //Hehe instead of rotating all objects and the plane, get the components of gravity-acceleration on a 9 degree slope
     BulletPhysics bullet(grav);
@@ -80,29 +86,40 @@ int main() {
     flippyBoi2.setLimit(-0.4,0.7);
     bullet.addConstraint(&flippyBoi2, true);
 
+    bullet.addMesh(*box1,1,true);
+    bullet.addMesh(*box2,0,true);
+
+    auto topBox = bullet.get(*box1);
+    auto bottomBox = bullet.get(*box2);
+
+    btTransform localA;
+    btTransform localB;
+
+    localA.setIdentity();
+    localB.setIdentity();
+    localA.getBasis().setEulerZYX(0,math::PI/2,0);
+    localA.setOrigin(btVector3(0.0,0.0,20.0));
+    localB.getBasis().setEulerZYX(0,math::PI/2,0);
+    localB.setOrigin(btVector3(0.0,0.0,math::TWO_PI));
+
+    btSliderConstraint launchSlider(*topBox->body,*bottomBox->body,localA,localB,true);
+    launchSlider.setLowerLinLimit(-0.1);
+    launchSlider.setUpperLinLimit(10);
+    launchSlider.setLowerAngLimit(0);
+    launchSlider.setUpperAngLimit(0);
+    bullet.addConstraint(&launchSlider, true);
+
     bullet.addMesh(*plane);
     bullet.get(*plane)->body->setRestitution(0.6);
 
-    //keyInput->flipperLeft(flippyBoi);
+    auto keyInput = std::make_shared<KeyInput>();
 
-   /* KeyAdapter keyListener( KeyAdapter::Mode::KEY_PRESSED | KeyAdapter::Mode::KEY_REPEAT, [&](KeyEvent evt){
-        if(evt.key == 32){//space
-            //flippyBoi.setMotorTargetVelocity(-1000000);
-            flippyBoi2.setMotorTargetVelocity(1000000);
-        }
-        if(evt.key == 82){//r
-            bullet.setMeshPosition(*ballMesh,{20,0,0});
-            //flippyBoi.setMotorTargetVelocity(1000000);
-            flippyBoi2.setMotorTargetVelocity(-1000000);
-        }
-    }); */
-
-    //canvas.addKeyListener(&keyListener);
     canvas.addKeyListener(keyInput.get());
 
     canvas.animate([&](float dt) {
         bullet.step(dt);
 
+        keyInput->flippers(flippyBoi, flippyBoi2);
         renderer.render(scene, camera);
 
     });

@@ -5,7 +5,9 @@
 
 using namespace threepp;
 
-std::shared_ptr<Mesh>createCylinder(float size, float height);
+std::shared_ptr<Mesh>createCylinder(float radius, float height, float red, float green, float blue);
+
+std::shared_ptr<Mesh>createBox(float width, float length, float height, float red, float green, float blue);
 
 std::shared_ptr<Mesh>createFlipper(float direction);
 
