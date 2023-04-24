@@ -21,7 +21,7 @@ int main() {
 
     auto scene = Scene::create();
 
-    auto ballMesh = createBall(4);
+    auto ballMesh = createBall(2.7);
     ballMesh->position.set(50,1,0);
     scene->add(ballMesh);
 
@@ -63,30 +63,28 @@ int main() {
     Vector3 grav = {0, -9.6892, 1.5346}; //Hehe instead of rotating all objects and the plane, get the components of gravity-acceleration on a 9 degree slope
     BulletPhysics bullet(grav);
 
-    bullet.addMesh(*ballMesh, 10, true);
+    bullet.addMesh(*ballMesh, 80.6, true);
     auto bouncyBall = bullet.get(*ballMesh);
-    bouncyBall->body->setRestitution(0.2);
-    bouncyBall->body->setFriction(0.001);
-    bouncyBall->body->setRollingFriction(0.001);
+    bouncyBall->body->setRestitution(0.1);
 
     bullet.addMesh(*bouncyCylinder);
     bullet.get(*bouncyCylinder)->body->setRestitution(10);
 
-    bullet.addMesh(*flipperMesh, 10,  true);
+    bullet.addMesh(*flipperMesh, 100,  true);
     auto flippy = bullet.get(*flipperMesh);
     btHingeConstraint flippyBoi(*flippy->body,btVector3(10,0,0),btVector3(0,1,0));
     flippyBoi.enableAngularMotor(true,0,10000000);
     flippyBoi.setLimit(-0.7,0.4);
     bullet.addConstraint(&flippyBoi, true);
 
-    bullet.addMesh(*flipper2Mesh,10,true);
+    bullet.addMesh(*flipper2Mesh,100,true);
     auto flippy2 = bullet.get(*flipper2Mesh);
     btHingeConstraint flippyBoi2(*flippy2->body,btVector3(-10,0,0), btVector3(0,1,0));
     flippyBoi2.enableAngularMotor(true,0,10000000);
     flippyBoi2.setLimit(-0.4,0.7);
     bullet.addConstraint(&flippyBoi2, true);
 
-    bullet.addMesh(*box1,1,true);
+    bullet.addMesh(*box1,10,true);
     bullet.addMesh(*box2,0,true);
 
     auto topBox = bullet.get(*box1);
@@ -103,13 +101,11 @@ int main() {
     localB.setOrigin(btVector3(0.0,0.0,math::TWO_PI));
 
     btSliderConstraint launchSlider(*topBox->body,*bottomBox->body,localA,localB,true);
-    launchSlider.setLowerLinLimit(-20);
-    launchSlider.setUpperLinLimit(5);
+    launchSlider.setLowerLinLimit(-30);
     launchSlider.setLowerAngLimit(0);
     launchSlider.setUpperAngLimit(0);
     launchSlider.setPoweredLinMotor(true);
-    launchSlider.setTargetLinMotorVelocity(-10000);
-    launchSlider.setMaxLinMotorForce(15);
+    launchSlider.setMaxLinMotorForce(10000);
     bullet.addConstraint(&launchSlider, true);
 
     bullet.get(*box1)->body->setLinearVelocity({0,0,100});
@@ -125,6 +121,8 @@ int main() {
         bullet.step(dt);
 
         keyInput->flippers(flippyBoi, flippyBoi2);
+        keyInput->launcher(launchSlider);
+
         renderer.render(scene, camera);
 
     });

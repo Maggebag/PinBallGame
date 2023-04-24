@@ -57,9 +57,29 @@ public:
             flipperLeft.setMotorTargetVelocity(-1000000);
         }
     }
+    void launcher(btSliderConstraint& slider)
+    {
+        if(keys_.s && lowLim_ < 5){
+           lowLim_+= 0.1;
+        }
+        if(keys_.w && lowLim_ > -30) {
+        lowLim_-= 0.1;
+        }
+
+        slider.setUpperLinLimit(lowLim_);
+
+        if(keys_.space){
+            slider.setTargetLinMotorVelocity(-10000);
+            lowLim_ = -30;
+        }
+        else{
+            slider.setTargetLinMotorVelocity(10000);
+        }
+    }
 
 private:
     keys keys_;
+    float lowLim_ = -30;
 };
 
 #endif //PINBALLGAME_KEYINPUT_HPP
