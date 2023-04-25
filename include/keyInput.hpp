@@ -7,7 +7,7 @@
 
 using namespace threepp;
 
-struct keys {
+struct Keys {
     bool w = false;
     bool a = false;
     bool s = false;
@@ -15,7 +15,7 @@ struct keys {
     bool space = false;
 };
 
-class KeyInput:public KeyListener {
+class KeyInput: public KeyListener {
 public:
     void onKeyPressed(KeyEvent evt) override {
         if (evt.key == 87){
@@ -59,10 +59,10 @@ public:
     }
     void launcher(btSliderConstraint& slider)
     {
-        if(keys_.s && lowLim_ < 5){
+        if(keys_.s && lowLim_ < 80){
            lowLim_+= 0.1;
         }
-        if(keys_.w && lowLim_ > -30) {
+        if(keys_.w && lowLim_ > 0) {
         lowLim_-= 0.1;
         }
 
@@ -70,7 +70,7 @@ public:
 
         if(keys_.space){
             slider.setTargetLinMotorVelocity(-10000);
-            lowLim_ = -30;
+            lowLim_ = 0;
         }
         else{
             slider.setTargetLinMotorVelocity(10000);
@@ -78,8 +78,8 @@ public:
     }
 
 private:
-    keys keys_;
-    float lowLim_ = -30;
+    Keys keys_;
+    float lowLim_ = 0;
 };
 
 #endif //PINBALLGAME_KEYINPUT_HPP

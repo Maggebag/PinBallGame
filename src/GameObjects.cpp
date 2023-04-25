@@ -4,39 +4,39 @@
 
 using namespace threepp;
 
-std::shared_ptr<Mesh>createCylinder(float radius, float height, float red, float green, float blue)
+std::shared_ptr<Mesh>utils::createCylinder(float radius, float height)
 {
     const auto cylinderGeometry = CylinderGeometry::create(radius,radius,height);
     const auto cylinderMaterial = MeshBasicMaterial::create();
-    cylinderMaterial->color.setRGB(red, green, blue);
+    cylinderMaterial->color = Color::red;
     auto cylinderMesh = Mesh::create(cylinderGeometry,cylinderMaterial);
 
     return cylinderMesh;
 }
 
-std::shared_ptr<Mesh>createBox(float width, float length, float height, float red, float green, float blue)
+std::shared_ptr<Mesh>utils::createBox(float width, float length, float height)
 {
     const auto boxGeometry = BoxGeometry::create(width,height, length);
     const auto boxMaterial = MeshBasicMaterial::create();
-    boxMaterial->color.setRGB(red, green, blue);
+    boxMaterial->color = Color::burlywood;
     auto boxMesh = Mesh::create(boxGeometry,boxMaterial);
 
     return boxMesh;
 }
 
-std::shared_ptr<Mesh>createFlipper(float direction)
+std::shared_ptr<Mesh>utils::createFlipper(float direction)
 {
-    const auto flipperGeometry = BoxGeometry::create(30, 5, 6);
+    const auto flipperGeometry = BoxGeometry::create(3*27, 22, 20);
     const auto flipperMaterial = MeshBasicMaterial::create();
     flipperMaterial->color = Color::palegreen;
     auto flipperMesh = Mesh::create(flipperGeometry, flipperMaterial);
 
-    const auto flipperTipGeometry = CylinderGeometry::create(2.5 , 2.5 , 6);
+    const auto flipperTipGeometry = CylinderGeometry::create(20/2 , 20/2 , 22);
     flipperTipGeometry->translate(direction * -flipperGeometry->width/2,0,0);
     auto flipendMesh = Mesh::create(flipperTipGeometry, flipperMaterial);
     flipperMesh->add(flipendMesh);
 
-    const auto flipperAxisGeometry = CylinderGeometry::create(2, 2, 6);
+    const auto flipperAxisGeometry = CylinderGeometry::create(20/2-2, 20/2-2, 27);
     const auto flipperAxisMaterial = MeshBasicMaterial::create();
     flipperAxisMaterial->color = Color::red;
     flipperAxisGeometry->translate(direction * flipperGeometry->width / 3, 0, 0);
@@ -46,7 +46,7 @@ std::shared_ptr<Mesh>createFlipper(float direction)
     return flipperMesh;
 }
 
-std::shared_ptr<Mesh>createBall(float radius)
+std::shared_ptr<Mesh>utils::createBall(float radius)
 {
     const auto ballGeometry = SphereGeometry::create(radius,32,32);
     const auto ballMaterial = MeshBasicMaterial::create();
@@ -55,7 +55,7 @@ std::shared_ptr<Mesh>createBall(float radius)
 
     return ballMesh;
 }
-std::shared_ptr<Mesh>createPlane(float width, float height)
+std::shared_ptr<Mesh>utils::createPlane(float width, float height)
 {
     const auto planeGeometry = PlaneGeometry::create(width,height);
     planeGeometry->rotateX(math::DEG2RAD*-90);
@@ -65,3 +65,4 @@ std::shared_ptr<Mesh>createPlane(float width, float height)
 
     return plane;
 }
+
