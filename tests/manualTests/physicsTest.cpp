@@ -17,23 +17,11 @@ int main() {
     renderer.setClearColor(Color::aliceblue);
 
     auto camera = PerspectiveCamera::create(75, canvas.getAspect(), 0.1f, 1000);
-    camera->position.set(0, 50, 10);
+    camera->position.set(0, 500, 10);
 
     OrbitControls controls{camera, canvas};
 
     auto scene = Scene::create();
-
-    auto ballMesh = utils::createBall(13.5);
-    ballMesh->position.set(50,13.5,0);
-    scene->add(ballMesh);
-
-    auto flipperMesh = utils::createFlipper(1);
-    flipperMesh->position.set(2.5*27,13.5,30);
-    scene->add(flipperMesh);
-
-    auto flipper2Mesh = utils::createFlipper(-1);
-    flipper2Mesh->position.set(-2.5*27,13.5,30);
-    scene->add(flipper2Mesh);
 
     auto box1 = utils::createBox(30,15,20);
     auto box2 = utils::createBox(30,15,20);
@@ -48,7 +36,7 @@ int main() {
         renderer.setSize(size);
     });
 
-    Vector3 grav = {0, -9.6892, 1.5346}; //todo:: make function to get components of gravity
+    Vector3 grav = {0, -974.694, 111.052}; //todo:: make function to get components of gravity
     BulletPhysics bullet(grav);
 
     PlayingField playingField;
@@ -58,36 +46,39 @@ int main() {
     scene->add(playingField.RightWall);
     scene->add(playingField.LeftWall);
 
+    scene->add(playingField.PinBall);
+    playingField.PinBall->position.set(40,13.5,140);
+
+    scene->add(playingField.FlipperLeft);
+    scene->add(playingField.FlipperRight);
+
     bullet.addMesh(*playingField.plane);
     bullet.get(*playingField.plane)->body->setRestitution(0.6);
-    bullet.get(*playingField.plane)->body->setFriction(0.001);
 
     bullet.addMesh(*playingField.TopWall);
-    bullet.get(*playingField.TopWall)->body->setRestitution(0.6);
+    bullet.get(*playingField.TopWall)->body->setRestitution(0.5);
     bullet.addMesh(*playingField.BottomWall);
-    bullet.get(*playingField.BottomWall)->body->setRestitution(0.6);
+    bullet.get(*playingField.BottomWall)->body->setRestitution(0.5);
     bullet.addMesh(*playingField.RightWall);
-    bullet.get(*playingField.RightWall)->body->setRestitution(0.6);
+    bullet.get(*playingField.RightWall)->body->setRestitution(0.5);
     bullet.addMesh(*playingField.LeftWall);
-    bullet.get(*playingField.LeftWall)->body->setRestitution(0.6);
+    bullet.get(*playingField.LeftWall)->body->setRestitution(0.5);
 
-    bullet.addMesh(*ballMesh, 80.6, true);
-    auto bouncyBall = bullet.get(*ballMesh);
-    bouncyBall->body->setRestitution(0.1);
-    bouncyBall->body->setFriction(0.001);
+    bullet.addMesh(*playingField.PinBall, 80.6, true);
+    bullet.get(*playingField.PinBall)->body->setRestitution(1);
 
-    bullet.addMesh(*flipperMesh, 100,  true);
-    auto flippy = bullet.get(*flipperMesh);
-    btHingeConstraint flippyBoi(*flippy->body,btVector3(10,0,0),btVector3(0,1,0));
-    flippyBoi.enableAngularMotor(true,0,100000);
-    flippyBoi.setLimit(-0.3,0.5);
+    bullet.addMesh(*playingField.FlipperRight, 100,  true);
+    auto flippy = bullet.get(*playingField.FlipperRight);
+    btHingeConstraint flippyBoi(*flippy->body,btVector3(27,0,0),btVector3(0,1,0));
+    flippyBoi.enableAngularMotor(true,0,1000000);
+    flippyBoi.setLimit(-0.4,0.5);
     bullet.addConstraint(&flippyBoi, true);
 
-    bullet.addMesh(*flipper2Mesh,100,true);
-    auto flippy2 = bullet.get(*flipper2Mesh);
-    btHingeConstraint flippyBoi2(*flippy2->body,btVector3(-10,0,0), btVector3(0,1,0));
-    flippyBoi2.enableAngularMotor(true,0,100000);
-    flippyBoi2.setLimit(-0.5,0.3);
+    bullet.addMesh(*playingField.FlipperLeft,100,true);
+    auto flippy2 = bullet.get(*playingField.FlipperLeft);
+    btHingeConstraint flippyBoi2(*flippy2->body,btVector3(-27,0,0), btVector3(0,1,0));
+    flippyBoi2.enableAngularMotor(true,0,1000000);
+    flippyBoi2.setLimit(-0.5,0.4);
     bullet.addConstraint(&flippyBoi2, true);
 
     bullet.addMesh(*box1,10,true);

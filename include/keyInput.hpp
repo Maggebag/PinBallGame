@@ -45,25 +45,25 @@ public:
     void flippers (btHingeConstraint& flipperRight, btHingeConstraint& flipperLeft) const
     {
         if (keys_.d){
-            flipperRight.setMotorTargetVelocity(-1000000);
+            flipperRight.setMotorTargetVelocity(-100000000);
         }
         else{
-            flipperRight.setMotorTargetVelocity(1000000);
+            flipperRight.setMotorTargetVelocity(100000000);
         }
         if (keys_.a){
-            flipperLeft.setMotorTargetVelocity(1000000);
+            flipperLeft.setMotorTargetVelocity(100000000);
         }
         else{
-            flipperLeft.setMotorTargetVelocity(-1000000);
+            flipperLeft.setMotorTargetVelocity(-100000000);
         }
     }
     void launcher(btSliderConstraint& slider)
     {
         if(keys_.s && lowLim_ < 80){
-           lowLim_+= 0.1;
+           lowLim_+= 0.5;
         }
         if(keys_.w && lowLim_ > 0) {
-        lowLim_-= 0.1;
+        lowLim_-= 0.5;
         }
 
         slider.setUpperLinLimit(lowLim_);
