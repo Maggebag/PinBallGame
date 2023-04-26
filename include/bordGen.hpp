@@ -14,7 +14,7 @@ struct Parameters{
     const float BorderHeight = BallSize+5;
     const float BorderWidth = 50;
     const float Height = 980;
-    const float Width = 490;
+    const float Width = 520;
 };
 
 class PlayingField{

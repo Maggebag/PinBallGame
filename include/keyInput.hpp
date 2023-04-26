@@ -80,9 +80,11 @@ public:
             slider.setTargetLinMotorVelocity(10000);
         }
     }
-    void reset(std::shared_ptr<Mesh> pinBall)
+    void reset(std::shared_ptr<Mesh> pinBall,BulletPhysics& bullet)
     {
-        pinBall->position.set()
+        if(keys_.r){
+        bullet.setMeshPosition(*pinBall,{30,13.5,0});
+        }
     }
 
 private:

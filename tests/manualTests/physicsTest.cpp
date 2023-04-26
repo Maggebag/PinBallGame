@@ -16,7 +16,7 @@ int main() {
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::aliceblue);
 
-    auto camera = PerspectiveCamera::create(75, canvas.getAspect(), 0.1f, 1000);
+    auto camera = PerspectiveCamera::create(75, canvas.getAspect(), 0.1f, 10000);
     camera->position.set(0, 500, 10);
 
     OrbitControls controls{camera, canvas};
@@ -119,6 +119,7 @@ int main() {
 
         keyInput->flippers(flippyBoi, flippyBoi2);
         keyInput->launcher(launchSlider);
+        keyInput->reset(playingField.PinBall, bullet);
 
         renderer.render(scene, camera);
 
