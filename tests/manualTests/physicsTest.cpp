@@ -43,7 +43,7 @@ int main() {
     auto extrudeMesh = Mesh::create(extrudeGeometry,extrudeMaterial);
     scene->add(extrudeMesh);
 
-    //todo:: make the launcher creation into its own function
+    //todo: make the launcher creation into its own function
     auto box1 = utils::createBox(30,15,20);
     auto box2 = utils::createBox(30,15,20);
     box1->position.set(150,13.5,40);
@@ -57,10 +57,10 @@ int main() {
         renderer.setSize(size);
     });
 
-    Vector3 grav = {0, -974.694, 111.052}; //todo:: make function to get components of gravity. Husk å legge til multiplikasjon med 1000 siden vi seier 1 unit = 1 mm
+    Vector3 grav = {0, -974.694, 111.052}; //todo: make function to get components of gravity. Husk å legge til multiplikasjon med 1000 siden vi seier 1 unit = 1 mm
     BulletPhysics bullet(grav);
 
-    bullet.addMesh(*extrudeMesh); //Spør om bullethandlig for concave shapes, er convex som er mulig no men har concave.
+    bullet.addMesh(*extrudeMesh); //todo: Spør om bullethandlig for concave shapes, er convex som er mulig no men har concave.
 
     PlayingField playingField;
     scene->add(playingField.plane);
