@@ -22,7 +22,7 @@ int main() {
 
     OrbitControls controls{camera, canvas};
 
-    auto scene = Scene::create();
+    auto scene = Scene::create(); //Add lights later, with shadows
 
     auto topCurve = Shape();
     topCurve.moveTo(-260,0);
@@ -33,20 +33,17 @@ int main() {
         .lineTo(-310,0);
     ExtrudeGeometry::Options opts;
     opts.steps = 100;
-    opts.depth = 32;
+    opts.depth = 3200;
     opts.bevelEnabled = false;
     opts.curveSegments = 100;
     auto extrudeGeometry = ExtrudeGeometry::create(topCurve,opts);
+    extrudeGeometry->rotateX(math::PI/2);
     extrudeGeometry->translate(0,32,-220);
     auto extrudeMaterial = MeshStandardMaterial::create();
     auto extrudeMesh = Mesh::create(extrudeGeometry,extrudeMaterial);
-    extrudeMesh->rotateX(math::PI);
-    //scene->add(extrudeMesh);
-    auto testGeo = ShapeGeometry::create(topCurve);
-    auto testMesh = Mesh::create(testGeo,extrudeMaterial);
-    scene->add(testMesh);
+    scene->add(extrudeMesh);
 
-
+    //todo:: make the launcher creation into its own function
     auto box1 = utils::createBox(30,15,20);
     auto box2 = utils::createBox(30,15,20);
     box1->position.set(150,13.5,40);
@@ -60,11 +57,10 @@ int main() {
         renderer.setSize(size);
     });
 
-    Vector3 grav = {0, -974.694, 111.052}; //todo:: make function to get components of gravity
+    Vector3 grav = {0, -974.694, 111.052}; //todo:: make function to get components of gravity. Husk å legge til multiplikasjon med 1000 siden vi seier 1 unit = 1 mm
     BulletPhysics bullet(grav);
 
-    
-    bullet.addMesh(*extrudeMesh);
+    bullet.addMesh(*extrudeMesh); //Spør om bullethandlig for concave shapes, er convex som er mulig no men har concave.
 
     PlayingField playingField;
     scene->add(playingField.plane);

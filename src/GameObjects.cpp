@@ -33,8 +33,8 @@ std::shared_ptr<Mesh>utils::createFlipper(float direction)
 
     const auto flipperTipGeometry = CylinderGeometry::create(20/2 , 20/2 , 22);
     flipperTipGeometry->translate(direction * -flipperGeometry->width/2,0,0);
-    auto flipendMesh = Mesh::create(flipperTipGeometry, flipperMaterial);
-    flipperMesh->add(flipendMesh);
+    auto flipperTipMesh = Mesh::create(flipperTipGeometry, flipperMaterial);
+    flipperMesh->add(flipperTipMesh);
 
     const auto flipperAxisGeometry = CylinderGeometry::create(20/2-2, 20/2-2, 27);
     const auto flipperAxisMaterial = MeshBasicMaterial::create();
@@ -49,9 +49,7 @@ std::shared_ptr<Mesh>utils::createFlipper(float direction)
 std::shared_ptr<Mesh>utils::createBall(float radius)
 {
     const auto ballGeometry = SphereGeometry::create(radius,32,32);
-    const auto ballMaterial = MeshStandardMaterial::create();
-    ballMaterial->metalness= 0.8;
-    ballMaterial->roughness = 1.5;
+    const auto ballMaterial = MeshPhongMaterial::create();
     ballMaterial->color.setHex(0XC0C0C0);
     auto ballMesh = Mesh::create(ballGeometry,ballMaterial);
 
