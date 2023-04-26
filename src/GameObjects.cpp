@@ -49,8 +49,10 @@ std::shared_ptr<Mesh>utils::createFlipper(float direction)
 std::shared_ptr<Mesh>utils::createBall(float radius)
 {
     const auto ballGeometry = SphereGeometry::create(radius,32,32);
-    const auto ballMaterial = MeshBasicMaterial::create();
-    ballMaterial->color = Color::gray;
+    const auto ballMaterial = MeshStandardMaterial::create();
+    ballMaterial->metalness= 0.8;
+    ballMaterial->roughness = 1.5;
+    ballMaterial->color.setHex(0XC0C0C0);
     auto ballMesh = Mesh::create(ballGeometry,ballMaterial);
 
     return ballMesh;

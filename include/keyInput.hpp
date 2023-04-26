@@ -73,11 +73,11 @@ public:
         slider.setUpperLinLimit(lowLim_);
 
         if(keys_.space){
-            slider.setTargetLinMotorVelocity(-10000);
+            slider.setTargetLinMotorVelocity(-1000000);
             lowLim_ = 0;
         }
         else{
-            slider.setTargetLinMotorVelocity(10000);
+            slider.setTargetLinMotorVelocity(1000000);
         }
     }
     void reset(std::shared_ptr<Mesh> pinBall,BulletPhysics& bullet)

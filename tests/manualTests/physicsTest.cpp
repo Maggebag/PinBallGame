@@ -3,6 +3,7 @@
 
 #include "threepp/threepp.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
+#include "threepp/geometries/ExtrudeGeometry.hpp"
 #include "GameObjects.hpp"
 #include "keyInput.hpp"
 #include "bordGen.hpp"
@@ -23,6 +24,29 @@ int main() {
 
     auto scene = Scene::create();
 
+    auto topCurve = Shape();
+    topCurve.moveTo(-260,0);
+    topCurve.bezierCurveTo(-260,-360,260,-360,260,0)
+        .lineTo(310,0)
+        .lineTo(310,-310)
+        .lineTo(-310,-310)
+        .lineTo(-310,0);
+    ExtrudeGeometry::Options opts;
+    opts.steps = 100;
+    opts.depth = 32;
+    opts.bevelEnabled = false;
+    opts.curveSegments = 100;
+    auto extrudeGeometry = ExtrudeGeometry::create(topCurve,opts);
+    extrudeGeometry->translate(0,32,-220);
+    auto extrudeMaterial = MeshStandardMaterial::create();
+    auto extrudeMesh = Mesh::create(extrudeGeometry,extrudeMaterial);
+    extrudeMesh->rotateX(math::PI);
+    //scene->add(extrudeMesh);
+    auto testGeo = ShapeGeometry::create(topCurve);
+    auto testMesh = Mesh::create(testGeo,extrudeMaterial);
+    scene->add(testMesh);
+
+
     auto box1 = utils::createBox(30,15,20);
     auto box2 = utils::createBox(30,15,20);
     box1->position.set(150,13.5,40);
@@ -38,6 +62,9 @@ int main() {
 
     Vector3 grav = {0, -974.694, 111.052}; //todo:: make function to get components of gravity
     BulletPhysics bullet(grav);
+
+    
+    bullet.addMesh(*extrudeMesh);
 
     PlayingField playingField;
     scene->add(playingField.plane);
@@ -70,14 +97,14 @@ int main() {
     bullet.addMesh(*playingField.FlipperRight, 100,  true);
     auto flippy = bullet.get(*playingField.FlipperRight);
     btHingeConstraint flippyBoi(*flippy->body,btVector3(27,0,0),btVector3(0,1,0));
-    flippyBoi.enableAngularMotor(true,0,1000000);
+    flippyBoi.enableAngularMotor(true,0,10000000000);
     flippyBoi.setLimit(-0.4,0.5);
     bullet.addConstraint(&flippyBoi, true);
 
     bullet.addMesh(*playingField.FlipperLeft,100,true);
     auto flippy2 = bullet.get(*playingField.FlipperLeft);
     btHingeConstraint flippyBoi2(*flippy2->body,btVector3(-27,0,0), btVector3(0,1,0));
-    flippyBoi2.enableAngularMotor(true,0,1000000);
+    flippyBoi2.enableAngularMotor(true,0,10000000000);
     flippyBoi2.setLimit(-0.5,0.4);
     bullet.addConstraint(&flippyBoi2, true);
 
