@@ -3,7 +3,6 @@
 #define PINBALLGAME_KEYINPUT_HPP
 
 #include "threepp/threepp.hpp"
-#include <iostream>
 
 using namespace threepp;
 
@@ -12,6 +11,7 @@ struct Keys {
     bool a = false;
     bool s = false;
     bool d = false;
+    bool r = false;
     bool space = false;
 };
 
@@ -26,6 +26,8 @@ public:
             keys_.d = true;}
         else if (evt.key == 65){
             keys_.a = true;}
+        else if (evt.key == 82){
+            keys_.r = true;}
         else if (evt.key == 32){
             keys_.space = true;}
     }
@@ -38,6 +40,8 @@ public:
             keys_.d = false;}
         else if (evt.key == 65){
             keys_.a = false;}
+        else if (evt.key == 82){
+            keys_.r = false;}
         else if (evt.key == 32){
             keys_.space = false;}
     }
@@ -75,6 +79,10 @@ public:
         else{
             slider.setTargetLinMotorVelocity(10000);
         }
+    }
+    void reset(std::shared_ptr<Mesh> pinBall)
+    {
+        pinBall->position.set()
     }
 
 private:
