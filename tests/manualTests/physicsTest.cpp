@@ -61,7 +61,7 @@ int main() {
     BulletPhysics bullet(grav);
 
     bullet.addMesh(*extrudeMesh); //todo: Spør om bullethandlig for concave shapes, er convex som er mulig no men har concave.
-
+    btConcaveShape;
     PlayingField playingField;
     scene->add(playingField.plane);
     scene->add(playingField.TopWall);
