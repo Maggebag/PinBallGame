@@ -24,44 +24,45 @@ int main() {
 
     auto scene = Scene::create(); //Add lights later, with shadows
 
+    //todo: skrot ditta lag funksjon for å lage halsirkel med boksa/prøv trianglemesh
     auto topCurve = Shape();
-    topCurve.moveTo(-260,0);
-    topCurve.bezierCurveTo(-260,-360,260,-360,260,0)
-        .lineTo(310,0)
-        .lineTo(310,-310)
-        .lineTo(-310,-310)
-        .lineTo(-310,0);
+    topCurve.moveTo(-260, 0);
+    topCurve.bezierCurveTo(-260, -200, -200, -260, 0, -260)
+            .lineTo(0, -310)
+            .lineTo(-310, -310)
+            .lineTo(-310, 0);
     ExtrudeGeometry::Options opts;
     opts.steps = 100;
     opts.depth = 3200;
     opts.bevelEnabled = false;
     opts.curveSegments = 100;
-    auto extrudeGeometry = ExtrudeGeometry::create(topCurve,opts);
-    extrudeGeometry->rotateX(math::PI/2);
-    extrudeGeometry->translate(0,32,-220);
-    auto extrudeMaterial = MeshStandardMaterial::create();
-    auto extrudeMesh = Mesh::create(extrudeGeometry,extrudeMaterial);
+    auto extrudeGeometry = ExtrudeGeometry::create(topCurve, opts);
+    extrudeGeometry->rotateX(-math::PI / 2);
+    extrudeGeometry->translate(0, 0*32, 180);
+    auto extrudeMaterial = MeshBasicMaterial::create();
+    extrudeMaterial->color = Color::red;
+    auto extrudeMesh = Mesh::create(extrudeGeometry, extrudeMaterial);
     scene->add(extrudeMesh);
 
     //todo: make the launcher creation into its own function
-    auto box1 = utils::createBox(30,15,20);
-    auto box2 = utils::createBox(30,15,20);
-    box1->position.set(150,13.5,40);
-    box2->position.set(150,13.5,120);
+    auto box1 = utils::createBox(30, 15, 20);
+    auto box2 = utils::createBox(30, 15, 20);
+    box1->position.set(150, 13.5, 40);
+    box2->position.set(150, 13.5, 120);
     scene->add(box1);
     scene->add(box2);
 
-    canvas.onWindowResize([&](WindowSize size){
+    canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
         camera->updateProjectionMatrix();
         renderer.setSize(size);
     });
 
-    Vector3 grav = {0, -974.694, 111.052}; //todo: make function to get components of gravity. Husk å legge til multiplikasjon med 1000 siden vi seier 1 unit = 1 mm
+    Vector3 grav = {0, -974.694,111.052}; //todo: make function to get components of gravity. Husk å legge til multiplikasjon med 1000 siden vi seier 1 unit = 1 mm
     BulletPhysics bullet(grav);
 
-    bullet.addMesh(*extrudeMesh); //todo: Spør om bullethandlig for concave shapes, er convex som er mulig no men har concave.
-    btConcaveShape;
+    bullet.addMesh(*extrudeMesh);
+
     PlayingField playingField;
     scene->add(playingField.plane);
     scene->add(playingField.TopWall);
@@ -70,7 +71,7 @@ int main() {
     scene->add(playingField.LeftWall);
 
     scene->add(playingField.PinBall);
-    playingField.PinBall->position.set(40,13.5,140);
+    playingField.PinBall->position.set(40, 13.5, 140);
 
     scene->add(playingField.FlipperLeft);
     scene->add(playingField.FlipperRight);
@@ -90,22 +91,22 @@ int main() {
     bullet.addMesh(*playingField.PinBall, 80.6, true);
     bullet.get(*playingField.PinBall)->body->setRestitution(1);
 
-    bullet.addMesh(*playingField.FlipperRight, 100,  true);
+    bullet.addMesh(*playingField.FlipperRight, 100, true);
     auto flippy = bullet.get(*playingField.FlipperRight);
-    btHingeConstraint flippyBoi(*flippy->body,btVector3(27,0,0),btVector3(0,1,0));
-    flippyBoi.enableAngularMotor(true,0,10000000000);
-    flippyBoi.setLimit(-0.4,0.5);
+    btHingeConstraint flippyBoi(*flippy->body, btVector3(27, 0, 0), btVector3(0, 1, 0));
+    flippyBoi.enableAngularMotor(true, 0, 100000000000);
+    flippyBoi.setLimit(-0.4, 0.5);
     bullet.addConstraint(&flippyBoi, true);
 
-    bullet.addMesh(*playingField.FlipperLeft,100,true);
+    bullet.addMesh(*playingField.FlipperLeft, 100, true);
     auto flippy2 = bullet.get(*playingField.FlipperLeft);
-    btHingeConstraint flippyBoi2(*flippy2->body,btVector3(-27,0,0), btVector3(0,1,0));
-    flippyBoi2.enableAngularMotor(true,0,10000000000);
-    flippyBoi2.setLimit(-0.5,0.4);
+    btHingeConstraint flippyBoi2(*flippy2->body, btVector3(-27, 0, 0), btVector3(0, 1, 0));
+    flippyBoi2.enableAngularMotor(true, 0, 100000000000);
+    flippyBoi2.setLimit(-0.5, 0.4);
     bullet.addConstraint(&flippyBoi2, true);
 
-    bullet.addMesh(*box1,10,true);
-    bullet.addMesh(*box2,0,true);
+    bullet.addMesh(*box1, 10, true);
+    bullet.addMesh(*box2, 0, true);
 
     auto topBox = bullet.get(*box1);
     auto bottomBox = bullet.get(*box2);
@@ -115,12 +116,12 @@ int main() {
 
     localA.setIdentity();
     localB.setIdentity();
-    localA.getBasis().setEulerZYX(0,math::PI/2,0);
-    localA.setOrigin(btVector3(0.0,0.0,80.0));
-    localB.getBasis().setEulerZYX(0,math::PI/2,0);
-    localB.setOrigin(btVector3(0.0,0.0,math::TWO_PI));
+    localA.getBasis().setEulerZYX(0, math::PI / 2, 0);
+    localA.setOrigin(btVector3(0.0, 0.0, 80.0));
+    localB.getBasis().setEulerZYX(0, math::PI / 2, 0);
+    localB.setOrigin(btVector3(0.0, 0.0, math::TWO_PI));
 
-    btSliderConstraint launchSlider(*topBox->body,*bottomBox->body,localA,localB,true);
+    btSliderConstraint launchSlider(*topBox->body, *bottomBox->body, localA, localB, true);
     launchSlider.setLowerLinLimit(0);
     launchSlider.setLowerAngLimit(0);
     launchSlider.setUpperAngLimit(0);
@@ -128,10 +129,10 @@ int main() {
     launchSlider.setMaxLinMotorForce(10000);
     bullet.addConstraint(&launchSlider, true);
 
-    bullet.get(*box1)->body->setLinearVelocity({0,0,100});
+    bullet.get(*box1)->body->setLinearVelocity({0, 0, 100});
 
     renderer.enableTextRendering();
-    auto& handle = renderer.textHandle();
+    auto &handle = renderer.textHandle();
 
     auto keyInput = std::make_shared<KeyInput>();
 
