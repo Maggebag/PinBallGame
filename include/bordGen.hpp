@@ -31,8 +31,10 @@ public:
     std::shared_ptr<Mesh> FlipperLeft;
     std::shared_ptr<Mesh> FlipperRight;
 
-    PlayingField() {
+    PlayingField(threepp::Object3D &scene,BulletPhysics &bullet) {
         plane = utils::createPlane(parameters_.Width, parameters_.Height);
+        scene.add(plane);
+        bullet.addMesh(*plane);
 
         RightWall = utils::createBox(parameters_.BorderWidth, parameters_.Height, parameters_.BorderHeight);
         RightWall->position.set(parameters_.Width / 2 + parameters_.HalfBorderWidth, parameters_.BorderHeight / 2, 0);
