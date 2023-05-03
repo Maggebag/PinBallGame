@@ -3,6 +3,7 @@
 #define PINBALLGAME_KEYINPUT_HPP
 
 #include "threepp/threepp.hpp"
+#include <iostream>
 
 using namespace threepp;
 
@@ -15,7 +16,7 @@ struct Keys {
     bool space = false;
 };
 
-class KeyInput : public KeyListener {
+struct KeyInput : public KeyListener {
 public:
     void onKeyPressed(KeyEvent evt) override {
         if (evt.key == 87) {
@@ -30,6 +31,8 @@ public:
             keys_.r = true;
         } else if (evt.key == 32) {
             keys_.space = true;
+        } else if (evt.mods == 1){
+            std::cout<<"Shift"<<std::endl;
         }
     }
 

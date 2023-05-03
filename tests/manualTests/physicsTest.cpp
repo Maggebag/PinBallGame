@@ -3,13 +3,20 @@
 
 #include "threepp/threepp.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
-#include "threepp/geometries/ExtrudeGeometry.hpp"
 #include "GameObjects.hpp"
 #include "keyInput.hpp"
 #include "bordGen.hpp"
 #include <sstream>
 
 using namespace threepp;
+
+void ballPosCheck(std::shared_ptr<Mesh> pinBall, BulletPhysics &bullet){
+     auto btBallPos = bullet.get(*pinBall)->body->getCenterOfMassPosition();
+     Vector3 ballPos = reinterpret_cast<Vector3 &&>(btBallPos);
+        if(ballPos.z>470){
+            bullet.setMeshPosition(*pinBall, {30, 13.5, 0});
+        }
+}
 
 int main() {
 
@@ -23,26 +30,6 @@ int main() {
     OrbitControls controls{camera, canvas};
 
     auto scene = Scene::create(); //Add lights later, with shadows
-
-    //todo: skrot ditta lag funksjon for å lage halsirkel med boksa/prøv trianglemesh
-    auto topCurve = Shape();
-    topCurve.moveTo(-260, 0);
-    topCurve.bezierCurveTo(-260, -200, -200, -260, 0, -260)
-            .lineTo(0, -310)
-            .lineTo(-310, -310)
-            .lineTo(-310, 0);
-    ExtrudeGeometry::Options opts;
-    opts.steps = 100;
-    opts.depth = 3200;
-    opts.bevelEnabled = false;
-    opts.curveSegments = 100;
-    auto extrudeGeometry = ExtrudeGeometry::create(topCurve, opts);
-    extrudeGeometry->rotateX(-math::PI / 2);
-    extrudeGeometry->translate(0, 0*32, 180);
-    auto extrudeMaterial = MeshBasicMaterial::create();
-    extrudeMaterial->color = Color::red;
-    auto extrudeMesh = Mesh::create(extrudeGeometry, extrudeMaterial);
-    scene->add(extrudeMesh);
 
     //todo: make the launcher creation into its own function
     auto box1 = utils::createBox(30, 15, 20);
@@ -60,8 +47,6 @@ int main() {
 
     Vector3 grav = {0, -974.694,111.052}; //todo: make function to get components of gravity. Husk å legge til multiplikasjon med 1000 siden vi seier 1 unit = 1 mm
     BulletPhysics bullet(grav);
-
-    bullet.addMesh(*extrudeMesh);
 
     PlayingField playingField;
     scene->add(playingField.plane);
@@ -126,10 +111,8 @@ int main() {
     launchSlider.setLowerAngLimit(0);
     launchSlider.setUpperAngLimit(0);
     launchSlider.setPoweredLinMotor(true);
-    launchSlider.setMaxLinMotorForce(10000);
+    launchSlider.setMaxLinMotorForce(100000);
     bullet.addConstraint(&launchSlider, true);
-
-    bullet.get(*box1)->body->setLinearVelocity({0, 0, 100});
 
     renderer.enableTextRendering();
     auto &handle = renderer.textHandle();
@@ -140,6 +123,8 @@ int main() {
 
     canvas.animate([&](float dt) {
         bullet.step(dt);
+
+        ballPosCheck(playingField.PinBall, bullet);
 
         keyInput->flippers(flippyBoi, flippyBoi2);
         keyInput->launcher(launchSlider);

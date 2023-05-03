@@ -24,11 +24,14 @@ std::shared_ptr<Mesh>utils::createBox(float width, float length, float height)
     return boxMesh;
 }
 
-std::shared_ptr<Mesh>utils::createFlipper(float direction)
+std::shared_ptr<Mesh>utils::createFlipper(float direction, float ballSize) //-1 for left flipper and 1 for right flipper
 {
-    const auto flipperGeometry = BoxGeometry::create(3*27, 22, 20);
     const auto flipperMaterial = MeshBasicMaterial::create();
     flipperMaterial->color = Color::palegreen;
+    const auto flipperAxisMaterial = MeshBasicMaterial::create();
+    flipperAxisMaterial->color = Color::red;
+
+    const auto flipperGeometry = BoxGeometry::create(3*ballSize, 22, 20);
     auto flipperMesh = Mesh::create(flipperGeometry, flipperMaterial);
 
     const auto flipperTipGeometry = CylinderGeometry::create(20/2 , 20/2 , 22);
@@ -37,8 +40,6 @@ std::shared_ptr<Mesh>utils::createFlipper(float direction)
     flipperMesh->add(flipperTipMesh);
 
     const auto flipperAxisGeometry = CylinderGeometry::create(20/2-2, 20/2-2, 27);
-    const auto flipperAxisMaterial = MeshBasicMaterial::create();
-    flipperAxisMaterial->color = Color::red;
     flipperAxisGeometry->translate(direction * flipperGeometry->width / 3, 0, 0);
     auto flipperAxisMesh = Mesh::create(flipperAxisGeometry, flipperAxisMaterial);
     flipperMesh->add(flipperAxisMesh);
