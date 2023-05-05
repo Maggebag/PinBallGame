@@ -3,6 +3,7 @@
 #define PINBALLGAME_KEYINPUT_HPP
 
 #include "threepp/threepp.hpp"
+#include "GameObjects.hpp"
 #include <iostream>
 
 using namespace threepp;
@@ -52,20 +53,24 @@ public:
         }
     }
 
-    void flippers(std::shared_ptr<FlipperObject> Right, std::shared_ptr<FlipperObject> Left) const {
+<<<<<<< HEAD
+    void flippers(const std::shared_ptr<FlipperObject>& Right, const std::shared_ptr<FlipperObject>& Left) const {
+=======
+    void flippers(btHingeConstraint &flipperRight, btHingeConstraint &flipperLeft) const {
+>>>>>>> parent of 0bf4d6f (ehe)
         if (keys_.d) {
-            Right->activateFlipper();
+            flipperRight.setMotorTargetVelocity(-1000000000);
         } else {
-            Right->deactivateFlipper();
+            flipperRight.setMotorTargetVelocity(1000000000);
         }
         if (keys_.a) {
-            Left->activateFlipper();
+            flipperLeft.setMotorTargetVelocity(1000000000);
         } else {
-            Left->deactivateFlipper();
+            flipperLeft.setMotorTargetVelocity(-1000000000);
         }
     }
 
-    void plunger(btSliderConstraint &slider) {
+    void launcher(btSliderConstraint &slider) {
         if (keys_.s && lowLim_ < 80) {
             lowLim_ += 0.5;
         }

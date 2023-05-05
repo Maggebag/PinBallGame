@@ -1,20 +1,27 @@
 #ifndef PINBALLGAME_GAMEOBJECTS_HPP
 #define PINBALLGAME_GAMEOBJECTS_HPP
 
+<<<<<<< HEAD
 #include "threepp/objects/Mesh.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
+#include "threepp/math/MathUtils.hpp"
+=======
+#include "threepp/threepp.hpp"
+>>>>>>> parent of 0bf4d6f (ehe)
 
-std::shared_ptr<threepp::Mesh> createCylinder(float radius, float height);
+using namespace threepp;
 
-std::shared_ptr<threepp::Mesh> createBox(float width, float length, float height);
+namespace utils {
+    std::shared_ptr<Mesh> createCylinder(float radius, float height);
 
-std::shared_ptr<threepp::Mesh> createFlipper(float direction, float ballSize);
+    std::shared_ptr<Mesh> createBox(float width, float length, float height);
 
-std::shared_ptr<threepp::Mesh> createBall(float radius);
+    std::shared_ptr<Mesh> createFlipper(float direction, float ballSize);
 
-std::shared_ptr<threepp::Mesh> createPlane(float width, float height);
+    std::shared_ptr<Mesh> createBall(float radius);
 
-btHingeConstraint
+<<<<<<< HEAD
+/*btHingeConstraint
 createFlipperConstraint(std::shared_ptr<threepp::Mesh> Flipper, float direction, float ballSize, threepp::BulletPhysics &bullet) {
 
     bullet.addMesh(*Flipper, 100, true);
@@ -31,9 +38,9 @@ createFlipperConstraint(std::shared_ptr<threepp::Mesh> Flipper, float direction,
         flipperConstraint.setLimit(-0.5,0.5);
     }
     return flipperConstraint;
-};
+}; */
 
-btSliderConstraint
+/*btSliderConstraint
 createPlungerConstraint(std::shared_ptr<threepp::Mesh> baseBox, std::shared_ptr<threepp::Mesh> plungerBox, float plungerTravelLength, threepp::BulletPhysics &bullet) {
 
     bullet.addMesh(*baseBox);
@@ -47,10 +54,10 @@ createPlungerConstraint(std::shared_ptr<threepp::Mesh> baseBox, std::shared_ptr<
 
     localA.setIdentity();
     localB.setIdentity();
-    localA.getBasis().setEulerZYX(0, math::PI / 2, 0);
+    localA.getBasis().setEulerZYX(0, threepp::math::PI / 2, 0);
     localA.setOrigin(btVector3(0.0, 0.0, plungerTravelLength));
-    localB.getBasis().setEulerZYX(0, math::PI / 2, 0);
-    localB.setOrigin(btVector3(0.0, 0.0, math::TWO_PI));
+    localB.getBasis().setEulerZYX(0, threepp::math::PI / 2, 0);
+    localB.setOrigin(btVector3(0.0, 0.0, threepp::math::TWO_PI));
 
     btSliderConstraint plungerConstraint(*btPlungerBox->body, *btBaseBox->body, localA, localB, true);
     plungerConstraint.setLowerLinLimit(0);
@@ -61,10 +68,12 @@ createPlungerConstraint(std::shared_ptr<threepp::Mesh> baseBox, std::shared_ptr<
     return plungerConstraint;
 
 };
+ */
+
 class FlipperObject {
 public:
-    float flipperDir;
-    btHingeConstraint btFlipper;
+
+    float flipperDir{};
     std::shared_ptr<threepp::Mesh> flipper;
 
     void setFlipperDirection(float direction) {
@@ -74,8 +83,19 @@ public:
     void addFlipper(float ballSize, threepp::BulletPhysics &bullet, threepp::Object3D &scene) {
         flipper = createFlipper(flipperDir, ballSize);
         scene.add(flipper);
-        btFlipper = createFlipperConstraint(flipper,flipperDir,ballSize,bullet);
-        bullet.addConstraint(&btFlipper, true);
+    }
+    void addConstraint(float ballSize, threepp::BulletPhysics &bullet){
+        bullet.addMesh(*flipper, 10, true);
+        auto btFlipper = bullet.get(*flipper);
+        btHingeConstraint btFlipperConstraint(*btFlipper->body,btVector3(ballSize, 0, 0), btVector3(0, 1, 0));
+
+        if(flipperDir>0){
+            btFlipperConstraint.setLimit(-0.4, 0.5);
+        }
+        else if(flipperDir<0) {
+            btFlipperConstraint.setLimit(-0.5,0.5);
+        }
+        bullet.addConstraint(&btFlipperConstraint,true);
     }
 
     void setPosition(float x, float y, float z) const{
@@ -83,17 +103,17 @@ public:
     }
 
     void activateFlipper() {
-        btFlipper.setMotorTargetVelocity(-1000000000 * flipperDir);
+        btFlipperConstraint.setMotorTargetVelocity(-1000000000 * flipperDir);
     }
 
     void deactivateFlipper() {
-        btFlipper.setMotorTargetVelocity(1000000000 * flipperDir);
+        btFlipperConstraint.setMotorTargetVelocity(1000000000 * flipperDir);
     }
 private:
 
 };
 
-class Plunger {
+/*class Plunger {
 
 public:
 
@@ -123,5 +143,10 @@ public:
     }
 
 };
+*/
+=======
+    std::shared_ptr<Mesh> createPlane(float width, float height);
 
+}
+>>>>>>> parent of 0bf4d6f (ehe)
 #endif //PINBALLGAME_GAMEOBJECTS_HPP

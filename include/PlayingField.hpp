@@ -23,8 +23,8 @@ public:
 
     std::shared_ptr<Mesh> PinBall;
 
-    std::shared_ptr<FlipperObject> FlipperLeft;
-    std::shared_ptr<FlipperObject> FlipperRight;
+    std::unique_ptr<FlipperObject> FlipperLeft;
+    std::unique_ptr<FlipperObject> FlipperRight;
 
     PlayingField(threepp::Object3D &scene,BulletPhysics &bullet) {
         plane = createPlane(parameters_.Width, parameters_.Height);
@@ -39,11 +39,11 @@ public:
         bullet.addMesh(*PinBall, 80.6, true);
 
         FlipperLeft->setFlipperDirection(-1);
-        FlipperLeft->addFlipper(parameters_.BallSize, scene);
+        FlipperLeft->addFlipper(parameters_.BallSize,bullet, scene);
         FlipperLeft->setPosition(-2.5 * parameters_.BallSize, parameters_.BallSize / 2, parameters_.Height / 3);
 
         FlipperRight->setFlipperDirection(1);
-        FlipperRight->addFlipper(parameters_.BallSize, scene);
+        FlipperRight->addFlipper(parameters_.BallSize, bullet, scene);
         FlipperRight->setPosition(2.5 * parameters_.BallSize, parameters_.BallSize / 2, parameters_.Height / 3);
 
     }

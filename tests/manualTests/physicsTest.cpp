@@ -3,12 +3,20 @@
 
 #include "threepp/threepp.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
+#include "GameObjects.hpp"
 #include "keyInput.hpp"
-#include "PlayingField.hpp"
-#include "gameLogic.hpp"
+#include "bordGen.hpp"
 #include <sstream>
 
 using namespace threepp;
+
+void ballPosCheck(std::shared_ptr<Mesh> pinBall, BulletPhysics &bullet){
+     auto btBallPos = bullet.get(*pinBall)->body->getCenterOfMassPosition();
+     Vector3 ballPos = reinterpret_cast<Vector3 &&>(btBallPos);
+        if(ballPos.z>470){
+            bullet.setMeshPosition(*pinBall, {30, 13.5, 0});
+        }
+}
 
 int main() {
 
@@ -21,7 +29,15 @@ int main() {
 
     OrbitControls controls{camera, canvas};
 
-    auto scene = Scene::create();
+    auto scene = Scene::create(); //Add lights later, with shadows
+
+    //todo: make the launcher creation into its own function
+    auto box1 = utils::createBox(30, 15, 20);
+    auto box2 = utils::createBox(30, 15, 20);
+    box1->position.set(150, 13.5, 40);
+    box2->position.set(150, 13.5, 120);
+    scene->add(box1);
+    scene->add(box2);
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
@@ -29,12 +45,19 @@ int main() {
         renderer.setSize(size);
     });
 
+    Vector3 grav = {0, -974.694,111.052}; //todo: make function to get components of gravity. Husk å legge til multiplikasjon med 1000 siden vi seier 1 unit = 1 mm
+    BulletPhysics bullet(grav);
 
+<<<<<<< HEAD
     BulletPhysics bullet(getGravFromAngle(6.5));
 
     PlayingField playingField(*scene,bullet);
 
+   /* scene->add(playingField.plane);
+=======
+    PlayingField playingField;
     scene->add(playingField.plane);
+>>>>>>> parent of 0bf4d6f (ehe)
     scene->add(playingField.TopWall);
     scene->add(playingField.BottomWall);
     scene->add(playingField.RightWall);
@@ -98,7 +121,11 @@ int main() {
     launchSlider.setPoweredLinMotor(true);
     launchSlider.setMaxLinMotorForce(100000);
     bullet.addConstraint(&launchSlider, true);
+<<<<<<< HEAD
+*/
+=======
 
+>>>>>>> parent of 0bf4d6f (ehe)
     renderer.enableTextRendering();
     auto &handle = renderer.textHandle();
 
@@ -111,8 +138,8 @@ int main() {
 
         ballPosCheck(playingField.PinBall, bullet);
 
-        keyInput->flippers(playingField.FlipperRight, playingField.FlipperLeft);
-        //keyInput->plunger(launchSlider);
+        keyInput->flippers(flippyBoi, flippyBoi2);
+        keyInput->launcher(launchSlider);
         keyInput->reset(playingField.PinBall, bullet);
 
         renderer.render(scene, camera);

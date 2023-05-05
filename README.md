@@ -17,5 +17,4 @@ The goal of this project is to make a pinball game using bullet physics engine, 
 * Figure out a good and efficient way of making the board in which the game is played.
 * Make outer-playing field mesh, will most likely do this in Fusion 360 and import into the project. Objects that you hit for points will be added using threepp.
 
-#### No tests for bullet....
-Write some meaningfull text here about why not.
+
