@@ -2,10 +2,9 @@
 #ifndef PINBALLGAME_KEYINPUT_HPP
 #define PINBALLGAME_KEYINPUT_HPP
 
-#include "threepp/threepp.hpp"
+#include <threepp/input/KeyListener.hpp>
+#include "GameObjects.hpp"
 #include <iostream>
-
-using namespace threepp;
 
 struct Keys {
     bool w = false;
@@ -16,9 +15,9 @@ struct Keys {
     bool space = false;
 };
 
-struct KeyInput : public KeyListener {
+struct KeyInput : public threepp::KeyListener {
 public:
-    void onKeyPressed(KeyEvent evt) override {
+    void onKeyPressed(threepp::KeyEvent evt) override {
         if (evt.key == 87) {
             keys_.w = true;
         } else if (evt.key == 83) {
@@ -36,7 +35,7 @@ public:
         }
     }
 
-    void onKeyReleased(KeyEvent evt) override {
+    void onKeyReleased(threepp::KeyEvent evt) override {
         if (evt.key == 87) {
             keys_.w = false;
         } else if (evt.key == 83) {
@@ -65,7 +64,7 @@ public:
         }
     }
 
-    void plunger(btSliderConstraint &slider) {
+    void plunger(std::shared_ptr<PlungerObject> Plunger) {
         if (keys_.s && lowLim_ < 80) {
             lowLim_ += 0.5;
         }
@@ -73,22 +72,22 @@ public:
             lowLim_ -= 0.5;
         }
 
-        slider.setUpperLinLimit(lowLim_);
+        Plunger->PlungerSetLowLim(lowLim_);
 
         if (keys_.space) {
-            slider.setTargetLinMotorVelocity(-1000000);
+            Plunger->releasePlunger();
             lowLim_ = 0;
         } else {
-            slider.setTargetLinMotorVelocity(1000000);
+            Plunger->resetPlunger(lowLim_);
         }
     }
 
-    void reset(std::shared_ptr<Mesh> pinBall, BulletPhysics &bullet) {
+  /*  void reset(std::shared_ptr<threepp::Mesh> pinBall, threepp::BulletPhysics &bullet) {
         if (keys_.r) {
             bullet.setMeshPosition(*pinBall, {30, 13.5, 0});
         }
     }
-
+*/
 private:
     Keys keys_;
     float lowLim_ = 0;

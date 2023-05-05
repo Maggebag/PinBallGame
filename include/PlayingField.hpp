@@ -3,10 +3,11 @@
 #ifndef PINBALLGAME_PLAYINGFIELD_HPP
 #define PINBALLGAME_PLAYINGFIELD_HPP
 
-#include "threepp/threepp.hpp"
+#include <threepp/objects/Mesh.hpp>
+#include <threepp/core/Object3D.hpp>
+#include <threepp/extras/physics/BulletPhysics.hpp>
+#include "gameLogic.hpp"
 #include "GameObjects.hpp"
-
-using namespace threepp;
 
 struct Parameters {
     //One unit equals 1mm
@@ -21,12 +22,14 @@ struct Parameters {
 class PlayingField {
 public:
 
-    std::shared_ptr<Mesh> PinBall;
+    std::shared_ptr<threepp::Mesh> PinBall;
 
     std::shared_ptr<FlipperObject> FlipperLeft;
     std::shared_ptr<FlipperObject> FlipperRight;
 
-    PlayingField(threepp::Object3D &scene,BulletPhysics &bullet) {
+    std::shared_ptr<PlungerObject> Plunger;
+
+    PlayingField(threepp::Object3D &scene, threepp::BulletPhysics &bullet) {
         plane = createPlane(parameters_.Width, parameters_.Height);
         scene.add(plane);
         bullet.addMesh(*plane);
@@ -39,25 +42,24 @@ public:
         bullet.addMesh(*PinBall, 80.6, true);
 
         FlipperLeft->setFlipperDirection(-1);
-        FlipperLeft->addFlipper(parameters_.BallSize, scene);
+        FlipperLeft->addFlipper(parameters_.BallSize, bullet, scene);
         FlipperLeft->setPosition(-2.5 * parameters_.BallSize, parameters_.BallSize / 2, parameters_.Height / 3);
 
         FlipperRight->setFlipperDirection(1);
-        FlipperRight->addFlipper(parameters_.BallSize, scene);
+        FlipperRight->addFlipper(parameters_.BallSize, bullet, scene);
         FlipperRight->setPosition(2.5 * parameters_.BallSize, parameters_.BallSize / 2, parameters_.Height / 3);
-
     }
 
 private:
     Parameters parameters_;
 
-    std::shared_ptr<Mesh> plane;
-    std::shared_ptr<Mesh> RightWall;
-    std::shared_ptr<Mesh> LeftWall;
-    std::shared_ptr<Mesh> TopWall;
-    std::shared_ptr<Mesh> BottomWall;
+    std::shared_ptr<threepp::Mesh> plane;
+    std::shared_ptr<threepp::Mesh> RightWall;
+    std::shared_ptr<threepp::Mesh> LeftWall;
+    std::shared_ptr<threepp::Mesh> TopWall;
+    std::shared_ptr<threepp::Mesh> BottomWall;
 
-    void createBorder(threepp::Object3D &scene,BulletPhysics &bullet){
+    void createBorder(threepp::Object3D &scene, threepp::BulletPhysics &bullet){
         RightWall = createBox(parameters_.BorderWidth, parameters_.Height, parameters_.BorderHeight);
         RightWall->position.set(parameters_.Width / 2 + parameters_.HalfBorderWidth, parameters_.BorderHeight / 2, 0);
 
