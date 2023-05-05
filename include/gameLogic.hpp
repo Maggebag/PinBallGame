@@ -5,6 +5,7 @@
 #include "threepp/objects/Mesh.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
 #include "threepp/math/MathUtils.hpp"
+#include <iostream>
 #include <cmath>
 
 void ballPosCheck(const std::shared_ptr<threepp::Mesh>& pinBall, threepp::BulletPhysics &bullet){
@@ -18,9 +19,10 @@ void ballPosCheck(const std::shared_ptr<threepp::Mesh>& pinBall, threepp::Bullet
 threepp::Vector3 getGravFromAngle(float angle) { //input in degrees
     auto angleInRad = threepp::math::degToRad(angle);
     threepp::Vector3 Gravity;
-    Gravity.y = -9.81*std::cos(angleInRad);
-    Gravity.z = 9.81*std::sin(angleInRad);
-    Gravity.addScalar(100);
+    Gravity.x = 0;
+    Gravity.y = -9.81*std::cos(angleInRad)*100;
+    Gravity.z = 9.81*std::sin(angleInRad)*100;
+    std::cout<<Gravity<<std::endl;
     return Gravity;
 }
 #endif //PINBALLGAME_GAMELOGIC_HPP

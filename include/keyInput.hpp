@@ -51,20 +51,20 @@ public:
         }
     }
 
-    void flippers(std::shared_ptr<FlipperObject> Right, std::shared_ptr<FlipperObject> Left) const {
+    void flippers(FlipperObject &Right, FlipperObject &Left) const {
         if (keys_.d) {
-            Right->activateFlipper();
+            Right.activateFlipper();
         } else {
-            Right->deactivateFlipper();
+            Right.deactivateFlipper();
         }
         if (keys_.a) {
-            Left->activateFlipper();
+            Left.activateFlipper();
         } else {
-            Left->deactivateFlipper();
+            Left.deactivateFlipper();
         }
     }
 
-    void plunger(std::shared_ptr<PlungerObject> Plunger) {
+    void plunger(PlungerObject &Plunger) {
         if (keys_.s && lowLim_ < 80) {
             lowLim_ += 0.5;
         }
@@ -72,22 +72,22 @@ public:
             lowLim_ -= 0.5;
         }
 
-        Plunger->PlungerSetLowLim(lowLim_);
+        Plunger.PlungerSetLowLim(lowLim_);
 
         if (keys_.space) {
-            Plunger->releasePlunger();
+            Plunger.releasePlunger();
             lowLim_ = 0;
         } else {
-            Plunger->resetPlunger(lowLim_);
+            Plunger.resetPlunger(lowLim_);
         }
     }
 
-  /*  void reset(std::shared_ptr<threepp::Mesh> pinBall, threepp::BulletPhysics &bullet) {
+    void reset(std::shared_ptr<threepp::Mesh> pinBall, threepp::BulletPhysics &bullet) {
         if (keys_.r) {
             bullet.setMeshPosition(*pinBall, {30, 13.5, 0});
         }
     }
-*/
+
 private:
     Keys keys_;
     float lowLim_ = 0;

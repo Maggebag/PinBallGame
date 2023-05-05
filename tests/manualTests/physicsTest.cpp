@@ -31,7 +31,7 @@ int main() {
 
     BulletPhysics bullet(getGravFromAngle(6.5));
 
-    PlayingField playingField(*scene,bullet);
+    PlayingField playingField(*scene, bullet);
 
     renderer.enableTextRendering();
     auto &handle = renderer.textHandle();
@@ -46,8 +46,8 @@ int main() {
         ballPosCheck(playingField.PinBall, bullet);
 
         keyInput->flippers(playingField.FlipperRight, playingField.FlipperLeft);
-        keyInput->plunger(playingField.Plunger);
-        //keyInput->reset(playingField.PinBall, bullet);
+       // keyInput->plunger(playingField.Plunger);
+       // keyInput->reset(playingField.PinBall, bullet);
 
         renderer.render(scene, camera);
 

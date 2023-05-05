@@ -1,5 +1,5 @@
 
-#include "GameObjects.hpp"
+
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
@@ -43,23 +43,3 @@ std::shared_ptr<Mesh> createFlipper(float direction, float ballSize){ //-1 for l
 
     return flipperMesh;
 }
-
-std::shared_ptr<Mesh> createBall(float radius) {
-    const auto ballGeometry = SphereGeometry::create(radius, 32, 32);
-    const auto ballMaterial = MeshPhongMaterial::create();
-    ballMaterial->color.setHex(0XC0C0C0);
-    auto ballMesh = Mesh::create(ballGeometry, ballMaterial);
-
-    return ballMesh;
-}
-
-std::shared_ptr<Mesh> createPlane(float width, float height) {
-    const auto planeGeometry = PlaneGeometry::create(width, height);
-    planeGeometry->rotateX(math::DEG2RAD * -90);
-    const auto planeMaterial = MeshBasicMaterial::create();
-    planeMaterial->color = Color::beige;
-    auto plane = Mesh::create(planeGeometry, planeMaterial);
-
-    return plane;
-}
-

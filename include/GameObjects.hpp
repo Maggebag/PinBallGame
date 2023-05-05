@@ -4,36 +4,28 @@
 #include "threepp/objects/Mesh.hpp"
 #include "threepp/extras/physics/BulletPhysics.hpp"
 #include "threepp/math/MathUtils.hpp"
-
-std::shared_ptr<threepp::Mesh> createCylinder(float radius, float height);
-
-std::shared_ptr<threepp::Mesh> createBox(float width, float length, float height);
-
-std::shared_ptr<threepp::Mesh> createFlipper(float direction, float ballSize);
-
-std::shared_ptr<threepp::Mesh> createBall(float radius);
-
-std::shared_ptr<threepp::Mesh> createPlane(float width, float height);
+#include <iostream>
 
 class FlipperObject {
 public:
-    float flipperDir;
-    std::shared_ptr<btHingeConstraint> btFlipper;
     std::shared_ptr<threepp::Mesh> flipper;
+    std::unique_ptr<btHingeConstraint> btFlipper;
 
-    void setFlipperDirection(float direction) {
+    void setFlipperDirection(int direction) {
         flipperDir = direction;
     }
 
     void addFlipper(float ballSize, threepp::BulletPhysics &bullet, threepp::Object3D &scene) {
         flipper = createFlipper(flipperDir, ballSize);
+        flipper->position.set(position.x,position.y,position.z);
         scene.add(flipper);
         bullet.addMesh(*flipper, 100, true);
 
         auto bulletFlipper = bullet.get(*flipper);
         bulletFlipper->body->setRestitution(0.2);
 
-        btFlipper = std::make_shared<btHingeConstraint>(*bulletFlipper->body, btVector3(ballSize, 0, 0), btVector3(0, 1, 0));
+        btFlipper = std::make_unique<btHingeConstraint>(*bulletFlipper->body, btVector3(flipperDir*ballSize, 0, 0), btVector3(0, 1, 0));
+        btFlipper->enableAngularMotor(true, 0, 9999999999);
         if(flipperDir>0){
             btFlipper->setLimit(-0.4, 0.5);
         }
@@ -43,18 +35,46 @@ public:
         bullet.addConstraint(btFlipper.get(), true);
     }
 
-    void setPosition(float x, float y, float z) const{
-        flipper->position.set(x,y,z);
+    void setPosition(float x, float y, float z) {
+       position.x = x;
+       position.y = y;
+       position.z = z;
     }
 
     void activateFlipper() const {
-        btFlipper->setMotorTargetVelocity(-1000000000 * flipperDir);
+        btFlipper->setMotorTargetVelocity(-9999999999 * flipperDir);
     }
 
     void deactivateFlipper() const {
-        btFlipper->setMotorTargetVelocity(1000000000 * flipperDir);
+        btFlipper->setMotorTargetVelocity(9999999999 * flipperDir);
+    }
+
+private:
+    threepp::Vector3 position;
+    int flipperDir = 0;
+    std::shared_ptr<threepp::Mesh> createFlipper(float direction, float ballSize){ //-1 for left flipper and 1 for right flipper
+        const auto flipperMaterial = threepp::MeshBasicMaterial::create();
+        flipperMaterial->color = threepp::Color::palegreen;
+        const auto flipperAxisMaterial = threepp::MeshBasicMaterial::create();
+        flipperAxisMaterial->color = threepp::Color::red;
+
+        const auto flipperGeometry = threepp::BoxGeometry::create(3 * ballSize, 22, 20);
+        auto flipperMesh = threepp::Mesh::create(flipperGeometry, flipperMaterial);
+
+        const auto flipperTipGeometry = threepp::CylinderGeometry::create(20 / 2, 20 / 2, 22);
+        flipperTipGeometry->translate(direction * -flipperGeometry->width / 2, 0, 0);
+        auto flipperTipMesh = threepp::Mesh::create(flipperTipGeometry, flipperMaterial);
+        flipperMesh->add(flipperTipMesh);
+
+        const auto flipperAxisGeometry = threepp::CylinderGeometry::create(20 / 2 - 2, 20 / 2 - 2, 27);
+        flipperAxisGeometry->translate(direction * flipperGeometry->width / 3, 0, 0);
+        auto flipperAxisMesh = threepp::Mesh::create(flipperAxisGeometry, flipperAxisMaterial);
+        flipperMesh->add(flipperAxisMesh);
+
+        return flipperMesh;
     }
 };
+
 
 class PlungerObject {
 
@@ -64,7 +84,7 @@ public:
     std::shared_ptr<threepp::Mesh> baseBox;
     std::shared_ptr<threepp::Mesh> plungerBox;
 
-    std::shared_ptr<btSliderConstraint> btPlunger;
+    std::unique_ptr<btSliderConstraint> btPlunger;
 
     void setPlungerTravelLength(float length) {
         plungerTravelLength = length;
@@ -92,7 +112,7 @@ public:
         localB.getBasis().setEulerZYX(0, threepp::math::PI / 2, 0);
         localB.setOrigin(btVector3(0.0, 0.0, threepp::math::TWO_PI));
 
-        btPlunger = std::make_shared<btSliderConstraint>(*btPlungerBox->body, *btBaseBox->body, localA, localB, true);
+        btPlunger = std::make_unique<btSliderConstraint>(*btPlungerBox->body, *btBaseBox->body, localA, localB, true);
 
         btPlunger->setLowerLinLimit(0);
         btPlunger->setLowerAngLimit(0);
@@ -121,10 +141,15 @@ public:
         btPlunger->setLowerLinLimit(limit);
     }
 
-
 private:
-    float lowLim_ = 0;
+    std::shared_ptr<threepp::Mesh> createBox(float width, float length, float height) {
+        const auto boxGeometry = threepp::BoxGeometry::create(width, height, length);
+        const auto boxMaterial = threepp::MeshBasicMaterial::create();
+        boxMaterial->color = threepp::Color::burlywood;
+        auto boxMesh = threepp::Mesh::create(boxGeometry, boxMaterial);
 
+        return boxMesh;
+    }
 };
 
 #endif //PINBALLGAME_GAMEOBJECTS_HPP
