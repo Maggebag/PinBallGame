@@ -52,20 +52,20 @@ public:
         }
     }
 
-    void flippers(btHingeConstraint &flipperRight, btHingeConstraint &flipperLeft) const {
+    void flippers(std::shared_ptr<FlipperObject> Right, std::shared_ptr<FlipperObject> Left) const {
         if (keys_.d) {
-            flipperRight.setMotorTargetVelocity(-1000000000);
+            Right->activateFlipper();
         } else {
-            flipperRight.setMotorTargetVelocity(1000000000);
+            Right->deactivateFlipper();
         }
         if (keys_.a) {
-            flipperLeft.setMotorTargetVelocity(1000000000);
+            Left->activateFlipper();
         } else {
-            flipperLeft.setMotorTargetVelocity(-1000000000);
+            Left->deactivateFlipper();
         }
     }
 
-    void launcher(btSliderConstraint &slider) {
+    void plunger(btSliderConstraint &slider) {
         if (keys_.s && lowLim_ < 80) {
             lowLim_ += 0.5;
         }
