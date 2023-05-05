@@ -34,7 +34,7 @@ createFlipperConstraint(std::shared_ptr<threepp::Mesh> Flipper, float direction,
 };
 
 btSliderConstraint
-createPlunger(std::shared_ptr<threepp::Mesh> baseBox, std::shared_ptr<threepp::Mesh> plungerBox, float plungerTravelLength, threepp::BulletPhysics &bullet) {
+createPlungerConstraint(std::shared_ptr<threepp::Mesh> baseBox, std::shared_ptr<threepp::Mesh> plungerBox, float plungerTravelLength, threepp::BulletPhysics &bullet) {
 
     bullet.addMesh(*baseBox);
     bullet.addMesh(*plungerBox, 10, true);
@@ -59,7 +59,6 @@ createPlunger(std::shared_ptr<threepp::Mesh> baseBox, std::shared_ptr<threepp::M
     plungerConstraint.setPoweredLinMotor(true);
     plungerConstraint.setMaxLinMotorForce(100000);
     return plungerConstraint;
-    //bullet.addConstraint(&plungerConstraint, true);
 
 };
 class FlipperObject {
@@ -75,7 +74,7 @@ public:
     void addFlipper(float ballSize, threepp::BulletPhysics &bullet, threepp::Object3D &scene) {
         flipper = createFlipper(flipperDir, ballSize);
         scene.add(flipper);
-        btFlipper = createFlipperConstraint(flipper, flipperDir, ballSize, bullet);
+        btFlipper = createFlipperConstraint(flipper,flipperDir,ballSize,bullet);
         bullet.addConstraint(&btFlipper, true);
     }
 
@@ -90,6 +89,7 @@ public:
     void deactivateFlipper() {
         btFlipper.setMotorTargetVelocity(1000000000 * flipperDir);
     }
+private:
 
 };
 
@@ -112,9 +112,9 @@ public:
         plungerBox = createBox(1.5*ballSize,20,ballSize);
         scene.add(baseBox);
         scene.add(plungerBox);
-        auto yes = createPlunger(baseBox, plungerBox, plungerTravelLength,bullet);
+        auto yes = createPlungerConstraint(baseBox, plungerBox, plungerTravelLength,bullet);
         yes = btPlunger;
-        bullet.addConstraint(&btPlunger, true);
+        bullet.addConstraint(&yes, true);
     }
 
     void setPosition(float x, float y, float z) const{

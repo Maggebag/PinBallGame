@@ -33,7 +33,7 @@ int main() {
     BulletPhysics bullet(getGravFromAngle(6.5));
 
     PlayingField playingField(*scene,bullet);
-    /*
+
     scene->add(playingField.plane);
     scene->add(playingField.TopWall);
     scene->add(playingField.BottomWall);
@@ -98,7 +98,7 @@ int main() {
     launchSlider.setPoweredLinMotor(true);
     launchSlider.setMaxLinMotorForce(100000);
     bullet.addConstraint(&launchSlider, true);
-    */
+
     renderer.enableTextRendering();
     auto &handle = renderer.textHandle();
 

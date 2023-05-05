@@ -39,11 +39,11 @@ public:
         bullet.addMesh(*PinBall, 80.6, true);
 
         FlipperLeft->setFlipperDirection(-1);
-        FlipperLeft->addFlipper(parameters_.BallSize, bullet, scene);
+        FlipperLeft->addFlipper(parameters_.BallSize, scene);
         FlipperLeft->setPosition(-2.5 * parameters_.BallSize, parameters_.BallSize / 2, parameters_.Height / 3);
 
         FlipperRight->setFlipperDirection(1);
-        FlipperRight->addFlipper(parameters_.BallSize, bullet, scene);
+        FlipperRight->addFlipper(parameters_.BallSize, scene);
         FlipperRight->setPosition(2.5 * parameters_.BallSize, parameters_.BallSize / 2, parameters_.Height / 3);
 
     }
