@@ -43,11 +43,11 @@ int main() {
     canvas.animate([&](float dt) {
         bullet.step(dt);
 
-        ballPosCheck(playingField.PinBall, bullet);
+        ballPosCheck(playingField.PinBall, bullet, playingField.ballResetPos);
 
         keyInput->flippers(playingField.FlipperRight, playingField.FlipperLeft);
-       // keyInput->plunger(playingField.Plunger);
-       // keyInput->reset(playingField.PinBall, bullet);
+        keyInput->plunger(playingField.Plunger);
+        keyInput->reset(playingField.PinBall, bullet);
 
         renderer.render(scene, camera);
 

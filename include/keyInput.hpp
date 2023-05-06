@@ -4,7 +4,6 @@
 
 #include <threepp/input/KeyListener.hpp>
 #include "GameObjects.hpp"
-#include <iostream>
 
 struct Keys {
     bool w = false;
@@ -30,8 +29,6 @@ public:
             keys_.r = true;
         } else if (evt.key == 32) {
             keys_.space = true;
-        } else if (evt.mods == 1){
-            std::cout<<"Shift"<<std::endl;
         }
     }
 
@@ -65,20 +62,20 @@ public:
     }
 
     void plunger(PlungerObject &Plunger) {
-        if (keys_.s && lowLim_ < 80) {
+        if (keys_.s && lowLim_ < Plunger.plungerTravelLength) {
             lowLim_ += 0.5;
         }
         if (keys_.w && lowLim_ > 0) {
             lowLim_ -= 0.5;
         }
 
-        Plunger.PlungerSetLowLim(lowLim_);
+        Plunger.PlungerSetUpperLim(lowLim_);
 
         if (keys_.space) {
             Plunger.releasePlunger();
             lowLim_ = 0;
         } else {
-            Plunger.resetPlunger(lowLim_);
+            Plunger.resetPlunger();
         }
     }
 
@@ -90,7 +87,7 @@ public:
 
 private:
     Keys keys_;
-    float lowLim_ = 0;
+    float lowLim_;
 };
 
 #endif //PINBALLGAME_KEYINPUT_HPP
