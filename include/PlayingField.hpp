@@ -40,6 +40,7 @@ public:
         PinBall = createBall(parameters_.BallSize / 2);
         scene.add(PinBall);
         bullet.addMesh(*PinBall, 80.6, true);
+        bullet.get(*PinBall)->body->setRestitution(0.5);
 
         FlipperLeft.setFlipperDirection(-1);
         FlipperLeft.setPosition(-2.5 * parameters_.BallSize, parameters_.BallSize / 2, parameters_.Height / 3);
@@ -83,10 +84,10 @@ private:
         bullet.addMesh(*TopWall);
         bullet.addMesh(*BottomWall);
 
-        bullet.get(*RightWall)->body->setRestitution(0.5);
-        bullet.get(*LeftWall)->body->setRestitution(0.5);
-        bullet.get(*TopWall)->body->setRestitution(0.5);
-        bullet.get(*BottomWall)->body->setRestitution(0.5);
+        bullet.get(*RightWall)->body->setRestitution(1);
+        bullet.get(*LeftWall)->body->setRestitution(1);
+        bullet.get(*TopWall)->body->setRestitution(1);
+        bullet.get(*BottomWall)->body->setRestitution(1);
     }
     std::shared_ptr<threepp::Mesh> createPlane(float width, float height) {
         const auto planeGeometry = threepp::PlaneGeometry::create(width, height);

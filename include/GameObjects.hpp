@@ -61,11 +61,6 @@ private:
         const auto flipperGeometry = threepp::BoxGeometry::create(3 * ballSize, 22, 20);
         auto flipperMesh = threepp::Mesh::create(flipperGeometry, flipperMaterial);
 
-        const auto flipperTipGeometry = threepp::CylinderGeometry::create(20 / 2, 20 / 2, 22);
-        flipperTipGeometry->translate(direction * -flipperGeometry->width / 2, 0, 0);
-        auto flipperTipMesh = threepp::Mesh::create(flipperTipGeometry, flipperMaterial);
-        flipperMesh->add(flipperTipMesh);
-
         const auto flipperAxisGeometry = threepp::CylinderGeometry::create(20 / 2 - 2, 20 / 2 - 2, 27);
         flipperAxisGeometry->translate(direction * flipperGeometry->width / 3, 0, 0);
         auto flipperAxisMesh = threepp::Mesh::create(flipperAxisGeometry, flipperAxisMaterial);
