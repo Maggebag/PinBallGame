@@ -79,7 +79,7 @@ public:
         }
     }
 
-    void reset(std::shared_ptr<threepp::Mesh> pinBall, threepp::BulletPhysics &bullet) {
+    void resetBall(const std::shared_ptr<threepp::Mesh>& pinBall, threepp::BulletPhysics &bullet) const {
         if (keys_.r) {
             bullet.setMeshPosition(*pinBall, {30, 13.5, 0});
         }

@@ -19,3 +19,6 @@ The goal of this project is to make a pinball game using bullet physics engine, 
 
 #### No tests for bullet....
 Write some meaningfull text here about why not.
+
+#### Sources:
+Pinball textures from: https://ambientcg.com/view?id=Metal007
