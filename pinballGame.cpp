@@ -13,7 +13,7 @@ int main()
 
     Canvas canvas(Canvas::Parameters().antialiasing(8));
     GLRenderer renderer(canvas);
-    renderer.setClearColor(Color::aliceblue);
+    renderer.setClearColor(Color::blanchedalmond);
     renderer.shadowMap().type = PCFSoftShadowMap;
     renderer.shadowMap().enabled = true;
 

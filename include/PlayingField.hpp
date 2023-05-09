@@ -130,7 +130,7 @@ private:
         auto curve = std::make_shared<threepp::Path>();
         curve->arc(param_.PlungerWidth/2,-param_.Height/5,curveRadius,0,-threepp::math::PI,true);
 
-        auto points = curve->getPoints(12);
+        auto points = curve->getPoints(20);
 
         for (int i = 0; i < points.size()/2; ++i) {
 
