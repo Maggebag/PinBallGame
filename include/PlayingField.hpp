@@ -49,6 +49,8 @@ public:
 
         createBorder(scene, bullet);
 
+        createBtmBallGuides(scene, bullet);
+
         createTopCurve(scene, bullet);
 
         threepp::TextureLoader tl;
@@ -121,6 +123,7 @@ private:
         bullet.get(*TopWall)->body->setRestitution(1);
         bullet.get(*BottomWall)->body->setRestitution(1);
     }
+
     void createTopCurve(threepp::Object3D &scene, threepp::BulletPhysics &bullet){
 
         float curveRadius = (param_.Width+param_.PlungerWidth)/2;
@@ -154,6 +157,31 @@ private:
             bullet.addMesh(*box2);
             bullet.get(*box2)->body->setRestitution(0.5f);
         }
+    }
+
+    void createBtmBallGuides(threepp::Object3D &scene, threepp::BulletPhysics &bullet){
+        auto leftGuide = utils::createBox(10*param_.BallSize,20,param_.BorderHeight,threepp::Color::burlywood);
+        auto leftGuideEnd = utils::createBox(20,60,param_.BorderHeight,threepp::Color::burlywood);
+        auto rightGuide = utils::createBox(10*param_.BallSize,20,param_.BorderHeight,threepp::Color::burlywood);
+        auto rightGuideEnd = utils::createBox(20,60,param_.BorderHeight,threepp::Color::burlywood);
+
+        leftGuide->rotateY(-threepp::math::PI/6);
+        leftGuide->position.set(-param_.Width/3.5f,param_.BorderHeight/2, param_.Height/2.5f);
+        scene.add(leftGuide);
+        bullet.addMesh(*leftGuide);
+
+        leftGuideEnd->position.set(-1.3575f*param_.BallSize,param_.BorderHeight/2,param_.Height/2.0375f);
+        scene.add(leftGuideEnd);
+        bullet.addMesh(*leftGuideEnd);
+
+        rightGuide->rotateY(threepp::math::PI/6);
+        rightGuide->position.set(param_.Width/3.5f,param_.BorderHeight/2, param_.Height/2.5f);
+        scene.add(rightGuide);
+        bullet.addMesh(*rightGuide);
+
+        rightGuideEnd->position.set(1.3575f*param_.BallSize,param_.BorderHeight/2,param_.Height/2.0375f);
+        scene.add(rightGuideEnd);
+        bullet.addMesh(*rightGuideEnd);
     }
 };
 
