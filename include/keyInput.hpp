@@ -3,7 +3,10 @@
 #define PINBALLGAME_KEYINPUT_HPP
 
 #include <threepp/input/KeyListener.hpp>
-#include "GameObjects.hpp"
+#include <threepp/extras/physics/BulletPhysics.hpp>
+
+#include "GameObjects/FlipperObject.hpp"
+#include "GameObjects/PlungerObject.hpp"
 
 struct Keys {
     bool w = false;

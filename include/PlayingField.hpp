@@ -1,15 +1,13 @@
 
-
 #ifndef PINBALLGAME_PLAYINGFIELD_HPP
 #define PINBALLGAME_PLAYINGFIELD_HPP
 
 #include <threepp/objects/Mesh.hpp>
 #include <threepp/core/Object3D.hpp>
 #include <threepp/extras/physics/BulletPhysics.hpp>
-#include "utils.hpp"
-#include "GameObjects.hpp"
-#include <iostream>
 
+#include "utils.hpp"
+#include "GameObjects/GameObjects.hpp"
 
 struct Parameters {
     //One unit equals 1mm
@@ -19,7 +17,6 @@ struct Parameters {
     const float HalfBorderWidth = BorderWidth / 2;
     const float Height = 980;
     const float Width = 520;
-
     const float PlungerWidth = 20.f + 1.5f*BallSize;
 };
 
@@ -31,11 +28,11 @@ public:
     threepp::Vector3 ballResetPos;
 
     FlipperObject FlipperLeft;
-    FlipperObject FlipperRight;
+   // FlipperObject FlipperRight;
 
-    BallGuidesObject BallGuides;
+    //BallGuidesObject BallGuides;
 
-    PlungerObject Plunger;
+    //PlungerObject Plunger;
 
     PlayingField(threepp::Object3D &scene, threepp::BulletPhysics &bullet) {
 
@@ -64,10 +61,12 @@ public:
 
         FlipperLeft.setFlipperDirection(-1);
         FlipperLeft.setPosition(-flipperPos_.x, flipperPos_.y, flipperPos_.z);
+        FlipperLeft.createFlipper(param_.BallSize);
         FlipperLeft.addFlipper(param_.BallSize, bullet, scene);
-
+/*
         FlipperRight.setFlipperDirection(1);
         FlipperRight.setPosition(flipperPos_.x, flipperPos_.y, flipperPos_.z);
+        FlipperRight.createFlipper(param_.BallSize);
         FlipperRight.addFlipper(param_.BallSize, bullet, scene);
 
         BallGuides.createGuides(param_.BallSize);
@@ -78,8 +77,9 @@ public:
         Plunger.setPosition(param_.Width / 2 - param_.BallSize*0.75f + param_.PlungerWidth, 14, param_.Height / 2 - 20);
         Plunger.createPlunger(param_.BallSize);
         Plunger.addPlunger(bullet, scene);
-
-        Plunger.createInsideShield(param_.Height, param_.BorderHeight, param_.BallSize, bullet, scene);
+        Plunger.createInsideShield(param_.Height, param_.BorderHeight, param_.BallSize);
+        Plunger.addInsideShield(bullet, scene);
+*/
     }
 
 private:
@@ -124,7 +124,7 @@ private:
         bullet.get(*BottomWall)->body->setRestitution(1);
     }
 
-    void createTopCurve(threepp::Object3D &scene, threepp::BulletPhysics &bullet){
+    void createTopCurve(threepp::Object3D &scene, threepp::BulletPhysics &bullet) const{
 
         float curveRadius = (param_.Width+param_.PlungerWidth)/2;
         auto curve = std::make_shared<threepp::Path>();
@@ -159,7 +159,7 @@ private:
         }
     }
 
-    void createBtmBallGuides(threepp::Object3D &scene, threepp::BulletPhysics &bullet){
+    void createBtmBallGuides(threepp::Object3D &scene, threepp::BulletPhysics &bullet) const{
         auto leftGuide = utils::createBox(10*param_.BallSize,20,param_.BorderHeight,threepp::Color::burlywood);
         auto leftGuideEnd = utils::createBox(20,60,param_.BorderHeight,threepp::Color::burlywood);
         auto rightGuide = utils::createBox(10*param_.BallSize,20,param_.BorderHeight,threepp::Color::burlywood);

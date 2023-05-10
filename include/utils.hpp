@@ -3,6 +3,10 @@
 #define PINBALLGAME_UTILS_HPP
 
 #include <threepp/objects/Mesh.hpp>
+#include <threepp/math/Vector3.hpp>
+#include <threepp/loaders/TextureLoader.hpp>
+#include <threepp/lights/SpotLight.hpp>
+#include <threepp/math/Color.hpp>
 
 namespace utils {
 

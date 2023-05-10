@@ -1,6 +1,12 @@
 
-#include <threepp/threepp.hpp>
+#include <threepp/objects/Mesh.hpp>
+#include <threepp/geometries/geometries.hpp>
+#include <threepp/materials/materials.hpp>
 #include <threepp/lights/LightShadow.hpp>
+#include <threepp/loaders/TextureLoader.hpp>
+#include <threepp/lights/SpotLight.hpp>
+#include <threepp/math/Color.hpp>
+
 #include "utils.hpp"
 
 using namespace threepp;

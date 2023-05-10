@@ -1,6 +1,12 @@
 
-#include <threepp/threepp.hpp>
 #include <threepp/extras/physics/BulletPhysics.hpp>
+#include <threepp/Canvas.hpp>
+#include <threepp/controls/OrbitControls.hpp>
+#include <threepp/renderers/GLRenderer.hpp>
+#include <threepp/scenes/Scene.hpp>
+#include <threepp/cameras/PerspectiveCamera.hpp>
+#include <threepp/lights/AmbientLight.hpp>
+
 #include "keyInput.hpp"
 #include "PlayingField.hpp"
 #include "gameLogic.hpp"
@@ -10,7 +16,6 @@ using namespace threepp;
 
 int main()
 {
-
     Canvas canvas(Canvas::Parameters().antialiasing(8));
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::blanchedalmond);
@@ -25,9 +30,7 @@ int main()
     auto scene = Scene::create();
 
     scene->add(AmbientLight::create(0xffffff, 0.1f));
-    auto light = utils::createLight(Vector3(0,700,-400));
-    scene->add(light);
-
+    scene->add(utils::createLight(Vector3(0,700,-400)));
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
@@ -46,12 +49,11 @@ int main()
     canvas.animate([&](float dt) {
         bullet.step(dt);
 
-        ballPosCheck(playingField.PinBall, bullet, playingField.ballResetPos);
+        //ballPosCheck(playingField.PinBall, bullet, playingField.ballResetPos);
 
-        keyInput->flippers(playingField.FlipperRight, playingField.FlipperLeft);
-        keyInput->plunger(playingField.Plunger);
+        //keyInput->flippers(playingField.FlipperRight, playingField.FlipperLeft);
+        //keyInput->plunger(playingField.Plunger);
 
         renderer.render(scene, camera);
     });
-
 }

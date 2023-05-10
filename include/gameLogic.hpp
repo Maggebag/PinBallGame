@@ -2,9 +2,9 @@
 #ifndef PINBALLGAME_GAMELOGIC_HPP
 #define PINBALLGAME_GAMELOGIC_HPP
 
-#include "threepp/objects/Mesh.hpp"
-#include "threepp/extras/physics/BulletPhysics.hpp"
-#include "threepp/math/MathUtils.hpp"
+#include <threepp/objects/Mesh.hpp>
+#include <threepp/extras/physics/BulletPhysics.hpp>
+#include <threepp/math/MathUtils.hpp>
 #include <cmath>
 
 void
