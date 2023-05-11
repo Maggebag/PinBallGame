@@ -16,6 +16,7 @@ std::shared_ptr<Mesh> utils::createCylinder(float radius, float height, threepp:
     const auto cylinderMaterial = MeshPhongMaterial::create();
     cylinderMaterial->color = Color;
     auto cylinderMesh = Mesh::create(cylinderGeometry, cylinderMaterial);
+    cylinderMesh->castShadow = true;
 
     return cylinderMesh;
 }
@@ -59,11 +60,12 @@ std::shared_ptr<threepp::Mesh> utils::createBall(float radius, threepp::TextureL
 
 std::shared_ptr<threepp::Mesh> utils::createBall(float radius) {
     const auto ballGeometry = threepp::SphereGeometry::create(radius, 32, 32);
-    const auto ballMaterial = threepp::MeshStandardMaterial::create();
+    const auto ballMaterial = threepp::MeshPhongMaterial::create();
     ballMaterial->color = threepp::Color::silver;
 
     auto ballMesh = threepp::Mesh::create(ballGeometry, ballMaterial);
     ballMesh->castShadow = true;
+    ballMesh->receiveShadow = true;
 
     return ballMesh;
 }
