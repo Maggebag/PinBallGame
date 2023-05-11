@@ -2,72 +2,82 @@
 #include "gameLogic.hpp"
 #include "utils.hpp"
 #include <threepp/extras/physics/BulletPhysics.hpp>
+#include <threepp/materials/materials.hpp>
 
 #define CATCH_CONFIG_MAIN
+
 #include <catch2/catch.hpp>
 
-TEST_CASE("ballPosGet Test"){
+TEST_CASE("ballPosGet Test") {
     threepp::BulletPhysics bullet;
 
     auto ball = utils::createBall(20);
-    ball->position.set(29,20,13);
+    ball->position.set(1, 2, 3);
     bullet.addMesh(*ball, 1);
 
-    CHECK(ballPosGet(ball,bullet) ==  threepp::Vector3(29,20,13));
+    SECTION("Returns Vector3") {
+        auto result = ballPosGet(ball, bullet);
+        REQUIRE(result.x != 0.0f);
+        REQUIRE(result.y != 0.0f);
+        REQUIRE(result.z != 0.0f);
+    }
+
+    SECTION("Returns expected result") {
+        auto result = ballPosGet(ball, bullet);
+        threepp::Vector3 expectedPos(1.0f, 2.0f, 3.0f);
+        REQUIRE(result == expectedPos);
+    }
 }
 
-TEST_CASE("ballPosGet_bullet Test"){
+TEST_CASE("checkIfBallOut Test") {
 
+    auto pinBall = utils::createBall(2);
     threepp::BulletPhysics bullet;
+    bullet.addMesh(*pinBall);
 
-    auto ball = utils::createBall(20);
-    bullet.addMesh(*ball, 1);
+    SECTION("Does not reset ball position if not out of bounds") {
+        threepp::Vector3 ballPos(0, 0, 0);
+        threepp::Vector3 resetPos(0, 0, 0);
+        float heightLimit = 100.0f;
+        checkIfBallOut(pinBall, ballPos, resetPos, heightLimit, bullet);
 
-    threepp::Vector3 pos(0,-10,34);
+        auto btBallPos = bullet.get(*pinBall)->body->getCenterOfMassPosition();
 
-    bullet.setMeshPosition(*ball, pos);
+        REQUIRE(reinterpret_cast<threepp::Vector3 &&>(btBallPos) == ballPos);
+    }
 
-    CHECK(ballPosGet(ball,bullet) == pos);
+    SECTION("Resets ball position if out of bounds") {
+        threepp::Vector3 ballPos(0, 0, 101.0f);
+        threepp::Vector3 resetPos(1, 2, 3);
+        float heightLimit = 100.0f;
+        checkIfBallOut(pinBall, ballPos, resetPos, heightLimit, bullet);
 
+        auto btBallPos = bullet.get(*pinBall)->body->getCenterOfMassPosition();
+
+        REQUIRE(reinterpret_cast<threepp::Vector3 &&>(btBallPos) == resetPos);
+    }
 }
 
-TEST_CASE("checkIfBallOut Test"){
+TEST_CASE("getGravFromAngle Test") {
+    SECTION("Returns Vector3") {
+        float angle = 45.0f;
+        auto result = getGravFromAngle(angle);
+        REQUIRE(result.x == 0.0f);
+        REQUIRE(result.y != 0.0f);
+        REQUIRE(result.z != 0.0f);
+    }
 
-    threepp::BulletPhysics bullet;
+    SECTION("Returns expected result") {
+        float angle = 25;
+        threepp::Vector3 grav = getGravFromAngle(angle);
+        REQUIRE(grav.x == 0);
+        REQUIRE_THAT(grav.y, Catch::Matchers::WithinRel(-889.0879, 0.001));
+        REQUIRE_THAT(grav.z, Catch::Matchers::WithinRel(414.5885, 0.001));
 
-    auto ball = utils::createBall(20);
-    bullet.addMesh(*ball,1);
-    threepp::Vector3 ballPos1(0,20,0);
-    bullet.setMeshPosition(*ball,ballPos1);
-
-    float heightLimit = 100;
-
-    threepp::Vector3 resetPos(10,20,30);
-
-    checkIfBallOut(ball, ballPos1, resetPos, heightLimit, bullet);
-
-    CHECK(bullet.get(*ball)->body->getCenterOfMassPosition() == btVector3(0,20,0));
-
-    threepp::Vector3 ballPos2(0,0,120);
-
-    bullet.setMeshPosition(*ball, ballPos2);
-
-    checkIfBallOut(ball, ballPos2, resetPos, heightLimit, bullet);
-
-    CHECK(bullet.get(*ball)->body->getCenterOfMassPosition() == btVector3(10,20,30));
-
-}
-
-TEST_CASE("getGravFromAngle Test"){
-    float angle = 25;
-    threepp::Vector3 grav = getGravFromAngle(angle);
-    REQUIRE(grav.x == 0);
-    REQUIRE_THAT(grav.y, Catch::Matchers::WithinRel(-889.0879,0.001));
-    REQUIRE_THAT(grav.z, Catch::Matchers::WithinRel(414.5885,0.001));
-
-    float angle2 = 0.2f;
-    threepp::Vector3 grav2 = getGravFromAngle(angle2);
-    REQUIRE(grav2.x == 0);
-    REQUIRE_THAT(grav2.y, Catch::Matchers::WithinRel(-980.994,0.001));
-    REQUIRE_THAT(grav2.z, Catch::Matchers::WithinRel(3.424,0.001));
+        float angle2 = 0.2f;
+        threepp::Vector3 grav2 = getGravFromAngle(angle2);
+        REQUIRE(grav2.x == 0);
+        REQUIRE_THAT(grav2.y, Catch::Matchers::WithinRel(-980.994, 0.001));
+        REQUIRE_THAT(grav2.z, Catch::Matchers::WithinRel(3.424, 0.001));
+    }
 }

@@ -12,7 +12,7 @@ ballPosGet(const std::shared_ptr<threepp::Mesh> &pinBall, threepp::BulletPhysics
     return ballPos;
 }
 
-void checkIfBallOut(const std::shared_ptr<threepp::Mesh>& pinBall, threepp::Vector3 ballPos, threepp::Vector3 resetPos,
+void checkIfBallOut(const std::shared_ptr<threepp::Mesh> &pinBall, threepp::Vector3 ballPos, threepp::Vector3 resetPos,
                     float heightLimit, threepp::BulletPhysics &bullet) {
     if (ballPos.z > heightLimit) {
         bullet.setMeshPosition(*pinBall, {resetPos.x, resetPos.y, resetPos.z});

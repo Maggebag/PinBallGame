@@ -42,12 +42,12 @@ std::shared_ptr<threepp::Mesh> utils::createPlane(float width, float height, thr
     return plane;
 }
 
-std::shared_ptr<threepp::Mesh> utils::createBall(float radius, threepp::TextureLoader& tl) {
+std::shared_ptr<threepp::Mesh> utils::createBall(float radius, threepp::TextureLoader &tl) {
     const auto ballGeometry = threepp::SphereGeometry::create(radius, 32, 32);
     const auto ballMaterial = threepp::MeshStandardMaterial::create();
     ballMaterial->map = tl.load("bin/data/textures/Metal007_1K_Color.jpg");
-    ballMaterial->roughnessMap = tl.load ("bin/data/textures/Metal007_1K_Roughness.jpg");
-    ballMaterial->metalnessMap = tl.load ("bin/data/textures/Metal007_1K_Metalness.jpg");
+    ballMaterial->roughnessMap = tl.load("bin/data/textures/Metal007_1K_Roughness.jpg");
+    ballMaterial->metalnessMap = tl.load("bin/data/textures/Metal007_1K_Metalness.jpg");
     ballMaterial->normalMap = tl.load("bin/data/textures/Metal007_1K_NormalGL.jpg");
     ballMaterial->metalness = 0.2f;
     ballMaterial->color = threepp::Color::silver;
@@ -76,8 +76,8 @@ std::shared_ptr<threepp::SpotLight> utils::createLight(threepp::Vector3 position
     light->distance = 10000;
     light->intensity = 0.8f;
     light->angle = math::degToRad(60);
-    light->position.set(position.x,position.y,position.z);
-    light->shadow->mapSize.set(4096,4096);
+    light->position.set(position.x, position.y, position.z);
+    light->shadow->mapSize.set(4096, 4096);
 
     return light;
 }

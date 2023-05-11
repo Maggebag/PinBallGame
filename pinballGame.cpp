@@ -14,8 +14,7 @@
 
 using namespace threepp;
 
-int main()
-{
+int main() {
     Canvas canvas(Canvas::Parameters().antialiasing(8));
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::blanchedalmond);
@@ -30,7 +29,7 @@ int main()
     auto scene = Scene::create();
 
     scene->add(AmbientLight::create(0xffffff, 0.1f));
-    scene->add(utils::createLight(Vector3(0,700,-400)));
+    scene->add(utils::createLight(Vector3(0, 700, -400)));
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
@@ -49,7 +48,8 @@ int main()
     canvas.animate([&](float dt) {
         bullet.step(dt);
 
-        checkIfBallOut(playingField.PinBall, ballPosGet(playingField.PinBall, bullet), playingField.ballResetPos, 470, bullet);
+        checkIfBallOut(playingField.PinBall, ballPosGet(playingField.PinBall, bullet), playingField.ballResetPos, 470,
+                       bullet);
 
         keyInput->flippers(playingField.FlipperRight, playingField.FlipperLeft);
         keyInput->plunger(playingField.Plunger);

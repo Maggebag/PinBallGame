@@ -8,4 +8,6 @@
 
 #include "PlungerObject.hpp"
 
+#include "LightShieldObject.hpp"
+
 #endif //PINBALLGAME_GAMEOBJECTS_HPP

@@ -4,14 +4,15 @@
 #include <threepp/geometries/geometries.hpp>
 
 #define CATCH_CONFIG_MAIN
+
 #include <catch2/catch.hpp>
 
-TEST_CASE("createCylinder Test"){
+TEST_CASE("createCylinder Test") {
 
-    auto cylinder = utils::createCylinder(5,20, threepp::Color::black);
+    auto cylinder = utils::createCylinder(5, 20, threepp::Color::black);
 
-    auto geometry = dynamic_cast<threepp::CylinderGeometry*>(cylinder->geometry());
-    auto material = dynamic_cast<threepp::MeshPhongMaterial*>(cylinder->material());
+    auto geometry = dynamic_cast<threepp::CylinderGeometry *>(cylinder->geometry());
+    auto material = dynamic_cast<threepp::MeshPhongMaterial *>(cylinder->material());
 
     CHECK(geometry->type() == "CylinderGeometry");
     CHECK(geometry->radiusTop == geometry->radiusTop);
@@ -22,12 +23,12 @@ TEST_CASE("createCylinder Test"){
     CHECK(cylinder->castShadow == true);
 }
 
-TEST_CASE("createBox Test"){
+TEST_CASE("createBox Test") {
 
-    auto box = utils::createBox(5,10,20, threepp::Color::yellow);
+    auto box = utils::createBox(5, 10, 20, threepp::Color::yellow);
 
-    auto geometry = dynamic_cast<threepp::BoxGeometry*>(box->geometry());
-    auto material = dynamic_cast<threepp::MeshPhongMaterial*>(box->material());
+    auto geometry = dynamic_cast<threepp::BoxGeometry *>(box->geometry());
+    auto material = dynamic_cast<threepp::MeshPhongMaterial *>(box->material());
 
     CHECK(geometry->type() == "BoxGeometry");
     CHECK(geometry->width == 5);
@@ -39,12 +40,12 @@ TEST_CASE("createBox Test"){
     CHECK(box->castShadow == true);
 }
 
-TEST_CASE("createPlane Test"){
+TEST_CASE("createPlane Test") {
 
-    auto plane = utils::createPlane(10,20,threepp::Color::aqua);
+    auto plane = utils::createPlane(10, 20, threepp::Color::aqua);
 
-    auto geometry = dynamic_cast<threepp::PlaneGeometry*>(plane->geometry());
-    auto material = dynamic_cast<threepp::MeshPhongMaterial*>(plane->material());
+    auto geometry = dynamic_cast<threepp::PlaneGeometry *>(plane->geometry());
+    auto material = dynamic_cast<threepp::MeshPhongMaterial *>(plane->material());
 
     CHECK(geometry->type() == "PlaneGeometry");
     CHECK(geometry->width == 10);
@@ -56,12 +57,12 @@ TEST_CASE("createPlane Test"){
     CHECK(plane->receiveShadow == true);
 }
 
-TEST_CASE("createBall Test"){
+TEST_CASE("createBall Test") {
 
     auto ball = utils::createBall(20);
 
-    auto geometry = dynamic_cast<threepp::SphereGeometry*>(ball->geometry());
-    auto material = dynamic_cast<threepp::MeshPhongMaterial*>(ball->material());
+    auto geometry = dynamic_cast<threepp::SphereGeometry *>(ball->geometry());
+    auto material = dynamic_cast<threepp::MeshPhongMaterial *>(ball->material());
 
     CHECK(geometry->radius == 20);
     CHECK(material->color == threepp::Color::silver);
@@ -70,10 +71,10 @@ TEST_CASE("createBall Test"){
     CHECK(ball->receiveShadow == true);
 }
 
-TEST_CASE("createLight Test"){
+TEST_CASE("createLight Test") {
 
-    auto light = utils::createLight(threepp::Vector3(0,1,0));
+    auto light = utils::createLight(threepp::Vector3(0, 1, 0));
 
     CHECK(light->castShadow == true);
-    CHECK(light->position == threepp::Vector3(0,1,0));
+    CHECK(light->position == threepp::Vector3(0, 1, 0));
 }

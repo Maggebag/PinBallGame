@@ -34,6 +34,8 @@ public:
 
     PlungerObject Plunger;
 
+    LightShieldObject shield;
+
     PlayingField(threepp::Object3D &scene, threepp::BulletPhysics &bullet) {
 
         ballResetPos.set(param_.Width / 2 - param_.BallSize*0.75f + param_.PlungerWidth, param_.BallSize/2, param_.Height / 2 - 220);
@@ -80,6 +82,9 @@ public:
         Plunger.addPlunger(bullet, scene);
         Plunger.createInsideShield(param_.Height, param_.BorderHeight, param_.BallSize);
         Plunger.addInsideShield(bullet, scene);
+
+        shield.defineLightShieldDimensions(100,200,25,threepp::Color::yellow);
+        shield.addToScene(scene);
     }
 
 private:
@@ -136,7 +141,7 @@ private:
         auto curve = std::make_shared<threepp::Path>();
         curve->arc(param_.PlungerWidth/2,-param_.Height/5,curveRadius,0,-threepp::math::PI,true);
 
-        auto points = curve->getPoints(20);
+        auto points = curve->getPoints(12);
 
         for (int i = 0; i < points.size()/2; ++i) {
 

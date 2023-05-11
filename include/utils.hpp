@@ -16,7 +16,7 @@ namespace utils {
 
     std::shared_ptr<threepp::Mesh> createPlane(float width, float height, threepp::Color::ColorName Color);
 
-    std::shared_ptr<threepp::Mesh> createBall(float radius, threepp::TextureLoader& tl);
+    std::shared_ptr<threepp::Mesh> createBall(float radius, threepp::TextureLoader &tl);
 
     std::shared_ptr<threepp::Mesh> createBall(float radius);
 
