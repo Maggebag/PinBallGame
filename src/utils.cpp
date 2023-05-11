@@ -57,6 +57,17 @@ std::shared_ptr<threepp::Mesh> utils::createBall(float radius, threepp::TextureL
     return ballMesh;
 }
 
+std::shared_ptr<threepp::Mesh> utils::createBall(float radius) {
+    const auto ballGeometry = threepp::SphereGeometry::create(radius, 32, 32);
+    const auto ballMaterial = threepp::MeshStandardMaterial::create();
+    ballMaterial->color = threepp::Color::silver;
+
+    auto ballMesh = threepp::Mesh::create(ballGeometry, ballMaterial);
+    ballMesh->castShadow = true;
+
+    return ballMesh;
+}
+
 std::shared_ptr<threepp::SpotLight> utils::createLight(threepp::Vector3 position) {
     auto light = SpotLight::create(threepp::Color::whitesmoke);
     light->castShadow = true;

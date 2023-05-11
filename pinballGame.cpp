@@ -37,6 +37,7 @@ int main()
         camera->updateProjectionMatrix();
         renderer.setSize(size);
     });
+    threepp::Vector3 BallPos;
 
     BulletPhysics bullet(getGravFromAngle(6.5));
 
@@ -49,10 +50,11 @@ int main()
     canvas.animate([&](float dt) {
         bullet.step(dt);
 
-        //ballPosCheck(playingField.PinBall, bullet, playingField.ballResetPos);
+        BallPos = ballPosCheck(playingField.PinBall, bullet);
 
-        //keyInput->flippers(playingField.FlipperRight, playingField.FlipperLeft);
-        //keyInput->plunger(playingField.Plunger);
+        keyInput->flippers(playingField.FlipperRight, playingField.FlipperLeft);
+        keyInput->plunger(playingField.Plunger);
+        keyInput->resetBall(playingField.PinBall, bullet);
 
         renderer.render(scene, camera);
     });

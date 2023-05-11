@@ -4,14 +4,17 @@
 
 #include <threepp/objects/Mesh.hpp>
 #include <threepp/extras/physics/BulletPhysics.hpp>
-#include <threepp/math/MathUtils.hpp>
-#include <cmath>
 
-void
-ballPosCheck(const std::shared_ptr<threepp::Mesh> &pinBall, threepp::BulletPhysics &bullet, threepp::Vector3 resetPos) {
+threepp::Vector3
+ballPosCheck(const std::shared_ptr<threepp::Mesh> &pinBall, threepp::BulletPhysics &bullet) {
     auto btBallPos = bullet.get(*pinBall)->body->getCenterOfMassPosition();
     threepp::Vector3 ballPos = reinterpret_cast<threepp::Vector3 &&>(btBallPos);
-    if (ballPos.z > 470) {
+    return ballPos;
+}
+
+void checkIfBallOut(std::shared_ptr<threepp::Mesh> pinBall, threepp::Vector3 ballPos, threepp::Vector3 resetPos,
+                    float heightLimit, threepp::BulletPhysics &bullet) {
+    if (ballPos.z > heightLimit) {
         bullet.setMeshPosition(*pinBall, {resetPos.x, resetPos.y, resetPos.z});
     }
 }

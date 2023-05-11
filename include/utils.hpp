@@ -18,6 +18,8 @@ namespace utils {
 
     std::shared_ptr<threepp::Mesh> createBall(float radius, threepp::TextureLoader& tl);
 
+    std::shared_ptr<threepp::Mesh> createBall(float radius);
+
     std::shared_ptr<threepp::SpotLight> createLight(threepp::Vector3 position);
 
 }

@@ -28,23 +28,24 @@ public:
     threepp::Vector3 ballResetPos;
 
     FlipperObject FlipperLeft;
-   // FlipperObject FlipperRight;
+    FlipperObject FlipperRight;
 
-    //BallGuidesObject BallGuides;
+    BallGuidesObject BallGuides;
 
-    //PlungerObject Plunger;
+    PlungerObject Plunger;
 
     PlayingField(threepp::Object3D &scene, threepp::BulletPhysics &bullet) {
 
         ballResetPos.set(param_.Width / 2 - param_.BallSize*0.75f + param_.PlungerWidth, param_.BallSize/2, param_.Height / 2 - 220);
 
-        Plane = utils::createPlane(param_.Width + param_.PlungerWidth, param_.Height, threepp::Color::beige);
+        auto Plane = utils::createPlane(param_.Width + param_.PlungerWidth, param_.Height, threepp::Color::beige);
         Plane->position.setX(param_.PlungerWidth/2);
         scene.add(Plane);
         bullet.addMesh(*Plane);
         bullet.get(*Plane)->body->setRestitution(0.5f);
 
-        createBorder(scene, bullet);
+        createBorder();
+        addBorder(scene, bullet);
 
         createBtmBallGuides(scene, bullet);
 
@@ -60,13 +61,13 @@ public:
         flipperPos_.set(2.5f * param_.BallSize, param_.BallSize / 2, param_.Height / 3);
 
         FlipperLeft.setFlipperDirection(-1);
-        FlipperLeft.setPosition(-flipperPos_.x, flipperPos_.y, flipperPos_.z);
         FlipperLeft.createFlipper(param_.BallSize);
+        FlipperLeft.setPosition(-flipperPos_.x, flipperPos_.y, flipperPos_.z);
         FlipperLeft.addFlipper(param_.BallSize, bullet, scene);
-/*
+
         FlipperRight.setFlipperDirection(1);
-        FlipperRight.setPosition(flipperPos_.x, flipperPos_.y, flipperPos_.z);
         FlipperRight.createFlipper(param_.BallSize);
+        FlipperRight.setPosition(flipperPos_.x, flipperPos_.y, flipperPos_.z);
         FlipperRight.addFlipper(param_.BallSize, bullet, scene);
 
         BallGuides.createGuides(param_.BallSize);
@@ -74,54 +75,59 @@ public:
         BallGuides.addBallGuides(bullet, scene);
 
         Plunger.setPlungerTravelLength(120.0);
-        Plunger.setPosition(param_.Width / 2 - param_.BallSize*0.75f + param_.PlungerWidth, 14, param_.Height / 2 - 20);
         Plunger.createPlunger(param_.BallSize);
+        Plunger.setPosition(param_.Width / 2 - param_.BallSize*0.75f + param_.PlungerWidth, 14, param_.Height / 2 - 20);
         Plunger.addPlunger(bullet, scene);
         Plunger.createInsideShield(param_.Height, param_.BorderHeight, param_.BallSize);
         Plunger.addInsideShield(bullet, scene);
-*/
     }
 
 private:
     Parameters param_;
 
-    std::shared_ptr<threepp::Mesh> Plane;
-    std::shared_ptr<threepp::Mesh> RightWall;
-    std::shared_ptr<threepp::Mesh> LeftWall;
-    std::shared_ptr<threepp::Mesh> TopWall;
-    std::shared_ptr<threepp::Mesh> BottomWall;
+    std::shared_ptr<threepp::Mesh> RightWall_;
+    std::shared_ptr<threepp::Mesh> LeftWall_;
+    std::shared_ptr<threepp::Mesh> TopWall_;
+    std::shared_ptr<threepp::Mesh> BottomWall_;
 
     threepp::Vector3 flipperPos_;
 
-    void createBorder(threepp::Object3D &scene, threepp::BulletPhysics &bullet) {
-        RightWall = utils::createBox(param_.BorderWidth, param_.Height, param_.BorderHeight, threepp::Color::burlywood);
-        RightWall->position.set(param_.Width / 2 + param_.HalfBorderWidth + param_.PlungerWidth, param_.BorderHeight / 2, 0);
+    void createBorder() {
 
-        LeftWall = utils::createBox(param_.BorderWidth, param_.Height, param_.BorderHeight, threepp::Color::burlywood);
-        LeftWall->position.set(-(param_.Width / 2 + param_.HalfBorderWidth), param_.BorderHeight / 2, 0);
+        RightWall_ = utils::createBox(param_.BorderWidth, param_.Height, param_.BorderHeight,
+                                      threepp::Color::burlywood);
+        RightWall_->position.set(param_.Width / 2 + param_.HalfBorderWidth + param_.PlungerWidth,
+                                 param_.BorderHeight / 2, 0);
 
-        TopWall = utils::createBox(param_.Width + param_.BorderWidth * 2 + param_.PlungerWidth, param_.BorderWidth,
-                                   param_.BorderHeight, threepp::Color::burlywood);
-        TopWall->position.set(param_.PlungerWidth/2, param_.BorderHeight / 2, -(param_.Height / 2 + param_.HalfBorderWidth));
+        LeftWall_ = utils::createBox(param_.BorderWidth, param_.Height, param_.BorderHeight, threepp::Color::burlywood);
+        LeftWall_->position.set(-(param_.Width / 2 + param_.HalfBorderWidth), param_.BorderHeight / 2, 0);
 
-        BottomWall = utils::createBox(param_.Width + param_.BorderWidth * 2 + param_.PlungerWidth, param_.BorderWidth,
-                                      param_.BorderHeight, threepp::Color::burlywood);
-        BottomWall->position.set(param_.PlungerWidth/2, param_.BorderHeight / 2, param_.Height / 2 + param_.HalfBorderWidth);
+        TopWall_ = utils::createBox(param_.Width + param_.BorderWidth * 2 + param_.PlungerWidth, param_.BorderWidth,
+                                    param_.BorderHeight, threepp::Color::burlywood);
+        TopWall_->position.set(param_.PlungerWidth / 2, param_.BorderHeight / 2,
+                               -(param_.Height / 2 + param_.HalfBorderWidth));
 
-        scene.add(RightWall);
-        scene.add(LeftWall);
-        scene.add(TopWall);
-        scene.add(BottomWall);
+        BottomWall_ = utils::createBox(param_.Width + param_.BorderWidth * 2 + param_.PlungerWidth, param_.BorderWidth,
+                                       param_.BorderHeight, threepp::Color::burlywood);
+        BottomWall_->position.set(param_.PlungerWidth / 2, param_.BorderHeight / 2,
+                                  param_.Height / 2 + param_.HalfBorderWidth);
+    }
 
-        bullet.addMesh(*RightWall);
-        bullet.addMesh(*LeftWall);
-        bullet.addMesh(*TopWall);
-        bullet.addMesh(*BottomWall);
+    void addBorder(threepp::Object3D &scene, threepp::BulletPhysics &bullet){
+        scene.add(RightWall_);
+        scene.add(LeftWall_);
+        scene.add(TopWall_);
+        scene.add(BottomWall_);
 
-        bullet.get(*RightWall)->body->setRestitution(1);
-        bullet.get(*LeftWall)->body->setRestitution(1);
-        bullet.get(*TopWall)->body->setRestitution(1);
-        bullet.get(*BottomWall)->body->setRestitution(1);
+        bullet.addMesh(*RightWall_);
+        bullet.addMesh(*LeftWall_);
+        bullet.addMesh(*TopWall_);
+        bullet.addMesh(*BottomWall_);
+
+        bullet.get(*RightWall_)->body->setRestitution(1);
+        bullet.get(*LeftWall_)->body->setRestitution(1);
+        bullet.get(*TopWall_)->body->setRestitution(1);
+        bullet.get(*BottomWall_)->body->setRestitution(1);
     }
 
     void createTopCurve(threepp::Object3D &scene, threepp::BulletPhysics &bullet) const{
@@ -184,6 +190,5 @@ private:
         bullet.addMesh(*rightGuideEnd);
     }
 };
-
 
 #endif //PINBALLGAME_PLAYINGFIELD_HPP

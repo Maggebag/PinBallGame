@@ -35,7 +35,7 @@ public:
         }
     }
 
-    void onKeyReleased(threepp::KeyEvent evt) override {
+    void onKeyReleased(threepp::KeyEvent evt) override{
         if (evt.key == 87) {
             keys_.w = false;
         } else if (evt.key == 83) {
@@ -51,7 +51,7 @@ public:
         }
     }
 
-    void flippers(FlipperObject &Right, FlipperObject &Left) const {
+    void flippers(FlipperObject &Right, FlipperObject &Left) const{
         if (keys_.d) {
             Right.activateFlipper();
         } else {
@@ -64,7 +64,7 @@ public:
         }
     }
 
-    void plunger(PlungerObject &Plunger) {
+    void plunger(PlungerObject &Plunger){
         if (keys_.s && lowLim_ < Plunger.plungerTravelLength) {
             lowLim_ += 0.5;
         }
@@ -82,9 +82,9 @@ public:
         }
     }
 
-    void resetBall(const std::shared_ptr<threepp::Mesh>& pinBall, threepp::BulletPhysics &bullet) const {
+    void resetBall(const std::shared_ptr<threepp::Mesh>& pinBall, threepp::BulletPhysics &bullet) const{
         if (keys_.r) {
-            bullet.setMeshPosition(*pinBall, {30, 13.5, 0});
+            bullet.setMeshPosition(*pinBall, {40, 13.5, 120});
         }
     }
 
