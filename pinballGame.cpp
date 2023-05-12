@@ -16,7 +16,11 @@
 using namespace threepp;
 
 int main() {
-    Canvas canvas(Canvas::Parameters().size(720,960).antialiasing(8).vsync(false));
+    Canvas canvas(Canvas::Parameters().size(720, 960)
+                                            .antialiasing(8)
+                                            .vsync(false)
+                                            .favicon("bin/doc/logo.png")
+                                            .title("PinBallGame"));
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::blanchedalmond);
     renderer.shadowMap().type = PCFSoftShadowMap;

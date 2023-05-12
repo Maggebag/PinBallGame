@@ -20,16 +20,16 @@ public:
 
     std::unique_ptr<btSliderConstraint> btPlunger;
 
-    void setPlungerTravelLength(float length){
+    void setPlungerTravelLength(float length) {
         plungerTravelLength = length;
     }
 
-    void createPlunger(float ballSize){
+    void createPlunger(float ballSize) {
         baseBox = utils::createBox(1.5f * ballSize, 20, ballSize, threepp::Color::gray);
         plungerBox = utils::createBox(1.5f * ballSize, 20, ballSize, threepp::Color::gray);
     }
 
-    void addPlunger(threepp::BulletPhysics &bullet, threepp::Object3D &scene){
+    void addPlunger(threepp::BulletPhysics &bullet, threepp::Object3D &scene) {
         scene.add(baseBox);
         scene.add(plungerBox);
 
@@ -60,7 +60,7 @@ public:
         bullet.addConstraint(btPlunger.get());
     }
 
-    void setPosition(float x, float y, float z){
+    void setPosition(float x, float y, float z) {
         position.x = x;
         position.y = y;
         position.z = z;
@@ -68,24 +68,24 @@ public:
         plungerBox->position.set(position.x, position.y, position.z - plungerTravelLength);
     }
 
-    void PlungerSetUpperLim(float limit) const{
+    void PlungerSetUpperLim(float limit) const {
         btPlunger->setUpperLinLimit(limit);
     }
 
-    void releasePlunger() const{
+    void releasePlunger() const {
         btPlunger->setTargetLinMotorVelocity(-1000000);
     }
 
-    void resetPlunger() const{
+    void resetPlunger() const {
         btPlunger->setTargetLinMotorVelocity(1000000);
     }
 
-    void createInsideShield(float gameHeight, float borderHeight, float ballSize){
+    void createInsideShield(float gameHeight, float borderHeight, float ballSize) {
         insideShield = utils::createBox(20, gameHeight / 4 * 3, borderHeight, threepp::Color::burlywood);
         insideShield->position.set(position.x - 1.5f * ballSize / 2 - 10, borderHeight / 2, gameHeight / 4 / 2);
     }
 
-    void addInsideShield(threepp::BulletPhysics &bullet, threepp::Object3D &scene) const{
+    void addInsideShield(threepp::BulletPhysics &bullet, threepp::Object3D &scene) const {
         scene.add(insideShield);
         bullet.addMesh(*insideShield);
         bullet.get(*insideShield)->body->setRestitution(1);

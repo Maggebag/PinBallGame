@@ -27,7 +27,7 @@ TEST_CASE("bouncyCylindersObject tests") {
 
         cylinders.setPosition(threepp::Vector3(1.0f, 2.0f, 3.0f));
 
-        REQUIRE(cylinders.CylinderTop->position == threepp::Vector3(1.0f, 2.0f, -3.f+1.f));
+        REQUIRE(cylinders.CylinderTop->position == threepp::Vector3(1.0f, 2.0f, -3.f + 1.f));
         REQUIRE(cylinders.CylinderLeft->position == threepp::Vector3(-1 - 4.f, 2.0f, -3.f + 2.f));
         REQUIRE(cylinders.CylinderRight->position == threepp::Vector3(1 + 4.f, 2.0f, -3.f + 2.f));
     }

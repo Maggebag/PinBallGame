@@ -17,7 +17,7 @@ struct Parameters {
     const float HalfBorderWidth = BorderWidth / 2;
     const float Height = 980;
     const float Width = 520;
-    const float PlungerWidth = 20.f + 1.5f*BallSize;
+    const float PlungerWidth = 20.f + 1.5f * BallSize;
 };
 
 class PlayingField {
@@ -48,14 +48,15 @@ public:
 
     bouncyCylindersObject cylinderGroup;
 
-    PlayingField(threepp::Object3D &scene, threepp::BulletPhysics &bullet) {
+    PlayingField(threepp::Object3D &scene, threepp::BulletPhysics &bullet){
 
-        ballResetPos.set(param_.Width / 2 - param_.BallSize*0.75f + param_.PlungerWidth, param_.BallSize/2, param_.Height / 2 - 220);
+        ballResetPos.set(param_.Width / 2 - param_.BallSize * 0.75f + param_.PlungerWidth, param_.BallSize / 2,
+                         param_.Height / 2 - 220);
 
         auto Plane = utils::createPlane(param_.Width + param_.PlungerWidth, param_.Height, threepp::Color::beige);
         auto windowPlane = utils::createPlane(param_.Width + param_.PlungerWidth, param_.Height, threepp::Color::white);
-        Plane->position.setX(param_.PlungerWidth/2);
-        windowPlane->position.setX(param_.PlungerWidth/2);
+        Plane->position.setX(param_.PlungerWidth / 2);
+        windowPlane->position.setX(param_.PlungerWidth / 2);
         windowPlane->position.setY(param_.BorderHeight);
         scene.add(Plane);
         bullet.addMesh(*Plane);
@@ -71,7 +72,7 @@ public:
 
         threepp::TextureLoader tl;
         PinBall = utils::createBall(param_.BallSize / 2, tl);
-        PinBall->position.set(ballResetPos.x,ballResetPos.y,ballResetPos.z);
+        PinBall->position.set(ballResetPos.x, ballResetPos.y, ballResetPos.z);
         scene.add(PinBall);
         bullet.addMesh(*PinBall, 80.6f, true);
         bullet.get(*PinBall)->body->setRestitution(0.75f);
@@ -94,65 +95,68 @@ public:
 
         Plunger.setPlungerTravelLength(120.0);
         Plunger.createPlunger(param_.BallSize);
-        Plunger.setPosition(param_.Width / 2 - param_.BallSize*0.75f + param_.PlungerWidth, 14, param_.Height / 2 - 20);
+        Plunger.setPosition(param_.Width / 2 - param_.BallSize * 0.75f + param_.PlungerWidth, 14,
+                            param_.Height / 2 - 20);
         Plunger.addPlunger(bullet, scene);
         Plunger.createInsideShield(param_.Height, param_.BorderHeight, param_.BallSize);
         Plunger.addInsideShield(bullet, scene);
 
-        shieldFlipperLeft.createShieldShape(2.5f*param_.BallSize,5.5f*param_.BallSize);
+        shieldFlipperLeft.createShieldShape(2.5f * param_.BallSize, 5.5f * param_.BallSize);
         shieldFlipperLeft.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
         shieldFlipperLeft.addBoxToLongestSide();
-        shieldFlipperLeft.setShieldPosition(-flipperPos_.x-3.3f*param_.BallSize,0,flipperPos_.z-2.4f*param_.BallSize);
+        shieldFlipperLeft.setShieldPosition(-flipperPos_.x - 3.3f * param_.BallSize, 0,
+                                            flipperPos_.z - 2.4f * param_.BallSize);
         shieldFlipperLeft.addToScene(bullet, scene);
 
-        shieldFlipperRight.createShieldShape(2.5f*param_.BallSize,5.5f*param_.BallSize);
+        shieldFlipperRight.createShieldShape(2.5f * param_.BallSize, 5.5f * param_.BallSize);
         shieldFlipperRight.createShieldMesh(32, threepp::Color::royalblue);
         shieldFlipperRight.addBoxToLongestSide();
-        shieldFlipperRight.setShieldPosition(flipperPos_.x+3.3f*param_.BallSize,0,flipperPos_.z-2.4f*param_.BallSize);
+        shieldFlipperRight.setShieldPosition(flipperPos_.x + 3.3f * param_.BallSize, 0,
+                                             flipperPos_.z - 2.4f * param_.BallSize);
         shieldFlipperRight.flipShield();
         shieldFlipperRight.addToScene(bullet, scene);
 
-        shieldChuteLeft.createShieldShape(2*param_.BallSize, 2*param_.BallSize);
+        shieldChuteLeft.createShieldShape(2 * param_.BallSize, 2 * param_.BallSize);
         shieldChuteLeft.createShieldMesh(param_.BorderHeight, threepp::Color::burlywood);
         shieldChuteLeft.addBoxToLongestSide();
-        shieldChuteLeft.setShieldPosition(-param_.Width/2-10, 0, 60);
+        shieldChuteLeft.setShieldPosition(-param_.Width / 2 - 10, 0, 60);
         shieldChuteLeft.addToScene(bullet, scene, 2);
 
-        shieldChuteRight.createShieldShape(2*param_.BallSize, 2*param_.BallSize);
+        shieldChuteRight.createShieldShape(2 * param_.BallSize, 2 * param_.BallSize);
         shieldChuteRight.createShieldMesh(param_.BorderHeight, threepp::Color::burlywood);
         shieldChuteRight.addBoxToLongestSide();
-        shieldChuteRight.setShieldPosition(param_.Width/2+10, 0, 60);
+        shieldChuteRight.setShieldPosition(param_.Width / 2 + 10, 0, 60);
         shieldChuteRight.flipShield();
         shieldChuteRight.addToScene(bullet, scene, 2);
 
-        topShieldLeft.createShieldShape(9*param_.BallSize,5*param_.BallSize);
+        topShieldLeft.createShieldShape(9 * param_.BallSize, 5 * param_.BallSize);
         topShieldLeft.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
-        topShieldLeft.setShieldPosition(-param_.Width/3, 0, -param_.Height/3);
+        topShieldLeft.setShieldPosition(-param_.Width / 3, 0, -param_.Height / 3);
         topShieldLeft.rotateShield(-100);
         topShieldLeft.addToScene(bullet, scene);
 
-        topShieldRight.createShieldShape(9*param_.BallSize,5*param_.BallSize);
+        topShieldRight.createShieldShape(9 * param_.BallSize, 5 * param_.BallSize);
         topShieldRight.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
-        topShieldRight.setShieldPosition(param_.Width/3, 0, -param_.Height/3);
+        topShieldRight.setShieldPosition(param_.Width / 3, 0, -param_.Height / 3);
         topShieldRight.flipShield();
         topShieldRight.rotateShield(100);
         topShieldRight.addToScene(bullet, scene);
 
-        middleShieldLeft.createShieldShape(5*param_.BallSize, 3*param_.BallSize);
+        middleShieldLeft.createShieldShape(5 * param_.BallSize, 3 * param_.BallSize);
         middleShieldLeft.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
-        middleShieldLeft.setShieldPosition(-param_.Width/10,0,-param_.Height/12);
+        middleShieldLeft.setShieldPosition(-param_.Width / 10, 0, -param_.Height / 12);
         middleShieldLeft.rotateShield(80);
         middleShieldLeft.addToScene(bullet, scene);
 
-        middleShieldRight.createShieldShape(5*param_.BallSize, 3*param_.BallSize);
+        middleShieldRight.createShieldShape(5 * param_.BallSize, 3 * param_.BallSize);
         middleShieldRight.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
-        middleShieldRight.setShieldPosition(param_.Width/10,0,-param_.Height/12);
+        middleShieldRight.setShieldPosition(param_.Width / 10, 0, -param_.Height / 12);
         middleShieldRight.flipShield();
         middleShieldRight.rotateShield(-80);
         middleShieldRight.addToScene(bullet, scene);
 
-        cylinderGroup.createMeshes(param_.BallSize/2, param_.BorderHeight, threepp::Color::orangered);
-        cylinderGroup.setPosition(threepp::Vector3(0,param_.BorderHeight/2,param_.Height/20));
+        cylinderGroup.createMeshes(param_.BallSize / 2, param_.BorderHeight, threepp::Color::orangered);
+        cylinderGroup.setPosition(threepp::Vector3(0, param_.BorderHeight / 2, param_.Height / 20));
         cylinderGroup.addToScene(bullet, scene);
     }
 
@@ -187,7 +191,7 @@ private:
                                   param_.Height / 2 + param_.HalfBorderWidth);
     }
 
-    void addBorder(threepp::Object3D &scene, threepp::BulletPhysics &bullet){
+    void addBorder(threepp::Object3D &scene, threepp::BulletPhysics &bullet) {
         scene.add(RightWall_);
         scene.add(LeftWall_);
         scene.add(TopWall_);
@@ -204,19 +208,19 @@ private:
         bullet.get(*BottomWall_)->body->setRestitution(1);
     }
 
-    void createTopCurve(threepp::Object3D &scene, threepp::BulletPhysics &bullet) const{
+    void createTopCurve(threepp::Object3D &scene, threepp::BulletPhysics &bullet) const {
 
-        float curveRadius = (param_.Width+param_.PlungerWidth)/2;
+        float curveRadius = (param_.Width + param_.PlungerWidth) / 2;
         auto curve = std::make_shared<threepp::Path>();
-        curve->arc(param_.PlungerWidth/2,-param_.Height/5,curveRadius,0,-threepp::math::PI,true);
+        curve->arc(param_.PlungerWidth / 2, -param_.Height / 5, curveRadius, 0, -threepp::math::PI, true);
 
         auto points = curve->getPoints(12);
 
-        for (int i = 0; i < points.size()/2; ++i) {
+        for (int i = 0; i < points.size() / 2; ++i) {
 
             auto boxWidth = points[i].distanceTo(points[i + 1]);
-            auto box1 = utils::createBox(boxWidth+10, 25, param_.BorderHeight, threepp::Color::burlywood);
-            auto box2 = utils::createBox(boxWidth+10, 25, param_.BorderHeight, threepp::Color::burlywood);
+            auto box1 = utils::createBox(boxWidth + 10, 25, param_.BorderHeight, threepp::Color::burlywood);
+            auto box2 = utils::createBox(boxWidth + 10, 25, param_.BorderHeight, threepp::Color::burlywood);
 
             auto relativeAngle = std::acos((points[i].x - points[i + 1].x) / boxWidth);
             auto angle = threepp::math::PI + relativeAngle;
@@ -224,10 +228,12 @@ private:
             threepp::Vector2 boxPos;
             boxPos.lerpVectors(points[i], points[i + 1], 0.5f);
 
-            box1->position.set(-boxPos.x -12.5f*std::sin(relativeAngle) + param_.PlungerWidth , param_.BorderHeight/2, boxPos.y - 12.5f*std::cos(relativeAngle));
+            box1->position.set(-boxPos.x - 12.5f * std::sin(relativeAngle) + param_.PlungerWidth,
+                               param_.BorderHeight / 2, boxPos.y - 12.5f * std::cos(relativeAngle));
             box1->rotateY(angle);
 
-            box2->position.set(boxPos.x +12.5f*std::sin(relativeAngle), param_.BorderHeight/2, boxPos.y -12.5f*std::cos(relativeAngle));
+            box2->position.set(boxPos.x + 12.5f * std::sin(relativeAngle), param_.BorderHeight / 2,
+                               boxPos.y - 12.5f * std::cos(relativeAngle));
             box2->rotateY(-angle);
 
             scene.add(box1);
@@ -240,27 +246,27 @@ private:
 
     }
 
-    void createBtmBallGuides(threepp::Object3D &scene, threepp::BulletPhysics &bullet) const{
-        auto leftGuide = utils::createBox(10*param_.BallSize,20,param_.BorderHeight,threepp::Color::burlywood);
-        auto leftGuideEnd = utils::createBox(20,60,param_.BorderHeight,threepp::Color::burlywood);
-        auto rightGuide = utils::createBox(10*param_.BallSize,20,param_.BorderHeight,threepp::Color::burlywood);
-        auto rightGuideEnd = utils::createBox(20,60,param_.BorderHeight,threepp::Color::burlywood);
+    void createBtmBallGuides(threepp::Object3D &scene, threepp::BulletPhysics &bullet) const {
+        auto leftGuide = utils::createBox(10 * param_.BallSize, 20, param_.BorderHeight, threepp::Color::burlywood);
+        auto leftGuideEnd = utils::createBox(20, 60, param_.BorderHeight, threepp::Color::burlywood);
+        auto rightGuide = utils::createBox(10 * param_.BallSize, 20, param_.BorderHeight, threepp::Color::burlywood);
+        auto rightGuideEnd = utils::createBox(20, 60, param_.BorderHeight, threepp::Color::burlywood);
 
-        leftGuide->rotateY(-threepp::math::PI/6);
-        leftGuide->position.set(-param_.Width/3.5f,param_.BorderHeight/2, param_.Height/2.5f);
+        leftGuide->rotateY(-threepp::math::PI / 6);
+        leftGuide->position.set(-param_.Width / 3.5f, param_.BorderHeight / 2, param_.Height / 2.5f);
         scene.add(leftGuide);
         bullet.addMesh(*leftGuide);
 
-        leftGuideEnd->position.set(-1.3575f*param_.BallSize,param_.BorderHeight/2,param_.Height/2.0375f);
+        leftGuideEnd->position.set(-1.3575f * param_.BallSize, param_.BorderHeight / 2, param_.Height / 2.0375f);
         scene.add(leftGuideEnd);
         bullet.addMesh(*leftGuideEnd);
 
-        rightGuide->rotateY(threepp::math::PI/6);
-        rightGuide->position.set(param_.Width/3.5f,param_.BorderHeight/2, param_.Height/2.5f);
+        rightGuide->rotateY(threepp::math::PI / 6);
+        rightGuide->position.set(param_.Width / 3.5f, param_.BorderHeight / 2, param_.Height / 2.5f);
         scene.add(rightGuide);
         bullet.addMesh(*rightGuide);
 
-        rightGuideEnd->position.set(1.3575f*param_.BallSize,param_.BorderHeight/2,param_.Height/2.0375f);
+        rightGuideEnd->position.set(1.3575f * param_.BallSize, param_.BorderHeight / 2, param_.Height / 2.0375f);
         scene.add(rightGuideEnd);
         bullet.addMesh(*rightGuideEnd);
     }

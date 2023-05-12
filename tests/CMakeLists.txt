@@ -1,5 +1,5 @@
 #Copied from threepp/tests with changes for this project
-add_compile_definitions(DATA_FOLDER="${PROJECT_SOURCE_DIR}/data")
+add_compile_definitions(DATA_FOLDER= "${PROJECT_SOURCE_DIR}/data")
 
 function(add_test_executable name)
     add_executable(${name} ${name}.cpp)

@@ -9,7 +9,7 @@
 
 #include "utils.hpp"
 
-class bouncyCylindersObject{
+class bouncyCylindersObject {
 public:
 
     std::shared_ptr<threepp::Mesh> CylinderTop;
@@ -17,20 +17,20 @@ public:
     std::shared_ptr<threepp::Mesh> CylinderRight;
 
 
-    void createMeshes(float radius, float height, threepp::Color::ColorName color){
+    void createMeshes(float radius, float height, threepp::Color::ColorName color) {
         radius_ = radius;
         CylinderTop = utils::createCylinder(radius, height, color);
         CylinderLeft = utils::createCylinder(radius, height, color);
         CylinderRight = utils::createCylinder(radius, height, color);
     }
 
-    void setPosition(threepp::Vector3 pos){
-        CylinderTop->position.set(pos.x, pos.y, -pos.z+radius_);
+    void setPosition(threepp::Vector3 pos) {
+        CylinderTop->position.set(pos.x, pos.y, -pos.z + radius_);
         CylinderLeft->position.set(-pos.x - radius_ * 4, pos.y, -pos.z + 3 * radius_);
         CylinderRight->position.set(pos.x + radius_ * 4, pos.y, -pos.z + 3 * radius_);
     }
 
-    void addToScene(threepp::BulletPhysics &bullet, threepp::Object3D &scene, float restitution = 3){
+    void addToScene(threepp::BulletPhysics &bullet, threepp::Object3D &scene, float restitution = 3) {
         scene.add(CylinderTop);
         scene.add(CylinderLeft);
         scene.add(CylinderRight);
@@ -43,6 +43,7 @@ public:
         bullet.get(*CylinderLeft)->body->setRestitution(restitution);
         bullet.get(*CylinderRight)->body->setRestitution(restitution);
     }
+
 private:
     float radius_;
 };

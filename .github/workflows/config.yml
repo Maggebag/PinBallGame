@@ -1,7 +1,7 @@
 #Copied from threepp/workflows, and done changes for use in this project. Link in README.md
 name: Build
 
-on: [push, workflow_dispatch]
+on: [ push, workflow_dispatch ]
 
 jobs:
   vcpkg-on-linux:
@@ -13,39 +13,39 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
-        compiler_version: [9]
+        os: [ ubuntu-20.04 ]
+        compiler_version: [ 9 ]
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Install prerequisites
-      run: |
-        sudo apt-get update && sudo apt-get install -y \
-        libxinerama-dev \
-        libxcursor-dev \
-        xorg-dev \
-        libglu1-mesa-dev \
-        pkg-config
+      - name: Install prerequisites
+        run: |
+          sudo apt-get update && sudo apt-get install -y \
+          libxinerama-dev \
+          libxcursor-dev \
+          xorg-dev \
+          libglu1-mesa-dev \
+          pkg-config
 
-    - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
-      uses: lukka/run-vcpkg@v10
-      id: runvcpkg
-      with:
-        vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-        vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
-        vcpkgJsonGlob: 'vcpkg.json'
-        appendedCacheKey: vcpkginstall
+      - name: Restore artifacts, or run vcpkg, build (and cache artifacts as post step)
+        uses: lukka/run-vcpkg@v10
+        id: runvcpkg
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: '12c2a93b4007612b5ffa980c9d2235eb0bcac10f'
+          vcpkgJsonGlob: 'vcpkg.json'
+          appendedCacheKey: vcpkginstall
 
-    - name: Configure and build
-      run: |
-        cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE=Release
-        cmake --build build
+      - name: Configure and build
+        run: |
+          cmake . -B build -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
 
-    - name: Test
-      run: |
-        cd build/tests
-        ctest --output-on-failure
+      - name: Test
+        run: |
+          cd build/tests
+          ctest --output-on-failure
 
 
   vcpkg-on-windows:
@@ -54,7 +54,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, windows-2022]
+        os: [ windows-2019, windows-2022 ]
 
     steps:
       - uses: actions/checkout@v3
@@ -85,7 +85,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-11]
+        os: [ macos-11 ]
 
     steps:
       - uses: actions/checkout@v3
