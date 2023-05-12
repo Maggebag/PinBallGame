@@ -15,14 +15,14 @@
 using namespace threepp;
 
 int main() {
-    Canvas canvas(Canvas::Parameters().antialiasing(8));
+    Canvas canvas(Canvas::Parameters().size(720,960).antialiasing(8).vsync(false));
     GLRenderer renderer(canvas);
     renderer.setClearColor(Color::blanchedalmond);
     renderer.shadowMap().type = PCFSoftShadowMap;
     renderer.shadowMap().enabled = true;
 
     auto camera = PerspectiveCamera::create(75, canvas.getAspect(), 0.1f, 10000);
-    camera->position.set(0, 500, 10);
+    camera->position.set(0, 850, 10);
 
     OrbitControls controls{camera, canvas};
 

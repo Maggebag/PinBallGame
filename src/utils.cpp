@@ -54,6 +54,7 @@ std::shared_ptr<threepp::Mesh> utils::createBall(float radius, threepp::TextureL
 
     auto ballMesh = threepp::Mesh::create(ballGeometry, ballMaterial);
     ballMesh->castShadow = true;
+    ballMesh->receiveShadow = true;
 
     return ballMesh;
 }

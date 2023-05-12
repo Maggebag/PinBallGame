@@ -13,7 +13,7 @@ struct Parameters {
     //One unit equals 1mm
     const float BallSize = 27;
     const float BorderHeight = BallSize + 5;
-    const float BorderWidth = 50;
+    const float BorderWidth = 80;
     const float HalfBorderWidth = BorderWidth / 2;
     const float Height = 980;
     const float Width = 520;
@@ -34,16 +34,27 @@ public:
 
     PlungerObject Plunger;
 
-    LightShieldObject shield;
+    LightShieldObject shieldFlipperLeft;
+    LightShieldObject shieldFlipperRight;
+
+    LightShieldObject shieldChuteLeft;
+    LightShieldObject shieldChuteRight;
+
+    LightShieldObject topShieldLeft;
+    LightShieldObject topShieldRight;
 
     PlayingField(threepp::Object3D &scene, threepp::BulletPhysics &bullet) {
 
         ballResetPos.set(param_.Width / 2 - param_.BallSize*0.75f + param_.PlungerWidth, param_.BallSize/2, param_.Height / 2 - 220);
 
         auto Plane = utils::createPlane(param_.Width + param_.PlungerWidth, param_.Height, threepp::Color::beige);
+        auto windowPlane = utils::createPlane(param_.Width + param_.PlungerWidth, param_.Height, threepp::Color::white);
         Plane->position.setX(param_.PlungerWidth/2);
+        windowPlane->position.setX(param_.PlungerWidth/2);
+        windowPlane->position.setY(param_.BorderHeight);
         scene.add(Plane);
         bullet.addMesh(*Plane);
+        bullet.addMesh(*windowPlane);
         bullet.get(*Plane)->body->setRestitution(0.5f);
 
         createBorder();
@@ -83,8 +94,44 @@ public:
         Plunger.createInsideShield(param_.Height, param_.BorderHeight, param_.BallSize);
         Plunger.addInsideShield(bullet, scene);
 
-        shield.defineLightShieldDimensions(100,200,25,threepp::Color::yellow);
-        shield.addToScene(scene);
+        shieldFlipperLeft.createShieldShape(2.5f*param_.BallSize,5.5f*param_.BallSize);
+        shieldFlipperLeft.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
+        shieldFlipperLeft.addBoxToLongestSide();
+        shieldFlipperLeft.setShieldPosition(-flipperPos_.x-3.3f*param_.BallSize,0,flipperPos_.z-2.4f*param_.BallSize);
+        shieldFlipperLeft.addToScene(bullet, scene);
+
+        shieldFlipperRight.createShieldShape(2.5f*param_.BallSize,5.5f*param_.BallSize);
+        shieldFlipperRight.createShieldMesh(32, threepp::Color::royalblue);
+        shieldFlipperRight.addBoxToLongestSide();
+        shieldFlipperRight.setShieldPosition(flipperPos_.x+3.3f*param_.BallSize,0,flipperPos_.z-2.4f*param_.BallSize);
+        shieldFlipperRight.flipShield();
+        shieldFlipperRight.addToScene(bullet, scene);
+
+        shieldChuteLeft.createShieldShape(2*param_.BallSize, 2*param_.BallSize);
+        shieldChuteLeft.createShieldMesh(param_.BorderHeight, threepp::Color::burlywood);
+        shieldChuteLeft.addBoxToLongestSide();
+        shieldChuteLeft.setShieldPosition(-param_.Width/2-10, 0, 60);
+        shieldChuteLeft.addToScene(bullet, scene, 2);
+
+        shieldChuteRight.createShieldShape(2*param_.BallSize, 2*param_.BallSize);
+        shieldChuteRight.createShieldMesh(param_.BorderHeight, threepp::Color::burlywood);
+        shieldChuteRight.addBoxToLongestSide();
+        shieldChuteRight.setShieldPosition(param_.Width/2+10, 0, 60);
+        shieldChuteRight.flipShield();
+        shieldChuteRight.addToScene(bullet, scene, 2);
+
+        topShieldLeft.createShieldShape(9*param_.BallSize,5*param_.BallSize);
+        topShieldLeft.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
+        topShieldLeft.setShieldPosition(-param_.Width/3, 0, -param_.Height/3);
+        topShieldLeft.rotateShield(-100);
+        topShieldLeft.addToScene(bullet, scene);
+
+        topShieldRight.createShieldShape(9*param_.BallSize,5*param_.BallSize);
+        topShieldRight.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
+        topShieldRight.setShieldPosition(param_.Width/3, 0, -param_.Height/3);
+        topShieldRight.flipShield();
+        topShieldRight.rotateShield(100);
+        topShieldRight.addToScene(bullet, scene);
     }
 
 private:
@@ -168,6 +215,7 @@ private:
             bullet.addMesh(*box2);
             bullet.get(*box2)->body->setRestitution(0.5f);
         }
+
     }
 
     void createBtmBallGuides(threepp::Object3D &scene, threepp::BulletPhysics &bullet) const{
