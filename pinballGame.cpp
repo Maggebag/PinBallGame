@@ -6,6 +6,7 @@
 #include <threepp/scenes/Scene.hpp>
 #include <threepp/cameras/PerspectiveCamera.hpp>
 #include <threepp/lights/AmbientLight.hpp>
+#include <threepp/core/Clock.hpp>
 
 #include "keyInput.hpp"
 #include "PlayingField.hpp"
@@ -45,7 +46,9 @@ int main() {
 
     canvas.addKeyListener(keyInput.get());
 
-    canvas.animate([&](float dt) {
+    Clock clock;
+    canvas.animate([&]() {
+        float dt = clock.getDelta();
         bullet.step(dt);
 
         checkIfBallOut(playingField.PinBall, ballPosGet(playingField.PinBall, bullet), playingField.ballResetPos, 470,

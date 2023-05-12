@@ -26,8 +26,8 @@ public:
 
     void setPosition(threepp::Vector3 pos){
         CylinderTop->position.set(pos.x, pos.y, -pos.z+radius_);
-        CylinderLeft->position.set(-pos.x - radius_ * 4, pos.y, -pos.z + 2 * radius_);
-        CylinderRight->position.set(pos.x + radius_ * 4, pos.y, -pos.z + 2 * radius_);
+        CylinderLeft->position.set(-pos.x - radius_ * 4, pos.y, -pos.z + 3 * radius_);
+        CylinderRight->position.set(pos.x + radius_ * 4, pos.y, -pos.z + 3 * radius_);
     }
 
     void addToScene(threepp::BulletPhysics &bullet, threepp::Object3D &scene, float restitution = 3){
