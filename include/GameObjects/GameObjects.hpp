@@ -10,4 +10,6 @@
 
 #include "LightShieldObject.hpp"
 
+#include "bouncyCylinders.hpp"
+
 #endif //PINBALLGAME_GAMEOBJECTS_HPP

@@ -43,6 +43,11 @@ public:
     LightShieldObject topShieldLeft;
     LightShieldObject topShieldRight;
 
+    LightShieldObject middleShieldLeft;
+    LightShieldObject middleShieldRight;
+
+    bouncyCylindersObject cylinderGroup;
+
     PlayingField(threepp::Object3D &scene, threepp::BulletPhysics &bullet) {
 
         ballResetPos.set(param_.Width / 2 - param_.BallSize*0.75f + param_.PlungerWidth, param_.BallSize/2, param_.Height / 2 - 220);
@@ -83,8 +88,8 @@ public:
         FlipperRight.setPosition(flipperPos_.x, flipperPos_.y, flipperPos_.z);
         FlipperRight.addFlipper(param_.BallSize, bullet, scene);
 
-        BallGuides.createGuides(param_.BallSize);
-        BallGuides.getFlipperPos(flipperPos_);
+        BallGuides.createGuides(param_.BallSize, threepp::Color::blueviolet);
+        BallGuides.getFlipperPos(FlipperLeft.getPosition(), FlipperRight.getPosition());
         BallGuides.addBallGuides(bullet, scene);
 
         Plunger.setPlungerTravelLength(120.0);
@@ -132,6 +137,23 @@ public:
         topShieldRight.flipShield();
         topShieldRight.rotateShield(100);
         topShieldRight.addToScene(bullet, scene);
+
+        middleShieldLeft.createShieldShape(5*param_.BallSize, 3*param_.BallSize);
+        middleShieldLeft.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
+        middleShieldLeft.setShieldPosition(-param_.Width/10,0,-param_.Height/12);
+        middleShieldLeft.rotateShield(80);
+        middleShieldLeft.addToScene(bullet, scene);
+
+        middleShieldRight.createShieldShape(5*param_.BallSize, 3*param_.BallSize);
+        middleShieldRight.createShieldMesh(param_.BorderHeight, threepp::Color::royalblue);
+        middleShieldRight.setShieldPosition(param_.Width/10,0,-param_.Height/12);
+        middleShieldRight.flipShield();
+        middleShieldRight.rotateShield(-80);
+        middleShieldRight.addToScene(bullet, scene);
+
+        cylinderGroup.createMeshes(param_.BallSize/2, param_.BorderHeight, threepp::Color::orangered);
+        cylinderGroup.setPosition(threepp::Vector3(0,param_.BorderHeight/2,param_.Height/20));
+        cylinderGroup.addToScene(bullet, scene);
     }
 
 private:

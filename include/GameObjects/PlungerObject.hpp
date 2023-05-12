@@ -55,9 +55,9 @@ public:
         btPlunger->setLowerAngLimit(0);
         btPlunger->setUpperAngLimit(0);
         btPlunger->setPoweredLinMotor(true);
-        btPlunger->setMaxLinMotorForce(100000);
+        btPlunger->setMaxLinMotorForce(1000000);
 
-        bullet.addConstraint(btPlunger.get(), true);
+        bullet.addConstraint(btPlunger.get());
     }
 
     void setPosition(float x, float y, float z){
@@ -82,7 +82,7 @@ public:
 
     void createInsideShield(float gameHeight, float borderHeight, float ballSize){
         insideShield = utils::createBox(20, gameHeight / 4 * 3, borderHeight, threepp::Color::burlywood);
-        insideShield->position.set(position.x - 1.5 * ballSize / 2 - 10, borderHeight / 2, gameHeight / 4 / 2);
+        insideShield->position.set(position.x - 1.5f * ballSize / 2 - 10, borderHeight / 2, gameHeight / 4 / 2);
     }
 
     void addInsideShield(threepp::BulletPhysics &bullet, threepp::Object3D &scene) const{

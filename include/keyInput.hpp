@@ -65,11 +65,11 @@ public:
     }
 
     void plunger(PlungerObject &Plunger){
-        if (keys_.s && lowLim_ < Plunger.plungerTravelLength) {
-            lowLim_ += 0.5;
+        if (keys_.s && lowLim_ < Plunger.plungerTravelLength-30) {
+            lowLim_ += 0.25;
         }
         if (keys_.w && lowLim_ > 0) {
-            lowLim_ -= 0.5;
+            lowLim_ -= 0.25;
         }
 
         Plunger.PlungerSetUpperLim(lowLim_);

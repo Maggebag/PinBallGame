@@ -17,24 +17,30 @@
 class LightShieldObject{
 
 public:
+
+    threepp::Shape shieldShape;
+    std::shared_ptr<threepp::Mesh> shieldMesh;
+
+    std::shared_ptr<threepp::Mesh> longSideBox;
+
     void createShieldShape(float width, float length) {
 
-        shieldShape_ = threepp::Shape();
-        shieldShape_.moveTo(0.f,length/2.f);
-        shieldShape_.lineTo(0.f,length*0.85f)
+        shieldShape = threepp::Shape();
+        shieldShape.moveTo(0.f,length/2.f);
+        shieldShape.lineTo(0.f,length*0.85f)
         .quadraticCurveTo(0.f,length,0.1f*width, length*0.9f);
-        shieldShape_.lineTo(width*0.95f,length*0.035f)
+        shieldShape.lineTo(width*0.95f,length*0.035f)
         .quadraticCurveTo(width,0.f,width*0.95f,length*0.01f);
-        shieldShape_.lineTo(width*0.05f,length*0.25f)
+        shieldShape.lineTo(width*0.05f,length*0.25f)
         .quadraticCurveTo(0.f,length*0.3f, 0.f, length*0.35f);
-        shieldShape_.closePath();
+        shieldShape.closePath();
     }
 
     void addBoxToLongestSide(){
 
         boxExist_ = true;
 
-        auto points = shieldShape_.getPoints(1);
+        auto points = shieldShape.getPoints(1);
 
         boxPos_.lerpVectors(points[2],points[3], 0.5f);
 
@@ -43,9 +49,9 @@ public:
         auto relativeAngle = std::acos((points[2].x - points[3].x) / boxLength);
         angle_ = threepp::math::PI + relativeAngle;
 
-        longSideBox_ = utils::createBox(boxLength,5,height_-8.f,threepp::Color::orangered);
-        longSideBox_->position.set(boxPos_.x+6.f, height_/2.f, -boxPos_.y-6.f);
-        longSideBox_->rotateY(angle_);
+        longSideBox = utils::createBox(boxLength,5,height_-8.f,threepp::Color::orangered);
+        longSideBox->position.set(boxPos_.x+6.f, height_/2.f, -boxPos_.y-6.f);
+        longSideBox->rotateY(angle_);
     }
 
     void createShieldMesh(float height, threepp::Color::ColorName color){
@@ -55,29 +61,29 @@ public:
         opts.depth = height;
         opts.bevelEnabled = true;
         opts.bevelSize = 10.f;
-        auto shieldGeometry = threepp::ExtrudeGeometry::create(shieldShape_, opts);
+        auto shieldGeometry = threepp::ExtrudeGeometry::create(shieldShape, opts);
         shieldGeometry->rotateX(-threepp::math::PI/2);
 
         auto shieldMaterial = threepp::MeshPhongMaterial::create();
         shieldMaterial->color = color;
 
-        shield_ = threepp::Mesh::create(shieldGeometry, shieldMaterial);
-        shield_->castShadow = true;
+        shieldMesh = threepp::Mesh::create(shieldGeometry, shieldMaterial);
+        shieldMesh->castShadow = true;
     }
 
     void flipShield(){
-        shield_->geometry()->rotateZ(threepp::math::PI);
+        shieldMesh->geometry()->rotateZ(threepp::math::PI);
         if(boxExist_){
-           longSideBox_->rotateY(-2*angle_);
-           longSideBox_->position.setX(position_.x-boxPos_.x-6.f);
+           longSideBox->rotateY(-2*angle_);
+           longSideBox->position.setX(position_.x-boxPos_.x-6.f);
         }
-        shield_->position.setY(height_);
+        shieldMesh->position.setY(height_);
     }
 
-    void rotateShield(float angle){ //not allowed to rotate shield if box exists
+    void rotateShield(float angle){ //not allowed to rotate shieldMesh if box exists
         if(!boxExist_) {
             auto angleInRad = threepp::math::degToRad(angle);
-            shield_->rotateY(angleInRad);
+            shieldMesh->rotateY(angleInRad);
         }
     }
 
@@ -86,21 +92,21 @@ public:
         position_.y = y;
         position_.z = z;
 
-        shield_->position.set(position_.x, position_.y, position_.z);
+        shieldMesh->position.set(position_.x, position_.y, position_.z);
         if(boxExist_){
-            longSideBox_->position.set(position_.x+boxPos_.x+6.f,height_/2.f,position_.z-boxPos_.y-6.f);
+            longSideBox->position.set(position_.x+boxPos_.x+6.f,height_/2.f,position_.z-boxPos_.y-6.f);
         }
     }
 
     void addToScene(threepp::BulletPhysics &bullet, threepp::Object3D &scene, float restitution = 3){
-        scene.add(shield_);
-        bullet.addMesh(*shield_);
-        bullet.get(*shield_)->body->setRestitution(1);
+        scene.add(shieldMesh);
+        bullet.addMesh(*shieldMesh);
+        bullet.get(*shieldMesh)->body->setRestitution(1);
 
         if(boxExist_){
-            scene.add(longSideBox_);
-            bullet.addMesh(*longSideBox_);
-            bullet.get(*longSideBox_)->body->setRestitution(restitution);
+            scene.add(longSideBox);
+            bullet.addMesh(*longSideBox);
+            bullet.get(*longSideBox)->body->setRestitution(restitution);
         }
     }
 
@@ -112,11 +118,6 @@ private:
     threepp::Vector2 boxPos_;
 
     threepp::Vector3 position_;
-
-    threepp::Shape shieldShape_;
-    std::shared_ptr<threepp::Mesh> shield_;
-
-    std::shared_ptr<threepp::Mesh> longSideBox_;
 };
 
 #endif //PINBALLGAME_LIGHTSHIELDOBJECT_HPP
