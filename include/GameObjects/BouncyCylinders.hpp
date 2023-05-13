@@ -1,6 +1,6 @@
 
-#ifndef PINBALLGAME_POPULATEFIELD_HPP
-#define PINBALLGAME_POPULATEFIELD_HPP
+#ifndef PINBALLGAME_BOUNCYCYLINDERS_HPP
+#define PINBALLGAME_BOUNCYCYLINDERS_HPP
 
 #include <memory>
 #include <threepp/objects/Mesh.hpp>
@@ -48,4 +48,4 @@ private:
     float radius_;
 };
 
-#endif //PINBALLGAME_POPULATEFIELD_HPP
+#endif //PINBALLGAME_BOUNCYCYLINDERS_HPP
