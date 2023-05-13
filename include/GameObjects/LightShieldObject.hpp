@@ -33,7 +33,6 @@ public:
                 .quadraticCurveTo(width, 0.f, width * 0.95f, length * 0.01f);
         shieldShape.lineTo(width * 0.05f, length * 0.25f)
                 .quadraticCurveTo(0.f, length * 0.3f, 0.f, length * 0.35f);
-        shieldShape.closePath();
     }
 
     void addBoxToLongestSide() {
