@@ -1,5 +1,4 @@
 
-
 #include "GameObjects/BallGuidesObject.hpp"
 
 #include <threepp/scenes/Scene.hpp>
