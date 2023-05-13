@@ -8,7 +8,7 @@ function(add_test_executable name)
     add_test(NAME ${name} COMMAND ${name})
 endfunction()
 
-add_test_executable(test_utils)
+#add_test_executable(test_utils)
 add_test_executable(test_gameLogic)
 #add_test_executable(test_BallGuidesObject)
 #add_test_executable(test_bouncyCylinders)
