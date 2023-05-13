@@ -21,6 +21,8 @@ To run the game, you need to have the following installed on your system:
 
 Call CMake with `-DCMAKE_TOOLCHAIN_FILE=[path to vcpkg]/scripts/buildsystems/vcpkg.cmake`
 
+Clion example:
+
 ![img.png](doc/examples/CmakeToolChain.png)
 
 Then just run the `pinBallGame` in Release mode!

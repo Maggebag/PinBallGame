@@ -76,6 +76,7 @@ public:
         scene.add(PinBall);
         bullet.addMesh(*PinBall, 80.6f, true);
         bullet.get(*PinBall)->body->setRestitution(0.75f);
+        bullet.get(*PinBall)->body->setDamping(0.1,0.1);
 
         flipperPos_.set(2.5f * param_.BallSize, param_.BallSize / 2, param_.Height / 3);
 
