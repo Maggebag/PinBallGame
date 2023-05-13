@@ -9,23 +9,21 @@
 
 #include "utils.hpp"
 
-using namespace threepp;
-
-std::shared_ptr<Mesh> utils::createCylinder(float radius, float height, threepp::Color::ColorName Color) {
-    const auto cylinderGeometry = CylinderGeometry::create(radius, radius, height);
-    const auto cylinderMaterial = MeshPhongMaterial::create();
+std::shared_ptr<threepp::Mesh> utils::createCylinder(float radius, float height, threepp::Color::ColorName Color) {
+    const auto cylinderGeometry = threepp::CylinderGeometry::create(radius, radius, height);
+    const auto cylinderMaterial = threepp::MeshPhongMaterial::create();
     cylinderMaterial->color = Color;
-    auto cylinderMesh = Mesh::create(cylinderGeometry, cylinderMaterial);
+    auto cylinderMesh = threepp::Mesh::create(cylinderGeometry, cylinderMaterial);
     cylinderMesh->castShadow = true;
 
     return cylinderMesh;
 }
 
-std::shared_ptr<Mesh> utils::createBox(float width, float length, float height, Color::ColorName Color) {
-    const auto boxGeometry = BoxGeometry::create(width, height, length);
-    const auto boxMaterial = MeshPhongMaterial::create();
+std::shared_ptr<threepp::Mesh> utils::createBox(float width, float length, float height, threepp::Color::ColorName Color) {
+    const auto boxGeometry = threepp::BoxGeometry::create(width, height, length);
+    const auto boxMaterial = threepp::MeshPhongMaterial::create();
     boxMaterial->color = Color;
-    auto boxMesh = Mesh::create(boxGeometry, boxMaterial);
+    auto boxMesh = threepp::Mesh::create(boxGeometry, boxMaterial);
     boxMesh->castShadow = true;
 
     return boxMesh;
@@ -72,11 +70,11 @@ std::shared_ptr<threepp::Mesh> utils::createBall(float radius) {
 }
 
 std::shared_ptr<threepp::SpotLight> utils::createLight(threepp::Vector3 position) {
-    auto light = SpotLight::create(threepp::Color::whitesmoke);
+    auto light = threepp::SpotLight::create(threepp::Color::whitesmoke);
     light->castShadow = true;
     light->distance = 10000;
     light->intensity = 0.8f;
-    light->angle = math::degToRad(60);
+    light->angle = threepp::math::degToRad(60);
     light->position.set(position.x, position.y, position.z);
     light->shadow->mapSize.set(4096, 4096);
 

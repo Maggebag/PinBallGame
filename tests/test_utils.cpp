@@ -50,7 +50,6 @@ TEST_CASE("createPlane Test") {
     CHECK(geometry->type() == "PlaneGeometry");
     CHECK(geometry->width == 10);
     CHECK(geometry->height == 20);
-//Have not figured out how to test for rotation
 
     CHECK(material->color == threepp::Color::aqua);
 

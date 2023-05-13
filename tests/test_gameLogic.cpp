@@ -12,7 +12,7 @@ TEST_CASE("ballPosGet Test") {
     threepp::BulletPhysics bullet;
 
     auto ball = utils::createBall(20);
-    ball->position.set(1, 2, 3);
+    ball->position.set(1.f, 2.f, 3.f);
     bullet.addMesh(*ball, 1);
 
     SECTION("Returns Vector3") {
@@ -68,16 +68,16 @@ TEST_CASE("getGravFromAngle Test") {
     }
 
     SECTION("Returns expected result") {
-        float angle = 25;
+        float angle = 25.f;
         threepp::Vector3 grav = getGravFromAngle(angle);
         REQUIRE(grav.x == 0);
-        REQUIRE_THAT(grav.y, Catch::Matchers::WithinRel(-889.0879, 0.001));
-        REQUIRE_THAT(grav.z, Catch::Matchers::WithinRel(414.5885, 0.001));
+        REQUIRE_THAT(grav.y, Catch::Matchers::WithinRel(-889.0879f, 0.001f));
+        REQUIRE_THAT(grav.z, Catch::Matchers::WithinRel(414.5885f, 0.001f));
 
         float angle2 = 0.2f;
         threepp::Vector3 grav2 = getGravFromAngle(angle2);
         REQUIRE(grav2.x == 0);
-        REQUIRE_THAT(grav2.y, Catch::Matchers::WithinRel(-980.994, 0.001));
-        REQUIRE_THAT(grav2.z, Catch::Matchers::WithinRel(3.424, 0.001));
+        REQUIRE_THAT(grav2.y, Catch::Matchers::WithinRel(-980.994f, 0.001f));
+        REQUIRE_THAT(grav2.z, Catch::Matchers::WithinRel(3.424f, 0.001f));
     }
 }
