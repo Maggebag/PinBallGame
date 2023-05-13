@@ -32,7 +32,7 @@ When you start the executable you will be presented with the pinball game board.
 Controls:
 - *W ------- Move the plunger upwards* 
 - *S -------- Pull the plunger down*
-- *Space - Releases the plunger*
+- *Space --- Releases the plunger*
 - *A -------- Activate Left Flipper*
 - *D ------- Activate Right FLipper*
 
@@ -45,7 +45,7 @@ There is a chance the ball gains so much speed that it will pass through the boa
 If this happens reset the ball position using "R".
 
 It is possible for the plunger to somehow phase through the wall and "detach" from its constraint. "It's a feature not a bug" /s
-This is something I discovered when messing about, and I have not recreated it more times. If it happens, just restart the game by closing it and preopening it .
+This is something I discovered when messing about, and I have not recreated it more times. If it happens, just restart the game by closing it and reopening it .
 
 ### Project Design
 
