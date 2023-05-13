@@ -1,5 +1,5 @@
 
-#include"GameObjects/bouncyCylinders.hpp"
+#include"GameObjects/BouncyCylinders.hpp"
 
 #include <threepp/scenes/Scene.hpp>
 

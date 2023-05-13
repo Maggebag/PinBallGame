@@ -9,7 +9,6 @@
         "opengl3-binding"
       ]
     },
-    "bullet3",
-    "assimp"
+    "bullet3"
   ]
 }
