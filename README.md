@@ -30,22 +30,31 @@ Then just run the `pinBallGame` in Release mode!
 When you start the executable you will be presented with the pinball game board.
 
 Controls:
-* W - Move the plunger upwards
-* S - Pull the plunger down
-* Space - Releases the plunger
-* A - Activate Left Flipper
-* D - Activate Right FLipper
+- *W ------- Move the plunger upwards* 
+- *S -------- Pull the plunger down*
+- *Space - Releases the plunger*
+- *A -------- Activate Left Flipper*
+- *D ------- Activate Right FLipper*
 
 To play you first pull back the plunger and release it. Then the ball will be in play, have fun! Keep the ball from falling down!
 
 Any object that is red will increase the ball speed when hit!
 
-#### Disclaimer:
+#### <span style = "color:red"> Disclaimer: </span>
 There is a chance the ball gains so much speed that it will pass through the board border during a "tick". That means that between the updating of the physics world the ball will move in a "tick" longer than the border width.
 If this happens reset the ball position using "R".
 
 It is possible for the plunger to somehow phase through the wall and "detach" from its constraint. "It's a feature not a bug" /s
 This is something I discovered when messing about, and I have not recreated it more times. If it happens, just restart the game by closing it and preopening it .
+
+### Project Design
+
+A pinball game consists of multiple different objects that the player uses to keep the ball in play.
+In this project the attempt was to make all the objects in the playing field it's own class, for ease of use and implementation.
+
+And then the Playingfield class takes care of creating, placing and adding these objects to the scene and the bullet world.
+An ideal solution would be to have classes for all objects one could expect to find on a pinball game board, so that an existing board could be recreated in the game.
+Passing a csv file with placements and the object type would be a great way to do this, but is not a feature... :(
 
 #### No tests for bullet...
 

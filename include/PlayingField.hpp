@@ -170,6 +170,7 @@ private:
 
     threepp::Vector3 flipperPos_;
 
+    // Function below here should be their own classes, but I have run out of time
     void createBorder() {
 
         RightWall_ = utils::createBox(param_.BorderWidth, param_.Height, param_.BorderHeight,
