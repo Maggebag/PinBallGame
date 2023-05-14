@@ -249,17 +249,17 @@ private:
     }
 
     void createBtmBallGuides(threepp::Object3D &scene, threepp::BulletPhysics &bullet) const {
-        auto leftGuide = utils::createBox(10 * param_.BallSize, 20, param_.BorderHeight, threepp::Color::burlywood);
-        auto leftGuideEnd = utils::createBox(20, 60, param_.BorderHeight, threepp::Color::burlywood);
-        auto rightGuide = utils::createBox(10 * param_.BallSize, 20, param_.BorderHeight, threepp::Color::burlywood);
-        auto rightGuideEnd = utils::createBox(20, 60, param_.BorderHeight, threepp::Color::burlywood);
+        auto leftGuide = utils::createBox(1.6f*param_.Width/3, 20, param_.BorderHeight, threepp::Color::burlywood);
+        auto leftGuideEnd = utils::createBox(20, param_.Height/20, param_.BorderHeight, threepp::Color::burlywood);
+        auto rightGuide = utils::createBox(1.6f*param_.Width/3, 20, param_.BorderHeight, threepp::Color::burlywood);
+        auto rightGuideEnd = utils::createBox(20, param_.Height/20, param_.BorderHeight, threepp::Color::burlywood);
 
         leftGuide->rotateY(-threepp::math::PI / 6);
         leftGuide->position.set(-param_.Width / 3.5f, param_.BorderHeight / 2, param_.Height / 2.5f);
         scene.add(leftGuide);
         bullet.addMesh(*leftGuide);
 
-        leftGuideEnd->position.set(-1.3575f * param_.BallSize, param_.BorderHeight / 2, param_.Height / 2.0375f);
+        leftGuideEnd->position.set(-param_.Width/12, param_.BorderHeight / 2, param_.Height / 2.0375f);
         scene.add(leftGuideEnd);
         bullet.addMesh(*leftGuideEnd);
 
@@ -268,7 +268,7 @@ private:
         scene.add(rightGuide);
         bullet.addMesh(*rightGuide);
 
-        rightGuideEnd->position.set(1.3575f * param_.BallSize, param_.BorderHeight / 2, param_.Height / 2.0375f);
+        rightGuideEnd->position.set(param_.Width/12, param_.BorderHeight / 2, param_.Height / 2.0375f);
         scene.add(rightGuideEnd);
         bullet.addMesh(*rightGuideEnd);
     }
