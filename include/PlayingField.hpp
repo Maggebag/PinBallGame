@@ -120,13 +120,13 @@ public:
         shieldChuteLeft.createShieldShape(2 * param_.BallSize, 2 * param_.BallSize);
         shieldChuteLeft.createShieldMesh(param_.BorderHeight, threepp::Color::burlywood);
         shieldChuteLeft.addBoxToLongestSide();
-        shieldChuteLeft.setShieldPosition(-param_.Width / 2 - 10, 0, 60);
+        shieldChuteLeft.setShieldPosition(-param_.Width / 2 - 10, 0, param_.Height/16);
         shieldChuteLeft.addToScene(bullet, scene, 2);
 
         shieldChuteRight.createShieldShape(2 * param_.BallSize, 2 * param_.BallSize);
         shieldChuteRight.createShieldMesh(param_.BorderHeight, threepp::Color::burlywood);
         shieldChuteRight.addBoxToLongestSide();
-        shieldChuteRight.setShieldPosition(param_.Width / 2 + 10, 0, 60);
+        shieldChuteRight.setShieldPosition(param_.Width / 2 + 10, 0, param_.Height/16);
         shieldChuteRight.flipShield();
         shieldChuteRight.addToScene(bullet, scene, 2);
 
